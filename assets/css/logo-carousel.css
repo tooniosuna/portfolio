@@ -1,0 +1,28 @@
+/*body {
+    align-items: center;
+    justify-content: center;
+}*/
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+   }
+    100% {
+        transform: translateX(calc(-250px * 7));
+   }
+}
+.slider-logo-carr {
+    height: 100px;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+    width: auto;
+}
+.slider-logo-carr .slide-track-logo-carr {
+    animation: scroll 40s linear infinite;
+    display: flex;
+    width: calc(250px * 14);
+}
+.slider-logo-carr .slide-logo-carr {
+    height: 100px;
+    width: 250px;
+}
