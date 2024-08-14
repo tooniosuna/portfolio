@@ -1,28 +1,37 @@
-/*body {
-    align-items: center;
-    justify-content: center;
-}*/
 @keyframes scroll {
     0% {
         transform: translateX(0);
-   }
+    }
     100% {
-        transform: translateX(calc(-250px * 7));
-   }
+        transform: translateX(-50%); /* Desplaza la mitad del contenido duplicado */
+    }
 }
+
 .slider-logo-carr {
-    height: 100px;
+    height: 200px; /* Ajusta según el tamaño de las imágenes */
     margin: auto;
     overflow: hidden;
     position: relative;
-    width: auto;
-}
-.slider-logo-carr .slide-track-logo-carr {
-    animation: scroll 40s linear infinite;
+    width: 100%;
     display: flex;
-    width: calc(250px * 14);
+    align-items: center; /* Alinea verticalmente los logos */
 }
+
+.slider-logo-carr .slide-track-logo-carr {
+    display: flex;
+    width: calc((250px + 18px) * 19 * 2); /* 19 logos, duplicados */
+    animation: scroll 40s linear infinite;
+}
+
 .slider-logo-carr .slide-logo-carr {
-    height: 100px;
-    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 18px;
+}
+
+.slider-logo-carr img {
+    max-width: 250px; /* Ajusta al tamaño deseado */
+    height: auto; /* Mantiene la proporción */
+    object-fit: contain; /* Mantiene las proporciones del logo */
 }
