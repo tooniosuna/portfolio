@@ -20,6 +20,7 @@
     <!-- Style css -->
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/logo-carousel.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
 </head>
 
 <body class="white-version home-sticky spybody" data-spy="scroll" data-target=".navbar-example2" data-offset="150">
@@ -29,7 +30,7 @@
         <header class="rn-header-area d-flex align-items-start flex-column left-header-style">
             <div class="logo-area">
                 <a href="index.html">
-                    <img src="assets/images/logo/logo-A.jpeg" alt="personal-logo">
+                    <img class="responsive-logo-a" src="assets/images/logo/logo-A.jpeg" alt="personal-logo">
                 </a>
             </div>
             <nav id="sideNavs" class="mainmenu-nav navbar-example2">
@@ -87,7 +88,7 @@
             <div class="col-6">
                 <div class="logo">
                     <a href="index.html">
-                        <img src="assets/images/logo/logo-A.jpeg" alt="Logo">
+                        <img class="responsive-logo-a" src="assets/images/logo/logo-A.jpeg" alt="Logo">
                     </a>
                 </div>
             </div>
@@ -108,13 +109,13 @@
             <div class="menu-top">
                 <div class="menu-header">
                     <a class="logo" href="index.html">
-                        <img src="assets/images/logo/logo-A.jpeg" alt="Personal Portfolio">
+                        <img class="responsive-logo-a" src="assets/images/logo/logo-A.jpeg" alt="Personal Portfolio">
                     </a>
                     <div class="close-button">
                         <button class="close-menu-activation close"><i data-feather="x"></i></button>
                     </div>
                 </div>
-                <p class="description">I'm Antonio Osuna, Digital Business Engineer. Take a look at my work!</p>
+                <p style="margin-top: 30px;" class="description">I'm Antonio Osuna, Digital Business Engineer. Take a look at my work!</p>
             </div>
             <div class="content">
                 <ul class="primary-menu nav nav-pills">
@@ -387,9 +388,6 @@
                         </div>
                     </div>
                     <!-- End SIngle Service -->
-
-                </div>
-                <div class="row row--25 mt_md--10 mt_sm--10">
                     <!-- Start Single Service -->
                     <div data-aos="fade-up" data-aos-duration="500" data-aos-delay="100" data-aos-once="true" class="col-lg-6 col-xl-4 col-md-6 col-sm-12 col-12 mt--50 mt_md--30 mt_sm--30">
                         <div class="rn-service">
@@ -441,8 +439,9 @@
                         </div>
                     </div>
                     <!-- End SIngle Service -->
-
                 </div>
+                <!--div class="row row--25 mt_md--10 mt_sm--10">
+                </div-->
             </div>
         </div>
         <!-- End Service Area  -->
@@ -462,24 +461,50 @@
                 <div class="row row--25 mt--10 mt_md--10 mt_sm--10">
                     <!-- Start Single Portfolio -->
                     <div data-aos="fade-up" data-aos-delay="300" data-aos-once="true" class="col-lg-6 col-xl-4 col-md-6 col-12 mt--50 mt_md--30 mt_sm--30">
-                        <div class="rn-portfolio" data-toggle="modal" data-target="#saria-web-page">
+                        <div class="rn-portfolio" data-toggle="modal" data-target="#admisiones-modal">
                             <div class="inner">
                                 <div class="thumbnail">
                                     <a href="javascript:void(0)">
-                                        <img src="assets/images/portfolio/saria-thumbnail.jpg" alt="Real Estate Landing Page">
+                                        <img src="assets/images/portfolio/admisiones-rcsa-rpa.png" alt="New clients enrollment">
                                     </a>
                                 </div>
                                 <div class="content">
                                     <div class="category-info">
                                         <div class="category-list">
-                                            <a href="javascript:void(0)">Website Building</a>
+                                            <a href="javascript:void(0)">Custom Development</a>
                                         </div>
                                         <div class="meta">
                                             <span><a href="javascript:void(0)"><i class="feather-map-pin"></i></a>
-                                                Yucatán, MX</span>
+                                                México</span>
                                         </div>
                                     </div>
-                                    <h4 class="title"><a href="javascript:void(0)">Web Page with Hubspot CRM Connection<i class="feather-arrow-up-right"></i></a></h4>
+                                    <h4 class="title"><a href="javascript:void(0)">New Clients Enrollment System<i class="feather-arrow-up-right"></i></a></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Portfolio -->
+                    
+                    <!-- Start Single Portfolio -->
+                    <div data-aos="fade-up" data-aos-delay="300" data-aos-once="true" class="col-lg-6 col-xl-4 col-md-6 col-12 mt--50 mt_md--30 mt_sm--30">
+                        <div class="rn-portfolio" data-toggle="modal" data-target="#sms-modal">
+                            <div class="inner">
+                                <div class="thumbnail">
+                                    <a href="javascript:void(0)">
+                                        <img src="assets/images/portfolio/sms-rpa.png" alt="School Management System0">
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <div class="category-info">
+                                        <div class="category-list">
+                                            <a href="javascript:void(0)">Custom Development</a>
+                                        </div>
+                                        <div class="meta">
+                                            <span><a href="javascript:void(0)"><i class="feather-map-pin"></i></a>
+                                                México</span>
+                                        </div>
+                                    </div>
+                                    <h4 class="title"><a href="javascript:void(0)">School Management System<i class="feather-arrow-up-right"></i></a></h4>
                                 </div>
                             </div>
                         </div>
@@ -505,7 +530,7 @@
                                                 Yucatán, MX</span>
                                         </div>
                                     </div>
-                                    <h4 class="title"><a href="javascript:void(0)">Custom Web System for Inventory and Sales operations <i
+                                    <h4 class="title"><a href="javascript:void(0)">Custom Web System for Inventory and Sales Operations <i
                                                 class="feather-arrow-up-right"></i></a></h4>
                                 </div>
                             </div>
@@ -538,9 +563,7 @@
                         </div>
                     </div>
                     <!-- End Single Portfolio -->
-                </div>
-                <div class="row row--25 mt--10 mt_md--10 mt_sm--10">
-                    <!-- Start Single Portfolio -->
+                     <!-- Start Single Portfolio -->
                     <div data-aos="fade-up" data-aos-delay="100" data-aos-once="true" class="col-lg-6 col-xl-4 col-md-6 col-12 mt--50 mt_md--30 mt_sm--30">
                         <div class="rn-portfolio" data-toggle="modal" data-target="#eladios-marketing-campaign">
                             <div class="inner">
@@ -618,9 +641,32 @@
                         </div>
                     </div>
                     <!-- End Single Portfolio -->
-                </div>
-                <div class="row row--25 mt--10 mt_md--10 mt_sm--10">
-                    <!-- Start Single Portfolio -->
+                     <!-- Start Single Portfolio -->
+                    <div data-aos="fade-up" data-aos-delay="300" data-aos-once="true" class="col-lg-6 col-xl-4 col-md-6 col-12 mt--50 mt_md--30 mt_sm--30">
+                        <div class="rn-portfolio" data-toggle="modal" data-target="#saria-web-page">
+                            <div class="inner">
+                                <div class="thumbnail">
+                                    <a href="javascript:void(0)">
+                                        <img src="assets/images/portfolio/saria-thumbnail.jpg" alt="Real Estate Landing Page">
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <div class="category-info">
+                                        <div class="category-list">
+                                            <a href="javascript:void(0)">Website Building</a>
+                                        </div>
+                                        <div class="meta">
+                                            <span><a href="javascript:void(0)"><i class="feather-map-pin"></i></a>
+                                                Yucatán, MX</span>
+                                        </div>
+                                    </div>
+                                    <h4 class="title"><a href="javascript:void(0)">Web Page with Hubspot CRM Connection<i class="feather-arrow-up-right"></i></a></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Portfolio -->
+                     <!-- Start Single Portfolio -->
                     <div data-aos="fade-up" data-aos-delay="100" data-aos-once="true" class="col-lg-6 col-xl-4 col-md-6 col-12 mt--50 mt_md--30 mt_sm--30">
                         <div class="rn-portfolio" data-toggle="modal" data-target="#ajedrea-hubspot-form">
                             <div class="inner">
@@ -647,6 +693,10 @@
                     </div>
                     <!-- End Single Portfolio -->
                 </div>
+                <!--div class="row row--25 mt--10 mt_md--10 mt_sm--10">
+                </div-->
+                <!--div class="row row--25 mt--10 mt_md--10 mt_sm--10">
+                </div-->
             </div>
         </div>
         <!-- End portfolio Area -->
@@ -696,9 +746,8 @@
                                     <h3>
                                         <span>Integrated System</span> International Foodservice Company
                                     </h3>
-                                    <p class="mb--30">Warehouse Management System, Sales tool and Business Intelligence dashboard.</p>
-                                    <p class="mb--30">I was hired to develop, from scratch, a system to keep track of all the raw material inventory to improve efficiency, avoid cross-species contamination and several other benefits.</p>
-                                    <p>Integrated a tool for the Sales department to view fresh product, put a price on it and send a report to the customers. Speed was of essence.</p>
+                                    <p class="mb--30">Developed a Warehouse Management System, Sales tool, and Business Intelligence dashboard from the ground up. The system was designed to accurately track raw material inventory, improving efficiency, preventing cross-species contamination, and providing various other operational benefits.</p>
+                                    <p class="mb--30">Additionally, I integrated a Sales tool that enabled the department to quickly view fresh product inventory, set pricing, and generate reports for customers, with a strong focus on speed and efficiency.</p>
                                     <div class="button-group mt--20">
                                         <!--a href="#" class="rn-btn thumbs-icon">
                                             <span>LIKE THIS</span>
@@ -743,9 +792,97 @@
                                     <h3>
                                         <span>Web Page</span> Hubspot CRM Form
                                     </h3>
-                                    <p class="mb--30">Created a web page for one of Bust MX's (digital marketing) real estate customers.</p>
-                                    <p class="mb--30">Along with a landing page, we were able to offer an additional service of linking the information from the form to Hubspot, their CRM. Then, the user was taken to WhatsApp to the company's contact with the same data written on the body of the message.</p>
-                                    <p>Improved company's reach and customer retention.</p>
+                                    <p class="mb--30">Developed a custom web page for a real estate client of Bust MX (digital marketing), including a landing page integrated with HubSpot CRM. The solution seamlessly linked form submissions to HubSpot and redirected users to WhatsApp with pre-filled message data, enhancing the client’s reach and boosting customer retention.</p>
+                                    <!--div class="button-group mt--20">
+                                        <a href="#" class="rn-btn thumbs-icon">
+                                            <span>LIKE THIS</span>
+                                            <i data-feather="thumbs-up"></i>
+                                        </a-->
+                                        <!--a href="https://chichenrealtymasterbroker.com/saria/" target="_blank" class="rn-btn">
+                                            <span>VISIT WEB PAGE</span>
+                                            <i data-feather="chevron-right"></i>
+                                        </a>
+                                    </div-->
+
+                                </div>
+                                <!-- End of .text-content -->
+                            </div>
+                        </div>
+                        <!-- End of .row Body-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="sms-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i data-feather="x"></i></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-6">
+                                <div class="portfolio-popup-thumbnail">
+                                    <div class="image">
+                                        <img class="w-100" src="assets/images/portfolio/sms-detalles.png" alt="slide">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="text-content">
+                                    <h3>
+                                        <span>Custom Development</span> School Management System
+                                    </h3>
+                                    <p class="mb--30">I led the development and migration of a comprehensive School Management System for Prepa Anáhuac across the entire country. This project encompassed every department essential to the network's operations. I delivered meticulously designed systems and user interfaces, ensuring seamless interaction for the diverse range of users involved at all levels.</p>
+                                    <!--div class="button-group mt--20">
+                                        <a href="#" class="rn-btn thumbs-icon">
+                                            <span>LIKE THIS</span>
+                                            <i data-feather="thumbs-up"></i>
+                                        </a-->
+                                        <!--a href="https://chichenrealtymasterbroker.com/saria/" target="_blank" class="rn-btn">
+                                            <span>VISIT WEB PAGE</span>
+                                            <i data-feather="chevron-right"></i>
+                                        </a>
+                                    </div-->
+
+                                </div>
+                                <!-- End of .text-content -->
+                            </div>
+                        </div>
+                        <!-- End of .row Body-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="admisiones-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i data-feather="x"></i></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-6">
+                                <div class="portfolio-popup-thumbnail">
+                                    <div class="image">
+                                        <img class="w-100" src="assets/images/portfolio/admisiones-detalles.png" alt="slide">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="text-content">
+                                    <h3>
+                                        <span>Custom Development</span> New Clients Enrollment System
+                                    </h3>
+                                    <p class="mb--30">I led the development of a custom system integrated with the Sales team's Microsoft Dynamics CRM, a proctoring tool, and a payment gateway. This system was designed to significantly enhance the speed and efficiency of student enrollment into the network.</p>
                                     <!--div class="button-group mt--20">
                                         <a href="#" class="rn-btn thumbs-icon">
                                             <span>LIKE THIS</span>
@@ -790,8 +927,8 @@
                                     <h3>
                                         <span>Web Services</span> A Web Page Collection
                                     </h3>
-                                    <p class="mb--30">Acodik and I collaborated to create a collection of web pages. The customers were a Boho Chic Hat Store, a Legal Firm and a Virtual Reality Startup.</p>
-                                    <p class="mb--30">I wanted to share our work, so I created this fun corporate video by the name of Acodik.</p>
+                                    <p class="mb--30">Collaborated with Acodik to design and develop a series of web pages for diverse clients, including a Boho Chic Hat Store, a Legal Firm, and a Virtual Reality Startup.</p>
+                                    <p class="mb--30">To showcase our work, I created an engaging corporate video under the name Acodik, highlighting the creativity and professionalism of our projects.</p>
                                     <div class="button-group mt--20">
                                         <!--a href="#" class="rn-btn thumbs-icon">
                                             <span>LIKE THIS</span>
@@ -836,8 +973,8 @@
                                     <h3>
                                         <span>Landing Page</span> Eladio's Marketing Campaign
                                     </h3>
-                                    <p class="mb--30">This restaurant started selling their new invention: Pidzas!. They wanted a place where people can land, view their menu and arrive to WhatsApp, where they'd place an order.</p>
-                                    <p class="mb--30">Modern landing page, consistent marketing campaign, fun project.</p>
+                                    <p class="mb--30">This restaurant launched their unique creation: Pidzas! They needed a landing page where customers could view the menu and easily place an order via WhatsApp.                                    </p>
+                                    <p class="mb--30">I delivered a modern landing page that aligned with their marketing campaign, making it a fun and successful project.</p>
                                     <div class="button-group mt--20">
                                         <!--a href="#" class="rn-btn thumbs-icon">
                                             <span>LIKE THIS</span>
@@ -880,10 +1017,9 @@
                             <div class="col-lg-6">
                                 <div class="text-content">
                                     <h3>
-                                        <span>Figma Training</span> Aromatherapy Ecommerce Mockup
+                                        <span>Figma Mockup</span> Aromatherapy Ecommerce
                                     </h3>
-                                    <p class="mb--30">I heard about Figma and what it's used for. I couldn't miss it!</p>
-                                    <p class="mb--30">As a test I created this fun small mock up to learn Figma. More than the navigation, I was able to do all the design for this project and that makes really happy.</p>
+                                    <p class="mb--30">Eager to explore the capabilities of Figma, I decided to put the tool to the test by creating a small mockup project. This hands-on experience allowed me to not only master the navigation within Figma but also to design the entire project from start to finish, a process that I found both rewarding and enriching.</p>
                                     <div class="button-group mt--20">
                                         <!--a href="#" class="rn-btn thumbs-icon">
                                             <span>LIKE THIS</span>
@@ -928,8 +1064,7 @@
                                     <h3>
                                         <span>Digital Image</span> Complezzo Real Estate Solutions
                                     </h3>
-                                    <p class="mb--30">Re-design web page, define graphic templates for posts, kickstart Facebook Ads campaign, generally integrate new company design.</p>
-                                    <p class="mb--30">Digital Marketing knowledge: Check!</p>
+                                    <p class="mb--30">Redesigned the company's website, created graphic templates for social media posts, and launched a Facebook Ads campaign to align with the new brand identity.</p>
                                     <p>Take a look:</p>
                                     <div class="button-group mt--20">
                                         <!--a href="#" class="rn-btn thumbs-icon">
@@ -975,8 +1110,7 @@
                                     <h3>
                                         <span>Web Services</span> Hubspot CRM Connection
                                     </h3>
-                                    <p class="mb--30">We created a WhatsApp form connected to the customer's Hubspot CRM.</p>
-                                    <p class="mb--30">The data from the form was sent to the CRM and then the user was taken to WhatsApp with a coordinator.</p>
+                                    <p class="mb--30">We developed a WhatsApp form integrated with the customer’s HubSpot CRM. The form data was seamlessly transmitted to the CRM, and users were then directed to WhatsApp to connect with a coordinator.</p>
                                     <div class="button-group mt--20">
                                         <!--a href="#" class="rn-btn thumbs-icon">
                                             <span>LIKE THIS</span>
