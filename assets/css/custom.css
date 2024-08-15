@@ -1,0 +1,6 @@
+@media only screen and (max-width: 1200px) {
+    .responsive-logo-a {
+        width: 0px; /* O el valor que prefieras */
+        height: auto; /* Mantiene la proporción de la imagen */
+    }
+}
