@@ -273,6 +273,20 @@ main[id] {
   background: var(--color-accent-hover);
 }
 
+/* Secondary variant — transparent with an accent border, fills in on hover.
+   Declared after .btn:hover so it wins the cascade at equal specificity. */
+.btn-outline {
+  background: transparent;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+}
+
+.btn-outline:hover,
+.btn-outline:focus-visible {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
 /* ==========================================================================
    STICKY WHATSAPP BUTTON
    Fixed to the bottom-right corner on every page.
@@ -599,6 +613,14 @@ main[id] {
   border-radius: 999px;
   padding: 0.4rem 0.9rem;
   font-size: 0.9rem;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+/* Purely decorative — chips aren't clickable, so no cursor change, just a
+   subtle color shift for a bit of life on hover. */
+.chip:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 /* ==========================================================================
@@ -717,4 +739,31 @@ main[id] {
   content: "\2013"; /* en dash */
   position: absolute;
   left: 0;
+}
+
+/* ==========================================================================
+   CONTACT
+   ========================================================================== */
+
+.contact-inner {
+  text-align: center;
+}
+
+.contact p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-md);
+}
+
+.contact-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 480px) {
+  .contact-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
 }
