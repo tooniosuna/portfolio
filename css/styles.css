@@ -382,10 +382,29 @@ main[id] {
    ========================================================================== */
 
 .hero {
+  position: relative;
   padding-block: var(--space-xl) var(--space-lg);
 }
 
+/* Full-width band behind the hero. Height is set in px by JS (main.js) to
+   land exactly at the bottom of the photo, then it stops — it does not
+   cover the whole section or bleed into later sections. */
+.hero-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 0;
+  background-image: url("../assets/blue-hero-background.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  pointer-events: none;
+}
+
 .hero-inner {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
@@ -434,21 +453,15 @@ main[id] {
   }
 }
 
-/* Shrink-wrapped to the photo's own size (inline-block), so the backdrop
-   image below is positioned against a box that's exactly the photo's
-   dimensions — its bottom edge lines up with the bottom edge of the photo
-   by definition, at any screen size. */
+/* Shrink-wrapped to the photo's own size — this is also the element JS
+   measures against to size .hero-backdrop (see main.js). */
 .hero-image {
   position: relative;
   display: inline-block;
-  background-image: url("../assets/blue-hero-background.png");
-  background-repeat: no-repeat;
-  background-position: right bottom;
-  background-size: cover;
 }
 
 /* No circular crop — this is a transparent-background cutout PNG, so it
-   should float directly on the page background rather than be masked. */
+   should float directly on the backdrop rather than be masked. */
 .hero-image img {
   width: 240px;
   display: block;

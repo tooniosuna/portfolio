@@ -62,6 +62,12 @@
        their real content arrives in Slices 4 and 5. -->
   <main>
     <section id="home" class="hero">
+      <!-- Full-width backdrop band. Its height is set by JS (see main.js)
+           to match the distance from the top of the hero to the bottom of
+           the photo — so it reads as a band behind the hero, not a
+           background that wraps the photo or bleeds into later sections. -->
+      <div class="hero-backdrop" aria-hidden="true"></div>
+
       <div class="container hero-inner">
 
         <div class="hero-text">

@@ -68,4 +68,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     typeNextChar();
   }
+
+  // Hero backdrop sizing: the full-width backdrop band (.hero-backdrop) is
+  // "position: absolute; top: 0" with no height set in CSS, because the
+  // right height depends on where the photo ends — which shifts depending
+  // on screen size (stacked on mobile, side-by-side on desktop). Instead
+  // of guessing that in CSS, measure it: the band's height is the distance
+  // from the top of .hero down to the bottom of .hero-image, so the band
+  // always stops exactly at the bottom edge of the photo. Only present on
+  // index.html, so this quietly does nothing on the Credentials page.
+  function sizeHeroBackdrop() {
+    const hero = document.querySelector(".hero");
+    const heroImage = document.querySelector(".hero-image");
+    const backdrop = document.querySelector(".hero-backdrop");
+
+    if (!hero || !heroImage || !backdrop) return;
+
+    const heroTop = hero.getBoundingClientRect().top;
+    const imageBottom = heroImage.getBoundingClientRect().bottom;
+    backdrop.style.height = Math.round(imageBottom - heroTop) + "px";
+  }
+
+  sizeHeroBackdrop();
+
+  // Re-measure once everything (including the photo) has fully loaded, and
+  // again whenever the window is resized or rotated.
+  window.addEventListener("load", sizeHeroBackdrop);
+  window.addEventListener("resize", sizeHeroBackdrop);
 });
