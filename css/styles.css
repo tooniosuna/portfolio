@@ -422,3 +422,175 @@ main[id] {
     margin-inline: 0;
   }
 }
+
+/* ==========================================================================
+   CONTENT SECTIONS (Summary / Education / Certifications / Skills / …)
+   Shared rhythm + divider so every "dissected CV" block feels consistent.
+   ========================================================================== */
+
+.section {
+  padding-block: var(--space-lg);
+}
+
+.section + .section {
+  border-top: 1px solid var(--color-border);
+}
+
+.section h2 {
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  margin-bottom: var(--space-md);
+}
+
+.summary p {
+  max-width: 65ch;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.summary p:last-child {
+  margin-bottom: 0;
+}
+
+/* Shared card surface, reused by Education now and other cards later */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+
+/* ==========================================================================
+   EDUCATION
+   ========================================================================== */
+
+.education-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.25rem;
+}
+
+.education-meta {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: var(--space-sm);
+}
+
+.verify-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-accent);
+  font-weight: 500;
+  margin-bottom: var(--space-md);
+}
+
+.verify-link:hover,
+.verify-link:focus-visible {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}
+
+.volunteer h4 {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.volunteer ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.volunteer li {
+  position: relative;
+  padding-left: 1rem;
+  font-size: 0.95rem;
+}
+
+.volunteer li::before {
+  content: "\2013"; /* en dash */
+  position: absolute;
+  left: 0;
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   CERTIFICATIONS
+   ========================================================================== */
+
+.cert-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.cert-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.75rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-sm) var(--space-md);
+}
+
+.cert-name {
+  font-weight: 500;
+}
+
+.badge-type {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.tag-progress {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  margin-left: auto;
+}
+
+/* ==========================================================================
+   SKILLS & TOOLS (chip groups)
+   ========================================================================== */
+
+.skills-group {
+  margin-bottom: var(--space-md);
+}
+
+.skills-group:last-child {
+  margin-bottom: 0;
+}
+
+.skills-group h3 {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+}
