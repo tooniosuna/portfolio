@@ -154,11 +154,33 @@ main[id] {
   min-height: 64px;
 }
 
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .nav-logo {
   font-family: var(--font-heading);
   font-weight: 600;
   font-size: 1.1rem;
   color: var(--color-text);
+}
+
+.nav-linkedin {
+  display: inline-flex;
+  color: var(--color-text-secondary);
+  transition: color 0.15s ease;
+}
+
+.nav-linkedin:hover,
+.nav-linkedin:focus-visible {
+  color: var(--color-accent);
+}
+
+.nav-linkedin svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* Mobile hamburger toggle — hidden on desktop */
@@ -412,11 +434,53 @@ main[id] {
   }
 }
 
+/* .hero-image shrink-wraps to the photo's own size (inline-block), so the
+   decorative backdrop below can be positioned in percentages that line up
+   with the photo exactly, at any screen size. */
+.hero-image {
+  position: relative;
+  display: inline-block;
+}
+
+/* A soft, contained backdrop shape — faint blue tint + a barely-visible
+   grid pattern for a "digital product" feel, no icons. It's sized smaller
+   than the photo on purpose: the photo overlaps its bottom (and slightly
+   its top), so Antonio reads as stepping out of the frame rather than
+   floating inside an endless background. */
+.hero-image::before {
+  content: "";
+  position: absolute;
+  top: 6%;
+  right: 8%;
+  bottom: 18%;
+  left: 8%;
+  z-index: 0;
+  border-radius: 28px;
+  background-color: #eaf1fc;
+  background-image: repeating-linear-gradient(
+      0deg,
+      rgba(47, 111, 237, 0.07) 0,
+      rgba(47, 111, 237, 0.07) 1px,
+      transparent 1px,
+      transparent 24px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(47, 111, 237, 0.07) 0,
+      rgba(47, 111, 237, 0.07) 1px,
+      transparent 1px,
+      transparent 24px
+    );
+}
+
 /* No circular crop — this is a transparent-background cutout PNG, so it
-   should float directly on the page background rather than be masked. */
+   should float directly on the backdrop rather than be masked. Positioned
+   relative + z-index so it renders above the ::before backdrop shape. */
 .hero-image img {
+  position: relative;
+  z-index: 1;
   width: 240px;
-  margin-inline: auto;
+  display: block;
 }
 
 /* Desktop: text and image sit side by side */
@@ -433,7 +497,6 @@ main[id] {
 
   .hero-image img {
     width: 320px;
-    margin-inline: 0;
   }
 }
 
