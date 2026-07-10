@@ -44,18 +44,34 @@
   </header>
 
   <!-- ============================ PAGE CONTENT ============================
-       SLICE 1 PLACEHOLDER — this is still the Slice 0 pipeline check, just
-       restyled with the real theme. Hero, CV content, timeline, and contact
-       sections replace this piece by piece in Slices 2–5. The three ids
-       below (home / experience / contact) are what the navbar links to. -->
-  <main id="home" class="placeholder">
-    <h1>Foundation: OK ✅</h1>
-    <p>Theme, layout, navbar, and WhatsApp button are live.</p>
-    <p id="js-check">JavaScript not loaded yet.</p>
-  </main>
+       "home" is the hero, built in this slice. "experience" and "contact"
+       are still empty placeholders — the navbar links to them already, but
+       their real content arrives in Slices 4 and 5. -->
+  <main>
+    <section id="home" class="hero">
+      <div class="container hero-inner">
 
-  <div id="experience"></div>
-  <div id="contact"></div>
+        <div class="hero-text">
+          <p class="hero-greeting">Hello! I'm <strong>Antonio Osuna</strong>.</p>
+          <h1 class="hero-title">
+            <!-- Screen readers get the full static list; the animated
+                 span is decorative and hidden from assistive tech. -->
+            <span id="typewriter" class="hero-role" aria-hidden="true"></span
+            ><span class="cursor" aria-hidden="true"></span>
+            <span class="sr-only">Product Owner, Product Manager, Business Analyst</span>
+          </h1>
+        </div>
+
+        <div class="hero-image">
+          <img src="assets/profile_pic_bckg.png" alt="Portrait of Antonio Osuna" />
+        </div>
+
+      </div>
+    </section>
+
+    <div id="experience"></div>
+    <div id="contact"></div>
+  </main>
 
   <!-- ======================= STICKY WHATSAPP BUTTON ======================= -->
   <a

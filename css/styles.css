@@ -307,7 +307,7 @@ main[id] {
 
 /* ==========================================================================
    SLICE 0 PLACEHOLDER CONTENT
-   Temporary — replaced section by section starting Slice 2 (Hero).
+   Still used on the Credentials page until Slice 6 replaces it.
    ========================================================================== */
 
 .placeholder {
@@ -323,4 +323,102 @@ main[id] {
 .placeholder p {
   color: var(--color-text-secondary);
   margin-top: var(--space-xs);
+}
+
+/* ==========================================================================
+   UTILITY: visually-hidden (screen-reader only)
+   ========================================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+
+.hero {
+  padding-block: var(--space-xl) var(--space-lg);
+}
+
+.hero-inner {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: var(--space-lg);
+  text-align: center;
+}
+
+.hero-greeting {
+  font-size: 1.15rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.hero-greeting strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.hero-title {
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  min-height: 1.3em; /* reserves space so layout doesn't jump as text types */
+}
+
+.hero-role {
+  color: var(--color-accent);
+}
+
+/* Blinking typewriter cursor */
+.cursor {
+  display: inline-block;
+  width: 3px;
+  margin-left: 2px;
+  background: var(--color-accent);
+  height: 0.9em;
+  vertical-align: -0.1em;
+  animation: blink 0.9s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* No circular crop — this is a transparent-background cutout PNG, so it
+   should float directly on the page background rather than be masked. */
+.hero-image img {
+  width: 240px;
+  margin-inline: auto;
+}
+
+/* Desktop: text and image sit side by side */
+@media (min-width: 768px) {
+  .hero-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .hero-text {
+    max-width: 55%;
+  }
+
+  .hero-image img {
+    width: 320px;
+    margin-inline: 0;
+  }
 }
