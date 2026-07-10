@@ -1,23 +1,326 @@
 /* ==========================================================================
-   Slice 0 — placeholder stylesheet.
-   Real theme (CSS variables, reset, layout) gets built in Slice 1.
-   This file only proves that css/styles.css loads correctly on GitHub Pages
-   using a relative path.
+   THEME TOKENS
+   Everything that defines "the look" of the site lives here as CSS
+   variables. Want to swap the whole color scheme later? Change the values
+   in this one block — nothing else in the file (or in the HTML) needs to
+   change.
+   ========================================================================== */
+
+:root {
+  /* Colors — light blue direction */
+  --color-bg: #f7f9fc;          /* page background */
+  --color-surface: #ffffff;     /* cards, header, panels */
+  --color-border: #dce3ee;      /* hairline borders/dividers */
+  --color-text: #0f172a;        /* primary text (near-navy) */
+  --color-text-secondary: #52607a; /* muted/secondary text */
+  --color-accent: #2f6fed;      /* links, buttons, highlights */
+  --color-accent-hover: #1d4ed8; /* accent on hover/active */
+  --color-on-accent: #ffffff;   /* text placed on top of accent color */
+
+  /* WhatsApp brand color — kept separate from the theme accent on purpose,
+     since it represents the WhatsApp icon/button specifically. */
+  --color-whatsapp: #25d366;
+  --color-whatsapp-hover: #1ebe5b;
+
+  /* Typography */
+  --font-heading: "Sora", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Layout */
+  --container-width: 1100px;
+  --radius: 8px;
+  --radius-lg: 14px;
+
+  /* Spacing scale */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+}
+
+/* ==========================================================================
+   RESET
+   A small, modern reset — just enough to remove browser inconsistencies
+   without fighting the browser on everything.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* ==========================================================================
+   BASE
    ========================================================================== */
 
 body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  background: #111;
-  color: #eee;
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.25;
+}
+
+/* Anchor targets (Home / Experience / Contact) sit a bit lower than the
+   fixed header, so the header doesn't cover the top of each section when
+   the nav links jump to them. */
+section[id],
+main[id] {
+  scroll-margin-top: 84px;
+}
+
+/* ==========================================================================
+   LAYOUT SCAFFOLDING
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--space-sm);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-inline: var(--space-md);
+  }
+}
+
+/* ==========================================================================
+   NAVBAR
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+}
+
+.nav-logo {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-text);
+}
+
+/* Mobile hamburger toggle — hidden on desktop */
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+}
+
+.nav-toggle span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--color-text);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile nav menu: hidden dropdown by default, toggled open via JS */
+.nav-menu {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-sm);
+  gap: var(--space-sm);
+
+  /* Closed state */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+.nav-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-menu a {
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  padding: var(--space-xs) 0;
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus-visible {
+  color: var(--color-accent);
+}
+
+/* Desktop: inline nav, no hamburger, no dropdown positioning */
+@media (min-width: 768px) {
+  .nav-toggle {
+    display: none;
+  }
+
+  .nav-menu {
+    position: static;
+    flex-direction: row;
+    gap: var(--space-lg);
+    padding: 0;
+    border-bottom: none;
+    background: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   BUTTONS (shared)
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  transition: background 0.15s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  background: var(--color-accent-hover);
+}
+
+/* ==========================================================================
+   STICKY WHATSAPP BUTTON
+   Fixed to the bottom-right corner on every page.
+   ========================================================================== */
+
+.whatsapp-button {
+  position: fixed;
+  bottom: var(--space-md);
+  right: var(--space-md);
+  z-index: 200;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-whatsapp);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.whatsapp-button:hover,
+.whatsapp-button:focus-visible {
+  background: var(--color-whatsapp-hover);
+  transform: scale(1.05);
+}
+
+.whatsapp-button svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* ==========================================================================
+   SLICE 0 PLACEHOLDER CONTENT
+   Temporary — replaced section by section starting Slice 2 (Hero).
+   ========================================================================== */
+
 .placeholder {
-  min-height: 100vh;
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 1.5rem;
+  padding: var(--space-xl) var(--space-sm);
+}
+
+.placeholder p {
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
 }
