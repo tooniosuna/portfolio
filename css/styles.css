@@ -434,51 +434,22 @@ main[id] {
   }
 }
 
-/* .hero-image shrink-wraps to the photo's own size (inline-block), so the
-   decorative backdrop below can be positioned in percentages that line up
-   with the photo exactly, at any screen size. */
+/* Shrink-wrapped to the photo's own size (inline-block), so the backdrop
+   image below is positioned against a box that's exactly the photo's
+   dimensions — its bottom edge lines up with the bottom edge of the photo
+   by definition, at any screen size. */
 .hero-image {
   position: relative;
   display: inline-block;
-}
-
-/* A soft, contained backdrop shape — faint blue tint + a barely-visible
-   grid pattern for a "digital product" feel, no icons. It's sized smaller
-   than the photo on purpose: the photo overlaps its bottom (and slightly
-   its top), so Antonio reads as stepping out of the frame rather than
-   floating inside an endless background. */
-.hero-image::before {
-  content: "";
-  position: absolute;
-  top: 6%;
-  right: 8%;
-  bottom: 18%;
-  left: 8%;
-  z-index: 0;
-  border-radius: 28px;
-  background-color: #eaf1fc;
-  background-image: repeating-linear-gradient(
-      0deg,
-      rgba(47, 111, 237, 0.07) 0,
-      rgba(47, 111, 237, 0.07) 1px,
-      transparent 1px,
-      transparent 24px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(47, 111, 237, 0.07) 0,
-      rgba(47, 111, 237, 0.07) 1px,
-      transparent 1px,
-      transparent 24px
-    );
+  background-image: url("../assets/blue-hero-background.png");
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: cover;
 }
 
 /* No circular crop — this is a transparent-background cutout PNG, so it
-   should float directly on the backdrop rather than be masked. Positioned
-   relative + z-index so it renders above the ::before backdrop shape. */
+   should float directly on the page background rather than be masked. */
 .hero-image img {
-  position: relative;
-  z-index: 1;
   width: 240px;
   display: block;
 }
@@ -566,6 +537,14 @@ main[id] {
   margin-bottom: var(--space-sm);
 }
 
+/* Generic version of the same stacking pattern, used on the Credentials
+   page (degree card + earned certs card + in-progress card). */
+.card-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
 .verify-link:hover,
 .verify-link:focus-visible {
   color: var(--color-accent-hover);
@@ -640,6 +619,66 @@ main[id] {
   padding: 0.2rem 0.6rem;
   border-radius: 999px;
   margin-left: auto;
+}
+
+/* Credentials page cert items nest name/badge in .cert-info and the
+   validation link in .cert-actions, so the link can push to the far
+   right (margin-left: auto) without disturbing the name/badge spacing. */
+.cert-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.75rem;
+}
+
+.cert-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.cert-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+.cert-link:hover,
+.cert-link:focus-visible {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   CREDENTIALS PAGE
+   ========================================================================== */
+
+.credentials h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  margin-bottom: var(--space-sm);
+}
+
+.credentials-intro {
+  max-width: 65ch;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-lg);
+}
+
+.credential-meta {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: var(--space-xs);
+}
+
+.credential-detail {
+  margin-bottom: var(--space-sm);
+}
+
+.credential-note {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-top: var(--space-sm);
 }
 
 /* ==========================================================================
@@ -783,6 +822,12 @@ main[id] {
   padding: 0 var(--space-md) var(--space-md);
   border-top: 1px solid var(--color-border);
   padding-top: var(--space-sm);
+}
+
+.role-summary {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: var(--space-sm);
 }
 
 .role-body ul {
