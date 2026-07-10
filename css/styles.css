@@ -1,0 +1,23 @@
+/* ==========================================================================
+   Slice 0 — placeholder stylesheet.
+   Real theme (CSS variables, reset, layout) gets built in Slice 1.
+   This file only proves that css/styles.css loads correctly on GitHub Pages
+   using a relative path.
+   ========================================================================== */
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #111;
+  color: #eee;
+}
+
+.placeholder {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+}
