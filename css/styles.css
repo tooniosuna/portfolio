@@ -459,20 +459,16 @@ main[id] {
   padding: var(--space-md);
 }
 
-/* ==========================================================================
-   EDUCATION
-   ========================================================================== */
-
-.education-card h3 {
+.card h3 {
   font-size: 1.15rem;
   margin-bottom: 0.25rem;
 }
 
-.education-meta {
-  color: var(--color-text-secondary);
-  font-size: 0.95rem;
-  margin-bottom: var(--space-sm);
-}
+/* ==========================================================================
+   EDUCATION
+   Parent section for both the degree card and the certifications card —
+   they sit stacked in .education-cards, sharing the same card styling.
+   ========================================================================== */
 
 .verify-link {
   display: inline-flex;
@@ -481,6 +477,16 @@ main[id] {
   color: var(--color-accent);
   font-weight: 500;
   margin-bottom: var(--space-md);
+}
+
+.education-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.cert-card h3 {
+  margin-bottom: var(--space-sm);
 }
 
 .verify-link:hover,
@@ -593,4 +599,122 @@ main[id] {
   border-radius: 999px;
   padding: 0.4rem 0.9rem;
   font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   ROLES TIMELINE
+   A vertical line with a dot per role; each role is a native <details>
+   element styled as a card, so it collapses/expands with zero JS.
+   ========================================================================== */
+
+.timeline {
+  position: relative;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 1.75rem;
+  padding-bottom: var(--space-md);
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+/* The dot marking each role on the line */
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.1rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+/* The connecting line between dots */
+.timeline-item::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1.3rem;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-border);
+}
+
+.timeline-item:last-child::after {
+  display: none;
+}
+
+.role-card.card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.role-card summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+}
+
+.role-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.role-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.role-title {
+  font-weight: 600;
+}
+
+.role-meta {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.role-toggle-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.role-card[open] .role-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.role-body {
+  padding: 0 var(--space-md) var(--space-md);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-sm);
+}
+
+.role-body ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.role-body li {
+  position: relative;
+  padding-left: 1rem;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.role-body li::before {
+  content: "\2013"; /* en dash */
+  position: absolute;
+  left: 0;
 }

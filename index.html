@@ -85,56 +85,61 @@
       </div>
     </section>
 
+    <!-- Education is the parent of both the degree itself and everything
+         else education-related (certifications, professional development).
+         One "Verify my credentials" link covers the whole section, since
+         the Credentials page validates all of it — degree, cédula, and
+         badges alike. -->
     <section class="section education">
       <div class="container">
         <h2>Education</h2>
-        <div class="card education-card">
-          <h3>Bachelor&rsquo;s Degree in Digital Business &amp; Software Engineering</h3>
-          <p class="education-meta">Anahuac Mayab University &middot; M&eacute;rida, MX &middot; Aug 2016 &ndash; Jun 2020</p>
+        <a href="credentials/index.html" class="verify-link">Verify my credentials &rarr;</a>
 
-          <a href="credentials/index.html" class="verify-link">Verify my credentials &rarr;</a>
+        <div class="education-cards">
+          <div class="card education-card">
+            <h3>Bachelor&rsquo;s Degree in Digital Business &amp; Software Engineering</h3>
+            <p class="education-meta">Anahuac Mayab University &middot; M&eacute;rida, MX &middot; Aug 2016 &ndash; Jun 2020</p>
 
-          <div class="volunteer">
-            <h4>Leadership &amp; volunteer roles</h4>
-            <ul>
-              <li>President of the Engineering Student Association</li>
-              <li>COO at Genera</li>
-              <li>Project Manager at Gente Nueva</li>
-              <li>Frontend Developer at Gente Nueva</li>
+            <div class="volunteer">
+              <h4>Leadership &amp; volunteer roles</h4>
+              <ul>
+                <li>President of the Engineering Student Association</li>
+                <li>COO at Genera</li>
+                <li>Project Manager at Gente Nueva</li>
+                <li>Frontend Developer at Gente Nueva</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card cert-card">
+            <h3>Certifications &amp; Professional Development</h3>
+            <!-- Names only — every validation link lives on the Credentials page. -->
+            <ul class="cert-list">
+              <li class="cert-item">
+                <span class="cert-name">AI for Product Owners</span>
+                <span class="badge-type">Skillsoft Badge</span>
+              </li>
+              <li class="cert-item">
+                <span class="cert-name">Software Product Management Proficiency</span>
+                <span class="badge-type">Skillsoft Badge</span>
+              </li>
+              <li class="cert-item">
+                <span class="cert-name">Google Foundations of Project Management</span>
+                <span class="badge-type">Coursera Certificate</span>
+              </li>
+              <li class="cert-item">
+                <span class="cert-name">IBM AI Product Manager</span>
+                <span class="badge-type">Coursera Certificate</span>
+                <span class="tag-progress">In progress</span>
+              </li>
+              <li class="cert-item">
+                <span class="cert-name">PSPO I (Professional Scrum Product Owner)</span>
+                <span class="badge-type">Scrum.org Professional Certificate</span>
+                <span class="tag-progress">In progress</span>
+              </li>
             </ul>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="section certifications">
-      <div class="container">
-        <h2>Certifications</h2>
-        <!-- Names only — every validation link lives on the Credentials page. -->
-        <ul class="cert-list">
-          <li class="cert-item">
-            <span class="cert-name">AI for Product Owners</span>
-            <span class="badge-type">Skillsoft Badge</span>
-          </li>
-          <li class="cert-item">
-            <span class="cert-name">Software Product Management Proficiency</span>
-            <span class="badge-type">Skillsoft Badge</span>
-          </li>
-          <li class="cert-item">
-            <span class="cert-name">Google Foundations of Project Management</span>
-            <span class="badge-type">Coursera Certificate</span>
-          </li>
-          <li class="cert-item">
-            <span class="cert-name">IBM AI Product Manager</span>
-            <span class="badge-type">Coursera Certificate</span>
-            <span class="tag-progress">In progress</span>
-          </li>
-          <li class="cert-item">
-            <span class="cert-name">PSPO I (Professional Scrum Product Owner)</span>
-            <span class="badge-type">Scrum.org Professional Certificate</span>
-            <span class="tag-progress">In progress</span>
-          </li>
-        </ul>
       </div>
     </section>
 
@@ -205,6 +210,149 @@
             <span class="chip">CMS</span>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="section roles">
+      <div class="container">
+        <h2>Roles &amp; experience</h2>
+
+        <!-- Native <details>/<summary> gives us collapsible cards with zero
+             JS: keyboard-accessible and works even if JavaScript is off.
+             Collapsed = header only (title · company · dates). Expanded =
+             key contributions. -->
+        <ol class="timeline">
+
+          <li class="timeline-item">
+            <details class="card role-card">
+              <summary>
+                <span class="role-header-text">
+                  <span class="role-title">Product &amp; Business Analyst Consultant</span>
+                  <span class="role-meta">Urso Core &middot; Canc&uacute;n, MX &middot; May 2026 &ndash; Present</span>
+                </span>
+                <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="role-body">
+                <ul>
+                  <li>Translate business needs into clear requirements, user flows, scope, and implementation plans.</li>
+                  <li>Build and launch websites and digital experiences using SEO, structured data, analytics, HTML, CSS, JavaScript, and CMS tools.</li>
+                  <li>Work directly with business owners to prioritize scope, make tradeoffs, and move projects from idea to launch.</li>
+                </ul>
+              </div>
+            </details>
+          </li>
+
+          <li class="timeline-item">
+            <details class="card role-card">
+              <summary>
+                <span class="role-header-text">
+                  <span class="role-title">Product Owner / Senior Business Analyst &mdash; eCommerce Ordering &amp; Reporting</span>
+                  <span class="role-meta">HCLTech &middot; Monterrey, MX &middot; Sep 2024 &ndash; May 2026</span>
+                </span>
+                <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="role-body">
+                <ul>
+                  <li>Led gap analysis between Legacy Oracle BI and the new Reporting platform, translating business needs into Jira user stories, acceptance criteria, UI/UX flows, data requirements, and functional documentation in Confluence.</li>
+                  <li>Owned backlog readiness across 2-week sprints and quarterly PI Planning, ensuring developers had refined, prioritized, and dependency-aware work up to 3 months ahead.</li>
+                  <li>Partnered with UX, Product Management, Tech Leads, Architects, and Data Engineering to create and validate mockups with leadership, define reporting data requirements, and support dashboard/reporting solution design.</li>
+                  <li>Drove business user adoption and continuous improvement for the Legacy Oracle BI transition through release notes, functional documentation, IT Support enablement, Adobe Analytics reviews, feedback analysis, and structured feedback readouts.</li>
+                  <li>Used adoption data, support feedback, and stakeholder readouts to identify gaps, surface new requirements to leadership, reprioritize work, and quickly move high-impact improvements into mockups, stories, refinement, and planning.</li>
+                  <li>Served as Project Reporting Manager for HCLTech BA, Product, and UX team members on the account, supporting operational processes, administrative reporting, leadership communication, and account execution.</li>
+                </ul>
+              </div>
+            </details>
+          </li>
+
+          <li class="timeline-item">
+            <details class="card role-card">
+              <summary>
+                <span class="role-header-text">
+                  <span class="role-title">Sales Representative &mdash; Travel &amp; Hospitality</span>
+                  <span class="role-meta">Playa Hotels &amp; Resorts &middot; Canc&uacute;n, MX &middot; Feb 2024 &ndash; Aug 2024</span>
+                </span>
+                <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="role-body">
+                <ul>
+                  <li>Conducted in-depth discovery sessions to identify customer needs and emotional drivers, tailoring pitches accordingly.</li>
+                  <li>Delivered persuasive sales presentations aligned with customer values, product benefits, and urgency triggers.</li>
+                  <li>Thrived under pressure in a fast-paced environment, consistently meeting sales expectations through preparation and rapport-building.</li>
+                </ul>
+              </div>
+            </details>
+          </li>
+
+          <li class="timeline-item">
+            <details class="card role-card">
+              <summary>
+                <span class="role-header-text">
+                  <span class="role-title">Product Manager / Business Analyst &mdash; EdTech &amp; Internal Platforms</span>
+                  <span class="role-meta">Red de Colegios Semper Altius &middot; Mexico City, MX &middot; Nov 2021 &ndash; Nov 2023</span>
+                </span>
+                <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="role-body">
+                <ul>
+                  <li>Directed three major software development initiatives from discovery to launch, managing requirements, vendor selection, contracts, delivery timelines, and post-release adoption.</li>
+                  <li>Collaborated with cross-functional stakeholders to translate institutional needs into actionable product requirements.</li>
+                  <li>Delivered user onboarding and documentation; managed CMS and supported national Microsoft 365 operations across campuses.</li>
+                </ul>
+              </div>
+            </details>
+          </li>
+
+          <li class="timeline-item">
+            <details class="card role-card">
+              <summary>
+                <span class="role-header-text">
+                  <span class="role-title">Customer Service Coordinator &mdash; Food Manufacturing / Supply Chain</span>
+                  <span class="role-meta">Harbar LLC &middot; Remote &middot; Sep 2020 &ndash; Nov 2021</span>
+                </span>
+                <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="role-body">
+                <ul>
+                  <li>Managed EDI, ERP, and CRM systems for 110+ accounts, optimizing processes for clients like Trader Joe&rsquo;s, Walmart, and U.S. Government vendors.</li>
+                  <li>Created cross-department sales protocols and documentation that improved order processing speed and operational accuracy.</li>
+                  <li>Spearheaded the company&rsquo;s first on-time monthly financial closing; supported $40M+ in annual order volume with high service quality.</li>
+                </ul>
+              </div>
+            </details>
+          </li>
+
+          <li class="timeline-item">
+            <details class="card role-card">
+              <summary>
+                <span class="role-header-text">
+                  <span class="role-title">Project Business Analyst &mdash; Seafood Industry / Logistics</span>
+                  <span class="role-meta">Caiman Products &middot; Yucat&aacute;n, MX &middot; Jul 2019 &ndash; Jul 2020</span>
+                </span>
+                <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="role-body">
+                <ul>
+                  <li>Designed and implemented a centralized system reducing manual reporting and Excel dependency.</li>
+                  <li>Enabled 20+ hours/week in time savings through system automation.</li>
+                  <li>Reduced physical infrastructure by 35% through cloud migration; improved same-day shipping processes.</li>
+                </ul>
+              </div>
+            </details>
+          </li>
+
+        </ol>
       </div>
     </section>
 
