@@ -16,14 +16,13 @@
 //      remembered in localStorage from a previous visit, else English.
 //
 // NOTE ON CONTENT STATUS:
-//   Home page content (Slice 9) is translated from Antonio's official
-//   Spanish CV: professional summary, education, volunteer roles, core
-//   skills, and all 6 roles (titles/meta/summaries/bullets). Certification
-//   and tool/platform names are intentionally left in English in both
-//   languages — they're proper nouns, matching the Spanish CV.
-//   Credentials page content (degree meta on that page specifically) is
-//   still pending — marked "// TODO Slice 10" — until that page's
-//   Spanish CV-derived content is filled in.
+//   Both pages are fully translated from Antonio's official Spanish CV:
+//   Home (professional summary, education, volunteer roles, core skills,
+//   all 6 roles) and Credentials (degree meta). Certification and
+//   tool/platform names are intentionally left in English in both
+//   languages — they're proper nouns, matching the Spanish CV. The
+//   Download CV href and WhatsApp pre-fill message are also
+//   language-aware — see contact.downloadCvHref and whatsapp.message.
 // ==========================================================================
 
 (function () {
@@ -42,19 +41,14 @@
       "hero.srRoles": "Product Owner, Product Manager, Business Analyst",
 
       "summary.heading": "Professional summary",
-      // TODO Slice 9 — real Spanish from the Spanish CV
       "summary.p1": "Product Owner with a product management mindset and a strong Business Analyst foundation. I turn business goals into clear requirements, aligned teams, and user-friendly digital products, creating shared understanding from idea to delivery.",
-      // TODO Slice 9
       "summary.p2": "Currently based in Cancún, MX. Open to relocation.",
 
       "education.heading": "Education",
       "education.verifyLink": "Verify my credentials →",
-      // TODO Slice 9
       "education.degreeTitle": "Bachelor’s Degree in Digital Business & Software Engineering",
-      // TODO Slice 9
       "education.meta": "Anahuac Mayab University · Mérida, MX · Aug 2016 – Jun 2020",
       "volunteer.heading": "Leadership & volunteer roles",
-      // TODO Slice 9
       "volunteer.item1": "President of the Engineering Student Association",
       "volunteer.item2": "COO at Genera",
       "volunteer.item3": "Project Manager at Gente Nueva",
@@ -74,7 +68,6 @@
       "skills.groupAnalytics": "Analytics & data",
       "skills.groupAI": "AI & automation",
       "skills.groupTech": "Technical basics",
-      // TODO Slice 9
       "skills.core1": "Product Ownership, Product Management, and Business Analysis",
       "skills.core2": "Stakeholder Alignment and Requirements Definition",
       "skills.core3": "Agile Product Delivery: Scrum, SAFe, PI Planning",
@@ -82,7 +75,6 @@
 
       "roles.heading": "Roles & experience",
 
-      // TODO Slice 9 — role1..role6 summary/bullets
       "roles.r1.title": "Product & Business Analyst Consultant",
       "roles.r1.meta": "Urso Core · Cancún, MX · May 2026 – Present",
       "roles.r1.summary": "Independent consulting work helping small businesses define, build, and improve digital products, websites, AI-enabled workflows, and growth systems.",

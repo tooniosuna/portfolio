@@ -1,9 +1,10 @@
 // ==========================================================================
 // main.js
-// Shared behavior for every page (index.html and credentials/index.html).
-// Real interactive features (typewriter, collapsible timeline cards) get
-// added slice by slice — this file currently only handles the mobile nav
-// toggle, plus the Slice 0 pipeline check.
+// Shared behavior for every page (index.html and credentials/index.html):
+// the mobile nav toggle, the hero typewriter animation, and sizing the
+// hero backdrop band. Language switching itself lives in i18n.js, loaded
+// just before this file — main.js only reads from it (window.i18n) for
+// the typewriter's role words.
 // ==========================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
