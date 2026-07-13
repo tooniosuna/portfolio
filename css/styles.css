@@ -183,6 +183,50 @@ main[id] {
   height: 16px;
 }
 
+/* Groups the language toggle, hamburger, and nav links together on the
+   right side of the header — everything but the brand on the left. */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Language toggle: always visible (not tucked inside the mobile dropdown),
+   since it's just two small icons either way. */
+.nav-lang {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.lang-btn {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 3px;
+  opacity: 0.45;
+  transition: opacity 0.15s ease;
+}
+
+.lang-btn:hover,
+.lang-btn:focus-visible {
+  opacity: 0.75;
+}
+
+.lang-btn[aria-pressed="true"] {
+  opacity: 1;
+}
+
+.lang-btn[aria-pressed="true"]:hover {
+  opacity: 1;
+}
+
+.lang-btn svg {
+  width: 20px;
+  height: 13px;
+  display: block;
+  border-radius: 2px;
+}
+
 /* Mobile hamburger toggle — hidden on desktop */
 .nav-toggle {
   display: flex;

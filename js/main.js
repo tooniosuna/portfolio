@@ -30,17 +30,33 @@ document.addEventListener("DOMContentLoaded", () => {
   // Hero typewriter: types out each title, pauses, erases it, then moves to
   // the next one, looping forever. The target span is aria-hidden — a
   // static sr-only list right next to it covers screen readers instead.
+  //
+  // The role words themselves come from i18n.js's dictionary (hero.roles),
+  // not a hardcoded array here, so switching language mid-visit restarts
+  // the loop with the Spanish (or English) words instead.
   const typewriterEl = document.getElementById("typewriter");
 
   if (typewriterEl) {
-    const roles = ["Product Owner", "Product Manager", "Business Analyst"];
     const TYPE_SPEED_MS = 80;
     const ERASE_SPEED_MS = 40;
     const PAUSE_AFTER_TYPE_MS = 1600;
     const PAUSE_AFTER_ERASE_MS = 300;
+    const FALLBACK_ROLES = ["Product Owner", "Product Manager", "Business Analyst"];
 
+    let roles = getRoles();
     let roleIndex = 0;
     let charIndex = 0;
+    let pendingTimeoutId = null;
+
+    function getRoles() {
+      if (window.i18n && typeof window.i18n.t === "function") {
+        const fromDict = window.i18n.t("hero.roles");
+        if (Array.isArray(fromDict) && fromDict.length > 0) {
+          return fromDict;
+        }
+      }
+      return FALLBACK_ROLES;
+    }
 
     function typeNextChar() {
       const currentRole = roles[roleIndex];
@@ -48,9 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
       typewriterEl.textContent = currentRole.slice(0, charIndex);
 
       if (charIndex < currentRole.length) {
-        setTimeout(typeNextChar, TYPE_SPEED_MS);
+        pendingTimeoutId = setTimeout(typeNextChar, TYPE_SPEED_MS);
       } else {
-        setTimeout(eraseNextChar, PAUSE_AFTER_TYPE_MS);
+        pendingTimeoutId = setTimeout(eraseNextChar, PAUSE_AFTER_TYPE_MS);
       }
     }
 
@@ -59,14 +75,30 @@ document.addEventListener("DOMContentLoaded", () => {
       typewriterEl.textContent = roles[roleIndex].slice(0, charIndex);
 
       if (charIndex > 0) {
-        setTimeout(eraseNextChar, ERASE_SPEED_MS);
+        pendingTimeoutId = setTimeout(eraseNextChar, ERASE_SPEED_MS);
       } else {
         roleIndex = (roleIndex + 1) % roles.length;
-        setTimeout(typeNextChar, PAUSE_AFTER_ERASE_MS);
+        pendingTimeoutId = setTimeout(typeNextChar, PAUSE_AFTER_ERASE_MS);
       }
     }
 
-    typeNextChar();
+    // Cancels whatever's mid-flight and starts over with the current
+    // language's role words. Used on first load, and again every time the
+    // language toggle fires.
+    function restartTypewriter() {
+      if (pendingTimeoutId) {
+        clearTimeout(pendingTimeoutId);
+        pendingTimeoutId = null;
+      }
+      roles = getRoles();
+      roleIndex = 0;
+      charIndex = 0;
+      typewriterEl.textContent = "";
+      typeNextChar();
+    }
+
+    restartTypewriter();
+    window.addEventListener("langchange", restartTypewriter);
   }
 
   // Hero backdrop sizing: the full-width backdrop band (.hero-backdrop) is

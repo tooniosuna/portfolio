@@ -29,6 +29,7 @@
           rel="noopener"
           class="nav-linkedin"
           aria-label="Antonio Osuna on LinkedIn"
+          data-i18n-aria="nav.linkedinAriaLabel"
         >
           <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.446-2.136 2.940v5.666H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
@@ -36,23 +37,46 @@
         </a>
       </div>
 
-      <button
-        class="nav-toggle"
-        id="navToggle"
-        aria-expanded="false"
-        aria-controls="navMenu"
-        aria-label="Toggle navigation menu"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <div class="nav-right">
+        <!-- Language toggle: instant swap via i18n.js, no page reload.
+             aria-pressed marks whichever language is currently active. -->
+        <div class="nav-lang" role="group" aria-label="Language">
+          <button class="lang-btn" data-lang="en" aria-label="English" aria-pressed="true">
+            <svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="60" height="36" fill="#00247d" />
+              <path d="M0,0 L60,36 M60,0 L0,36" stroke="#fff" stroke-width="6" />
+              <path d="M0,0 L60,36 M60,0 L0,36" stroke="#cf142b" stroke-width="2" />
+              <path d="M30,0 V36 M0,18 H60" stroke="#fff" stroke-width="10" />
+              <path d="M30,0 V36 M0,18 H60" stroke="#cf142b" stroke-width="6" />
+            </svg>
+          </button>
+          <button class="lang-btn" data-lang="es" aria-label="Español" aria-pressed="false">
+            <svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="60" height="36" fill="#c60b1e" />
+              <rect y="9" width="60" height="18" fill="#ffc400" />
+            </svg>
+          </button>
+        </div>
 
-      <nav class="nav-menu" id="navMenu">
-        <a href="index.html#home">Home</a>
-        <a href="index.html#experience">Experience</a>
-        <a href="index.html#contact">Contact</a>
-      </nav>
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          aria-expanded="false"
+          aria-controls="navMenu"
+          aria-label="Toggle navigation menu"
+          data-i18n-aria="nav.toggleAriaLabel"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="nav-menu" id="navMenu">
+          <a href="index.html#home" data-i18n="nav.home">Home</a>
+          <a href="index.html#experience" data-i18n="nav.experience">Experience</a>
+          <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
+        </nav>
+      </div>
     </div>
   </header>
 
@@ -71,13 +95,15 @@
       <div class="container hero-inner">
 
         <div class="hero-text">
-          <p class="hero-greeting">Hello! I'm <strong>Antonio Osuna</strong>.</p>
+          <p class="hero-greeting">
+            <span data-i18n="hero.greetingPrefix">Hello! I&rsquo;m</span> <strong>Antonio Osuna</strong>.
+          </p>
           <h1 class="hero-title">
             <!-- Screen readers get the full static list; the animated
                  span is decorative and hidden from assistive tech. -->
             <span id="typewriter" class="hero-role" aria-hidden="true"></span
             ><span class="cursor" aria-hidden="true"></span>
-            <span class="sr-only">Product Owner, Product Manager, Business Analyst</span>
+            <span class="sr-only" data-i18n="hero.srRoles">Product Owner, Product Manager, Business Analyst</span>
           </h1>
         </div>
 
@@ -93,14 +119,14 @@
          roles timeline, added in Slice 4). -->
     <section id="experience" class="section summary">
       <div class="container">
-        <h2>Professional summary</h2>
-        <p>
+        <h2 data-i18n="summary.heading">Professional summary</h2>
+        <p data-i18n="summary.p1">
           Product Owner with a product management mindset and a strong Business
           Analyst foundation. I turn business goals into clear requirements,
           aligned teams, and user-friendly digital products, creating shared
           understanding from idea to delivery.
         </p>
-        <p>Currently based in Cancún, MX. Open to relocation.</p>
+        <p data-i18n="summary.p2">Currently based in Cancún, MX. Open to relocation.</p>
       </div>
     </section>
 
@@ -111,50 +137,50 @@
          badges alike. -->
     <section class="section education">
       <div class="container">
-        <h2>Education</h2>
-        <a href="credentials/index.html" class="verify-link">Verify my credentials &rarr;</a>
+        <h2 data-i18n="education.heading">Education</h2>
+        <a href="credentials/index.html" class="verify-link" data-i18n="education.verifyLink">Verify my credentials &rarr;</a>
 
         <div class="education-cards">
           <div class="card education-card">
-            <h3>Bachelor&rsquo;s Degree in Digital Business &amp; Software Engineering</h3>
-            <p class="education-meta">Anahuac Mayab University &middot; M&eacute;rida, MX &middot; Aug 2016 &ndash; Jun 2020</p>
+            <h3 data-i18n="education.degreeTitle">Bachelor&rsquo;s Degree in Digital Business &amp; Software Engineering</h3>
+            <p class="education-meta" data-i18n="education.meta">Anahuac Mayab University &middot; M&eacute;rida, MX &middot; Aug 2016 &ndash; Jun 2020</p>
 
             <div class="volunteer">
-              <h4>Leadership &amp; volunteer roles</h4>
+              <h4 data-i18n="volunteer.heading">Leadership &amp; volunteer roles</h4>
               <ul>
-                <li>President of the Engineering Student Association</li>
-                <li>COO at Genera</li>
-                <li>Project Manager at Gente Nueva</li>
-                <li>Frontend Developer at Gente Nueva</li>
+                <li data-i18n="volunteer.item1">President of the Engineering Student Association</li>
+                <li data-i18n="volunteer.item2">COO at Genera</li>
+                <li data-i18n="volunteer.item3">Project Manager at Gente Nueva</li>
+                <li data-i18n="volunteer.item4">Frontend Developer at Gente Nueva</li>
               </ul>
             </div>
           </div>
 
           <div class="card cert-card">
-            <h3>Certifications &amp; Professional Development</h3>
+            <h3 data-i18n="certCard.heading">Certifications &amp; Professional Development</h3>
             <!-- Names only — every validation link lives on the Credentials page. -->
             <ul class="cert-list">
               <li class="cert-item">
-                <span class="cert-name">AI for Product Owners</span>
+                <span class="cert-name" data-i18n="cert.name1">AI for Product Owners</span>
                 <span class="badge-type">Skillsoft Badge</span>
               </li>
               <li class="cert-item">
-                <span class="cert-name">Software Product Management Proficiency</span>
+                <span class="cert-name" data-i18n="cert.name2">Software Product Management Proficiency</span>
                 <span class="badge-type">Skillsoft Badge</span>
               </li>
               <li class="cert-item">
-                <span class="cert-name">Google Foundations of Project Management</span>
+                <span class="cert-name" data-i18n="cert.name3">Google Foundations of Project Management</span>
                 <span class="badge-type">Coursera Certificate</span>
               </li>
               <li class="cert-item">
-                <span class="cert-name">IBM AI Product Manager</span>
+                <span class="cert-name" data-i18n="cert.name4">IBM AI Product Manager</span>
                 <span class="badge-type">Coursera Certificate</span>
-                <span class="tag-progress">In progress</span>
+                <span class="tag-progress" data-i18n="cert.inProgress">In progress</span>
               </li>
               <li class="cert-item">
-                <span class="cert-name">PSPO I (Professional Scrum Product Owner)</span>
+                <span class="cert-name" data-i18n="cert.name5">PSPO I (Professional Scrum Product Owner)</span>
                 <span class="badge-type">Scrum.org Professional Certificate</span>
-                <span class="tag-progress">In progress</span>
+                <span class="tag-progress" data-i18n="cert.inProgress">In progress</span>
               </li>
             </ul>
           </div>
@@ -164,20 +190,20 @@
 
     <section class="section skills">
       <div class="container">
-        <h2>Skills &amp; tools</h2>
+        <h2 data-i18n="skills.heading">Skills &amp; tools</h2>
 
         <div class="skills-group">
-          <h3>Core skills</h3>
+          <h3 data-i18n="skills.groupCore">Core skills</h3>
           <div class="chip-row">
-            <span class="chip">Product Ownership, Product Management, and Business Analysis</span>
-            <span class="chip">Stakeholder Alignment and Requirements Definition</span>
-            <span class="chip">Agile Product Delivery: Scrum, SAFe, PI Planning</span>
-            <span class="chip">AI-Assisted Product Discovery, Documentation, and Delivery</span>
+            <span class="chip" data-i18n="skills.core1">Product Ownership, Product Management, and Business Analysis</span>
+            <span class="chip" data-i18n="skills.core2">Stakeholder Alignment and Requirements Definition</span>
+            <span class="chip" data-i18n="skills.core3">Agile Product Delivery: Scrum, SAFe, PI Planning</span>
+            <span class="chip" data-i18n="skills.core4">AI-Assisted Product Discovery, Documentation, and Delivery</span>
           </div>
         </div>
 
         <div class="skills-group">
-          <h3>Product &amp; collaboration</h3>
+          <h3 data-i18n="skills.groupCollab">Product &amp; collaboration</h3>
           <div class="chip-row">
             <span class="chip">Jira</span>
             <span class="chip">Confluence</span>
@@ -191,7 +217,7 @@
         </div>
 
         <div class="skills-group">
-          <h3>Analytics &amp; data</h3>
+          <h3 data-i18n="skills.groupAnalytics">Analytics &amp; data</h3>
           <div class="chip-row">
             <span class="chip">Power BI</span>
             <span class="chip">Adobe Analytics</span>
@@ -204,7 +230,7 @@
         </div>
 
         <div class="skills-group">
-          <h3>AI &amp; automation</h3>
+          <h3 data-i18n="skills.groupAI">AI &amp; automation</h3>
           <div class="chip-row">
             <span class="chip">ChatGPT</span>
             <span class="chip">Claude</span>
@@ -218,7 +244,7 @@
         </div>
 
         <div class="skills-group">
-          <h3>Technical basics</h3>
+          <h3 data-i18n="skills.groupTech">Technical basics</h3>
           <div class="chip-row">
             <span class="chip">Power Automate</span>
             <span class="chip">AppSheet</span>
@@ -234,7 +260,7 @@
 
     <section class="section roles">
       <div class="container">
-        <h2>Roles &amp; experience</h2>
+        <h2 data-i18n="roles.heading">Roles &amp; experience</h2>
 
         <!-- Native <details>/<summary> gives us collapsible cards with zero
              JS: keyboard-accessible and works even if JavaScript is off.
@@ -247,19 +273,19 @@
             <details class="card role-card">
               <summary>
                 <span class="role-header-text">
-                  <span class="role-title">Product &amp; Business Analyst Consultant</span>
-                  <span class="role-meta">Urso Core &middot; Canc&uacute;n, MX &middot; May 2026 &ndash; Present</span>
+                  <span class="role-title" data-i18n="roles.r1.title">Product &amp; Business Analyst Consultant</span>
+                  <span class="role-meta" data-i18n="roles.r1.meta">Urso Core &middot; Canc&uacute;n, MX &middot; May 2026 &ndash; Present</span>
                 </span>
                 <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               </summary>
               <div class="role-body">
-                <p class="role-summary">Independent consulting work helping small businesses define, build, and improve digital products, websites, AI-enabled workflows, and growth systems.</p>
+                <p class="role-summary" data-i18n="roles.r1.summary">Independent consulting work helping small businesses define, build, and improve digital products, websites, AI-enabled workflows, and growth systems.</p>
                 <ul>
-                  <li>Translate business needs into clear requirements, user flows, scope, and implementation plans.</li>
-                  <li>Build and launch websites and digital experiences using SEO, structured data, analytics, HTML, CSS, JavaScript, and CMS tools.</li>
-                  <li>Work directly with business owners to prioritize scope, make tradeoffs, and move projects from idea to launch.</li>
+                  <li data-i18n="roles.r1.b1">Translate business needs into clear requirements, user flows, scope, and implementation plans.</li>
+                  <li data-i18n="roles.r1.b2">Build and launch websites and digital experiences using SEO, structured data, analytics, HTML, CSS, JavaScript, and CMS tools.</li>
+                  <li data-i18n="roles.r1.b3">Work directly with business owners to prioritize scope, make tradeoffs, and move projects from idea to launch.</li>
                 </ul>
               </div>
             </details>
@@ -269,22 +295,22 @@
             <details class="card role-card">
               <summary>
                 <span class="role-header-text">
-                  <span class="role-title">Product Owner / Senior Business Analyst &mdash; eCommerce Ordering &amp; Reporting</span>
-                  <span class="role-meta">HCLTech &middot; Monterrey, MX &middot; Sep 2024 &ndash; May 2026</span>
+                  <span class="role-title" data-i18n="roles.r2.title">Product Owner / Senior Business Analyst &mdash; eCommerce Ordering &amp; Reporting</span>
+                  <span class="role-meta" data-i18n="roles.r2.meta">HCLTech &middot; Monterrey, MX &middot; Sep 2024 &ndash; May 2026</span>
                 </span>
                 <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               </summary>
               <div class="role-body">
-                <p class="role-summary">Led product ownership and business analysis for a new eCommerce Reporting platform built from scratch to replace Legacy Oracle BI, partnering with Product Management, UX, Data Engineering, engineering leadership, QA, IT Support, Customer Experience, eCommerce SMEs, and National Sales stakeholders across internal users and external National Accounts.</p>
+                <p class="role-summary" data-i18n="roles.r2.summary">Led product ownership and business analysis for a new eCommerce Reporting platform built from scratch to replace Legacy Oracle BI, partnering with Product Management, UX, Data Engineering, engineering leadership, QA, IT Support, Customer Experience, eCommerce SMEs, and National Sales stakeholders across internal users and external National Accounts.</p>
                 <ul>
-                  <li>Led gap analysis between Legacy Oracle BI and the new Reporting platform, translating business needs into Jira user stories, acceptance criteria, UI/UX flows, data requirements, and functional documentation in Confluence.</li>
-                  <li>Owned backlog readiness across 2-week sprints and quarterly PI Planning, ensuring developers had refined, prioritized, and dependency-aware work up to 3 months ahead.</li>
-                  <li>Partnered with UX, Product Management, Tech Leads, Architects, and Data Engineering to create and validate mockups with leadership, define reporting data requirements, and support dashboard/reporting solution design.</li>
-                  <li>Drove business user adoption and continuous improvement for the Legacy Oracle BI transition through release notes, functional documentation, IT Support enablement, Adobe Analytics reviews, feedback analysis, and structured feedback readouts.</li>
-                  <li>Used adoption data, support feedback, and stakeholder readouts to identify gaps, surface new requirements to leadership, reprioritize work, and quickly move high-impact improvements into mockups, stories, refinement, and planning.</li>
-                  <li>Served as Project Reporting Manager for HCLTech BA, Product, and UX team members on the account, supporting operational processes, administrative reporting, leadership communication, and account execution.</li>
+                  <li data-i18n="roles.r2.b1">Led gap analysis between Legacy Oracle BI and the new Reporting platform, translating business needs into Jira user stories, acceptance criteria, UI/UX flows, data requirements, and functional documentation in Confluence.</li>
+                  <li data-i18n="roles.r2.b2">Owned backlog readiness across 2-week sprints and quarterly PI Planning, ensuring developers had refined, prioritized, and dependency-aware work up to 3 months ahead.</li>
+                  <li data-i18n="roles.r2.b3">Partnered with UX, Product Management, Tech Leads, Architects, and Data Engineering to create and validate mockups with leadership, define reporting data requirements, and support dashboard/reporting solution design.</li>
+                  <li data-i18n="roles.r2.b4">Drove business user adoption and continuous improvement for the Legacy Oracle BI transition through release notes, functional documentation, IT Support enablement, Adobe Analytics reviews, feedback analysis, and structured feedback readouts.</li>
+                  <li data-i18n="roles.r2.b5">Used adoption data, support feedback, and stakeholder readouts to identify gaps, surface new requirements to leadership, reprioritize work, and quickly move high-impact improvements into mockups, stories, refinement, and planning.</li>
+                  <li data-i18n="roles.r2.b6">Served as Project Reporting Manager for HCLTech BA, Product, and UX team members on the account, supporting operational processes, administrative reporting, leadership communication, and account execution.</li>
                 </ul>
               </div>
             </details>
@@ -294,19 +320,19 @@
             <details class="card role-card">
               <summary>
                 <span class="role-header-text">
-                  <span class="role-title">Sales Representative &mdash; Travel &amp; Hospitality</span>
-                  <span class="role-meta">Playa Hotels &amp; Resorts &middot; Canc&uacute;n, MX &middot; Feb 2024 &ndash; Aug 2024</span>
+                  <span class="role-title" data-i18n="roles.r3.title">Sales Representative &mdash; Travel &amp; Hospitality</span>
+                  <span class="role-meta" data-i18n="roles.r3.meta">Playa Hotels &amp; Resorts &middot; Canc&uacute;n, MX &middot; Feb 2024 &ndash; Aug 2024</span>
                 </span>
                 <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               </summary>
               <div class="role-body">
-                <p class="role-summary">Sales consultant for a high-end vacation club, focused on trust-building and persuasive communication. Worked in a high-pressure, target-driven environment requiring adaptability, empathy, and the ability to uncover dominant buying motives through structured discovery.</p>
+                <p class="role-summary" data-i18n="roles.r3.summary">Sales consultant for a high-end vacation club, focused on trust-building and persuasive communication. Worked in a high-pressure, target-driven environment requiring adaptability, empathy, and the ability to uncover dominant buying motives through structured discovery.</p>
                 <ul>
-                  <li>Conducted in-depth discovery sessions to identify customer needs and emotional drivers, tailoring pitches accordingly.</li>
-                  <li>Delivered persuasive sales presentations aligned with customer values, product benefits, and urgency triggers.</li>
-                  <li>Thrived under pressure in a fast-paced environment, consistently meeting sales expectations through preparation and rapport-building.</li>
+                  <li data-i18n="roles.r3.b1">Conducted in-depth discovery sessions to identify customer needs and emotional drivers, tailoring pitches accordingly.</li>
+                  <li data-i18n="roles.r3.b2">Delivered persuasive sales presentations aligned with customer values, product benefits, and urgency triggers.</li>
+                  <li data-i18n="roles.r3.b3">Thrived under pressure in a fast-paced environment, consistently meeting sales expectations through preparation and rapport-building.</li>
                 </ul>
               </div>
             </details>
@@ -316,19 +342,19 @@
             <details class="card role-card">
               <summary>
                 <span class="role-header-text">
-                  <span class="role-title">Product Manager / Business Analyst &mdash; EdTech &amp; Internal Platforms</span>
-                  <span class="role-meta">Red de Colegios Semper Altius &middot; Mexico City, MX &middot; Nov 2021 &ndash; Nov 2023</span>
+                  <span class="role-title" data-i18n="roles.r4.title">Product Manager / Business Analyst &mdash; EdTech &amp; Internal Platforms</span>
+                  <span class="role-meta" data-i18n="roles.r4.meta">Red de Colegios Semper Altius &middot; Mexico City, MX &middot; Nov 2021 &ndash; Nov 2023</span>
                 </span>
                 <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               </summary>
               <div class="role-body">
-                <p class="role-summary">Led digital product delivery, internal tool modernization, and business analysis for a national education network serving 70+ campuses and over 90,000 students and staff. Acted as the sole client-side product and analysis lead, responsible for requirements gathering, vendor management, platform delivery, stakeholder alignment, and training.</p>
+                <p class="role-summary" data-i18n="roles.r4.summary">Led digital product delivery, internal tool modernization, and business analysis for a national education network serving 70+ campuses and over 90,000 students and staff. Acted as the sole client-side product and analysis lead, responsible for requirements gathering, vendor management, platform delivery, stakeholder alignment, and training.</p>
                 <ul>
-                  <li>Directed three major software development initiatives from discovery to launch, managing requirements, vendor selection, contracts, delivery timelines, and post-release adoption.</li>
-                  <li>Collaborated with cross-functional stakeholders to translate institutional needs into actionable product requirements.</li>
-                  <li>Delivered user onboarding and documentation; managed CMS and supported national Microsoft 365 operations across campuses.</li>
+                  <li data-i18n="roles.r4.b1">Directed three major software development initiatives from discovery to launch, managing requirements, vendor selection, contracts, delivery timelines, and post-release adoption.</li>
+                  <li data-i18n="roles.r4.b2">Collaborated with cross-functional stakeholders to translate institutional needs into actionable product requirements.</li>
+                  <li data-i18n="roles.r4.b3">Delivered user onboarding and documentation; managed CMS and supported national Microsoft 365 operations across campuses.</li>
                 </ul>
               </div>
             </details>
@@ -338,19 +364,19 @@
             <details class="card role-card">
               <summary>
                 <span class="role-header-text">
-                  <span class="role-title">Customer Service Coordinator &mdash; Food Manufacturing / Supply Chain</span>
-                  <span class="role-meta">Harbar LLC &middot; Remote &middot; Sep 2020 &ndash; Nov 2021</span>
+                  <span class="role-title" data-i18n="roles.r5.title">Customer Service Coordinator &mdash; Food Manufacturing / Supply Chain</span>
+                  <span class="role-meta" data-i18n="roles.r5.meta">Harbar LLC &middot; Remote &middot; Sep 2020 &ndash; Nov 2021</span>
                 </span>
                 <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               </summary>
               <div class="role-body">
-                <p class="role-summary">Coordinated service operations for a US-based food manufacturer with major retail clients. Led documentation, system optimization, and process improvement across customer service, operations, and finance.</p>
+                <p class="role-summary" data-i18n="roles.r5.summary">Coordinated service operations for a US-based food manufacturer with major retail clients. Led documentation, system optimization, and process improvement across customer service, operations, and finance.</p>
                 <ul>
-                  <li>Managed EDI, ERP, and CRM systems for 110+ accounts, optimizing processes for clients like Trader Joe&rsquo;s, Walmart, and U.S. Government vendors.</li>
-                  <li>Created cross-department sales protocols and documentation that improved order processing speed and operational accuracy.</li>
-                  <li>Spearheaded the company&rsquo;s first on-time monthly financial closing; supported $40M+ in annual order volume with high service quality.</li>
+                  <li data-i18n="roles.r5.b1">Managed EDI, ERP, and CRM systems for 110+ accounts, optimizing processes for clients like Trader Joe&rsquo;s, Walmart, and U.S. Government vendors.</li>
+                  <li data-i18n="roles.r5.b2">Created cross-department sales protocols and documentation that improved order processing speed and operational accuracy.</li>
+                  <li data-i18n="roles.r5.b3">Spearheaded the company&rsquo;s first on-time monthly financial closing; supported $40M+ in annual order volume with high service quality.</li>
                 </ul>
               </div>
             </details>
@@ -360,19 +386,19 @@
             <details class="card role-card">
               <summary>
                 <span class="role-header-text">
-                  <span class="role-title">Project Business Analyst &mdash; Seafood Industry / Logistics</span>
-                  <span class="role-meta">Caiman Products &middot; Yucat&aacute;n, MX &middot; Jul 2019 &ndash; Jul 2020</span>
+                  <span class="role-title" data-i18n="roles.r6.title">Project Business Analyst &mdash; Seafood Industry / Logistics</span>
+                  <span class="role-meta" data-i18n="roles.r6.meta">Caiman Products &middot; Yucat&aacute;n, MX &middot; Jul 2019 &ndash; Jul 2020</span>
                 </span>
                 <svg class="role-toggle-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
               </summary>
               <div class="role-body">
-                <p class="role-summary">Led the development of a business intelligence system for a seafood distributor. Combined technical analysis, process optimization, and data modeling to improve efficiency across operations.</p>
+                <p class="role-summary" data-i18n="roles.r6.summary">Led the development of a business intelligence system for a seafood distributor. Combined technical analysis, process optimization, and data modeling to improve efficiency across operations.</p>
                 <ul>
-                  <li>Designed and implemented a centralized system reducing manual reporting and Excel dependency.</li>
-                  <li>Enabled 20+ hours/week in time savings through system automation.</li>
-                  <li>Reduced physical infrastructure by 35% through cloud migration; improved same-day shipping processes.</li>
+                  <li data-i18n="roles.r6.b1">Designed and implemented a centralized system reducing manual reporting and Excel dependency.</li>
+                  <li data-i18n="roles.r6.b2">Enabled 20+ hours/week in time savings through system automation.</li>
+                  <li data-i18n="roles.r6.b3">Reduced physical infrastructure by 35% through cloud migration; improved same-day shipping processes.</li>
                 </ul>
               </div>
             </details>
@@ -384,18 +410,19 @@
 
     <section id="contact" class="section contact">
       <div class="container contact-inner">
-        <h2>Contact</h2>
-        <p>Interested in working together? Let&rsquo;s connect.</p>
+        <h2 data-i18n="contact.heading">Contact</h2>
+        <p data-i18n="contact.intro">Interested in working together? Let&rsquo;s connect.</p>
         <div class="contact-actions">
           <a
             href="https://www.linkedin.com/in/antonio-osuna/"
             target="_blank"
             rel="noopener"
             class="btn btn-outline"
+            data-i18n="contact.linkedin"
           >
             Connect on LinkedIn
           </a>
-          <a href="assets/AntonioOsunaCV.pdf" download class="btn">Download CV</a>
+          <a href="assets/AntonioOsunaCV.pdf" download class="btn" data-i18n="contact.downloadCv">Download CV</a>
         </div>
       </div>
     </section>
@@ -408,6 +435,7 @@
     target="_blank"
     rel="noopener"
     aria-label="Chat on WhatsApp"
+    data-i18n-aria="whatsapp.ariaLabel"
   >
     <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <!-- White speech-bubble silhouette -->
@@ -423,6 +451,7 @@
     </svg>
   </a>
 
+  <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
