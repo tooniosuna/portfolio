@@ -132,13 +132,16 @@
       "contact.intro": "Interested in working together? Let’s connect.",
       "contact.linkedin": "Connect on LinkedIn",
       "contact.downloadCv": "Download CV",
+      "contact.downloadCvHref": "assets/AntonioOsunaCV.pdf",
 
       "whatsapp.ariaLabel": "Chat on WhatsApp",
+      // Raw message text, not URL-encoded — applyTranslations() builds the
+      // full wa.me href from this so the pre-fill switches with language.
+      "whatsapp.message": "I saw your profile, let's chat!",
 
       "credentials.title": "Credentials",
       "credentials.intro": "This page verifies everything referenced on my portfolio and CV: my degree and cédula profesional, plus every certification badge — earned and in progress.",
       "credentials.degreeHeading": "Bachelor’s degree",
-      // TODO Slice 10
       "credentials.degreeMeta": "Digital Business & Software Engineering · Anahuac Mayab University · Mérida, MX",
       "credentials.cedulaLabel": "Cédula profesional:",
       "credentials.verifyLink": "Verify on the SEP portal →",
@@ -250,14 +253,15 @@
       "contact.intro": "¿Interesado en trabajar juntos? Conectemos.",
       "contact.linkedin": "Conectar en LinkedIn",
       "contact.downloadCv": "Descargar CV",
+      "contact.downloadCvHref": "assets/AntonioOsuna%20CV(ES).pdf",
 
       "whatsapp.ariaLabel": "Chatear por WhatsApp",
+      "whatsapp.message": "Vi tu perfil, ¡conversemos!",
 
       "credentials.title": "Credenciales",
       "credentials.intro": "Esta página verifica todo lo referenciado en mi portafolio y CV: mi título y cédula profesional, además de cada certificación — obtenidas y en curso.",
       "credentials.degreeHeading": "Licenciatura",
-      // TODO Slice 10
-      "credentials.degreeMeta": "Digital Business & Software Engineering · Anahuac Mayab University · Mérida, MX",
+      "credentials.degreeMeta": "Ingeniería en Informática y Negocios Digitales · Universidad Anáhuac Mayab · Mérida, MX",
       "credentials.cedulaLabel": "Cédula profesional:",
       "credentials.verifyLink": "Verificar en el portal de la SEP →",
       "credentials.note": "El portal de la SEP no genera un enlace directo a resultados individuales — busca con el número de cédula indicado arriba.",
@@ -296,6 +300,12 @@
     var params = new URLSearchParams(window.location.search);
     var queryLang = params.get("lang");
     if (queryLang === "en" || queryLang === "es") {
+      // Persist immediately: if someone arrives via a ?lang=es link (e.g.
+      // the Spanish CV) and then clicks an internal link that doesn't
+      // carry the query string (like Home -> Credentials), the language
+      // they landed on should still stick instead of reverting to
+      // whatever was stored before.
+      setStoredLang(queryLang);
       return queryLang;
     }
 
@@ -308,6 +318,8 @@
   }
 
   var currentLang = getInitialLang();
+
+  var WHATSAPP_NUMBER = "5219988459830";
 
   function applyTranslations() {
     var dict = translations[currentLang] || translations[DEFAULT_LANG];
@@ -327,6 +339,24 @@
         el.setAttribute("aria-label", value);
       }
     });
+
+    document.querySelectorAll("[data-i18n-href]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n-href");
+      var value = dict[key];
+      if (typeof value === "string") {
+        el.setAttribute("href", value);
+      }
+    });
+
+    // WhatsApp pre-fill message: built from the raw text (not stored
+    // pre-encoded), so it always matches the active language.
+    var waMessage = dict["whatsapp.message"];
+    if (typeof waMessage === "string") {
+      var waHref = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(waMessage);
+      document.querySelectorAll(".whatsapp-button").forEach(function (el) {
+        el.setAttribute("href", waHref);
+      });
+    }
 
     document.documentElement.setAttribute("lang", currentLang);
 
