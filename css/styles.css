@@ -399,6 +399,53 @@ main[id] {
   gap: 0.6rem;
 }
 
+/* Breadcrumb trail — sits at the top of every page under Real Demos, one
+   level below the site nav, so it's always clear how deep you are (e.g.
+   Home / Real Demos / Inventory and Order Management System / Sales).
+   Every crumb but the last is a link; the current page is plain text. */
+.breadcrumbs {
+  margin: var(--space-sm) 0 var(--space-md);
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.breadcrumbs li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.breadcrumbs li:not(:last-child)::after {
+  content: "/";
+  color: var(--color-border);
+}
+
+.breadcrumbs a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus-visible {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.breadcrumbs li[aria-current="page"] {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
 /* ==========================================================================
    STICKY WHATSAPP BUTTON
    Fixed to the bottom-right corner on every page.
