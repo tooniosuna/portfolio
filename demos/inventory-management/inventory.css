@@ -1,0 +1,969 @@
+/* ==========================================================================
+   inventory.css
+   Styles specific to the Inventory and Order Management System demo. Kept
+   out of the site-wide styles.css for the same reason as reporting.css —
+   this demo has enough of its own UI to warrant its own file. Everything
+   here is prefixed "inv-" so it can't collide with site-wide class names.
+   Shared tokens (--color-accent, --radius, etc.) come from ../../css/styles.css,
+   loaded before this file.
+   ========================================================================== */
+
+.inv-intro-text {
+  max-width: 68ch;
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   PROCESS DIAGRAM
+   Mobile-first: a vertical stack of 3 steps with connectors between them.
+   At 768px+ it becomes a horizontal row. The Receive -> Sell connector is
+   colored and carries a small icon to mark it as the old bottleneck; the
+   actual explanation is a standalone note below the whole diagram
+   (.inv-diagram-bottleneck-note) rather than crammed into the connector
+   itself, so the 3 steps keep even, unobstructed spacing.
+   -------------------------------------------------------------------------- */
+.inv-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-sm);
+  margin: var(--space-lg) 0;
+  padding: var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.inv-diagram-step {
+  position: relative;
+  flex: 1;
+  text-align: center;
+  padding: var(--space-sm);
+}
+
+.inv-diagram-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-bottom: var(--space-xs);
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.inv-diagram-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--space-xs);
+  border-radius: 50%;
+  background: var(--color-bg);
+  color: var(--color-accent);
+}
+
+.inv-diagram-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.inv-diagram-step h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.inv-diagram-step p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* Connector between two steps. Mobile: a short vertical arrow. */
+.inv-diagram-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0 var(--space-sm);
+}
+
+.inv-diagram-arrow {
+  display: block;
+  width: 2px;
+  height: 28px;
+  background: var(--color-border);
+  position: relative;
+}
+
+.inv-diagram-arrow::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid var(--color-border);
+}
+
+/* The highlighted bottleneck connector — warm/warning color instead of
+   the plain grey used everywhere else, plus a small icon marking it as
+   different. The actual explanation lives below the whole diagram now
+   (.inv-diagram-bottleneck-note), so the diagram row itself stays light
+   and evenly spaced instead of one connector ballooning out. */
+.inv-diagram-connector-blocker .inv-diagram-arrow {
+  background: #d97706;
+}
+
+.inv-diagram-connector-blocker .inv-diagram-arrow::after {
+  border-top-color: #d97706;
+}
+
+.inv-diagram-connector-icon {
+  flex-shrink: 0;
+  color: #d97706;
+}
+
+.inv-diagram-connector-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Standalone explanation block, same amber treatment as before, now
+   sitting below the full diagram instead of squeezed inside it. */
+.inv-diagram-bottleneck-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: var(--space-sm);
+  padding: 0.75rem 1rem;
+  background: #fffaf0;
+  border: 1px solid #f2c94c;
+  border-radius: var(--radius);
+}
+
+.inv-diagram-blocker-icon {
+  flex-shrink: 0;
+  color: #d97706;
+  margin-top: 0.1rem;
+}
+
+.inv-diagram-blocker-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.inv-diagram-bottleneck-note p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #7c4a03;
+  line-height: 1.5;
+}
+
+.inv-diagram-bottleneck-note strong {
+  color: #7c4a03;
+}
+
+@media (min-width: 768px) {
+  .inv-diagram {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+  }
+
+  .inv-diagram-connector {
+    flex-direction: row;
+    padding-top: 30px; /* roughly aligns with the icon row, not the badge/text */
+  }
+
+  .inv-diagram-arrow {
+    width: 100%;
+    min-width: 32px;
+    height: 2px;
+  }
+
+  .inv-diagram-arrow::after {
+    left: auto;
+    right: -1px;
+    bottom: 50%;
+    transform: translateY(50%);
+    border-left: 7px solid var(--color-border);
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-right: none;
+  }
+
+  .inv-diagram-connector-blocker .inv-diagram-arrow::after {
+    border-left-color: #d97706;
+  }
+
+  /* This one connector stacks its icon above the arrow instead of
+     going full-row, so the icon reads as a marker on the line rather
+     than another column competing with the steps for space. */
+  .inv-diagram-connector-blocker {
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-top: 22px;
+  }
+
+  .inv-diagram-connector-blocker .inv-diagram-arrow {
+    width: 40px;
+    min-width: 40px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   MODULE CARDS (Reception / Sales / BI)
+   Same shape/behavior as the Reporting demo's section cards — a live card
+   links out to its own page; a not-yet-built one is visually muted with a
+   "Coming soon" tag and isn't clickable.
+   -------------------------------------------------------------------------- */
+.inv-hub-heading-row {
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+
+.inv-hub-heading-row h2 {
+  margin: 0;
+}
+
+.inv-module-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .inv-module-cards {
+    flex-direction: row;
+  }
+}
+
+.inv-module-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.inv-module-card:hover,
+.inv-module-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.1);
+  border-color: var(--color-accent);
+}
+
+.inv-module-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-accent);
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.inv-module-card:hover .inv-module-card-icon,
+.inv-module-card:focus-visible .inv-module-card-icon {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.inv-module-card-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.inv-module-card h3 {
+  margin: 0;
+}
+
+.inv-module-card p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+}
+
+.inv-module-card-cta {
+  margin-top: auto;
+  padding-top: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.inv-module-card.is-disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.inv-module-card.is-disabled:hover,
+.inv-module-card.is-disabled:focus-visible {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--color-border);
+}
+
+.inv-module-card-tag {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+}
+
+/* --------------------------------------------------------------------------
+   RECEPTION MODULE — hub view
+   -------------------------------------------------------------------------- */
+.inv-hub-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.inv-hub-header-row h1 {
+  margin-bottom: 0.15rem;
+}
+
+.inv-hub-date {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.inv-hub-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.inv-admin-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.inv-admin-toggle input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.inv-admin-toggle:has(input:checked) span {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.inv-hub-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+
+.inv-hub-heading-row h2 {
+  margin: 0;
+}
+
+.inv-empty-note {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  padding: var(--space-sm) 0;
+}
+
+.inv-reception-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 640px) {
+  .inv-reception-list {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+.inv-reception-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.inv-reception-card:hover,
+.inv-reception-card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.1);
+  border-color: var(--color-accent);
+}
+
+.inv-reception-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.inv-reception-card-lot {
+  font-weight: 700;
+  font-family: var(--font-heading);
+  letter-spacing: 0.02em;
+}
+
+.inv-reception-card-provider {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.inv-reception-card-meta,
+.inv-reception-card-stats {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+.inv-status-badge {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.inv-status-badge.is-progress {
+  color: #b45309;
+  background: rgba(217, 119, 6, 0.12);
+}
+
+.inv-status-badge.is-finished {
+  color: #1a7f37;
+  background: rgba(26, 127, 55, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   RECEPTION MODULE — detail view
+   -------------------------------------------------------------------------- */
+.inv-detail-back-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: var(--space-md);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.inv-detail-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.inv-detail-header h1 {
+  margin-bottom: 0.25rem;
+  font-family: var(--font-heading);
+}
+
+.inv-detail-meta {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.88rem;
+}
+
+.inv-product-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.inv-product-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inv-product-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.inv-product-row-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.inv-product-row-total {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.inv-load-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.inv-load-list li {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  padding: 0.3rem 0.6rem;
+  background: var(--color-bg);
+  border-radius: var(--radius);
+}
+
+.inv-empty-note-inline {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.inv-add-load-btn {
+  align-self: flex-start;
+  font-size: 0.82rem;
+  padding: 0.4rem 0.8rem;
+}
+
+.inv-detail-footer {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.inv-detail-footer-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.inv-final-summary {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.inv-final-summary h3 {
+  margin: 0 0 var(--space-sm);
+}
+
+.inv-final-summary dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.4rem var(--space-sm);
+  margin: 0;
+}
+
+.inv-final-summary dt {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.inv-final-summary dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.inv-admin-note {
+  margin: var(--space-sm) 0 0;
+  font-size: 0.85rem;
+  color: var(--color-accent);
+}
+
+/* --------------------------------------------------------------------------
+   MODAL SYSTEM
+   Shared by New Reception, Add Product, Add Load, and Final Details — a
+   centered dialog with a shared backdrop. Only one is ever open at once
+   (reception.js only ever adds .is-open to a single modal at a time).
+   -------------------------------------------------------------------------- */
+.inv-modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 300;
+}
+
+.inv-modal-backdrop.is-open {
+  display: block;
+}
+
+.inv-modal {
+  display: none;
+  position: fixed;
+  z-index: 301;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(480px, calc(100vw - 2rem));
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.25);
+}
+
+.inv-modal.is-open {
+  display: block;
+}
+
+.inv-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.inv-modal-header h3 {
+  margin: 0;
+}
+
+.inv-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+}
+
+.inv-modal-close:hover,
+.inv-modal-close:focus-visible {
+  color: var(--color-text);
+}
+
+.inv-modal-body {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.inv-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+/* --------------------------------------------------------------------------
+   FORM FIELDS (shared across all 4 modals)
+   -------------------------------------------------------------------------- */
+.inv-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.inv-field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.inv-field select,
+.inv-field input[type="text"],
+.inv-field input[type="number"] {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.inv-field select:disabled,
+.inv-field input:disabled {
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+}
+
+.inv-field select:focus-visible,
+.inv-field input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.inv-field-hint {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+}
+
+.inv-readonly-value {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+}
+
+.inv-arrival-lot {
+  margin: 0 0 var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.inv-product-preview {
+  margin: 0 0 var(--space-sm);
+  padding: 0.6rem 0.8rem;
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 600;
+  min-height: 1.3em;
+}
+
+.inv-form-error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #c0392b;
+}
+
+.inv-form-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   SALES MODULE — per-product cost grid, price/utilidad row, completed
+   summary actions, and the Send by Email client checklist. Reuses the
+   Reception module's card/list/status-badge/modal/field classes for
+   everything else (hub, detail header, empty states, etc).
+   -------------------------------------------------------------------------- */
+.inv-sales-cost-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  background: var(--color-bg);
+  border-radius: var(--radius);
+}
+
+@media (min-width: 640px) {
+  .inv-sales-cost-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .inv-sales-cost-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.inv-sales-cost-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.inv-sales-cost-field select {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.inv-sales-cost-field input[type="number"] {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.inv-sales-cost-field select:disabled,
+.inv-sales-cost-field input:disabled {
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+}
+
+.inv-sales-price-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-top: 0.4rem;
+}
+
+.inv-sales-price-row .inv-field {
+  flex: 1;
+  min-width: 180px;
+}
+
+.inv-sales-utilidad {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.inv-sales-utilidad-value {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.inv-sales-utilidad-value.is-negative {
+  color: #c0392b;
+}
+
+.inv-sales-utilidad-value.is-positive {
+  color: #1a7f37;
+}
+
+.inv-sales-completed-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.inv-sales-client-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 0.5rem 0.6rem;
+  background: var(--color-bg);
+  border-radius: var(--radius);
+}
+
+.inv-sales-client-option {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.inv-sales-client-option input {
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.inv-sales-client-option span {
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+}
+
+.inv-sales-add-email-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.inv-sales-add-email-row input {
+  flex: 1;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.inv-sales-added-emails {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.inv-sales-added-emails li {
+  font-size: 0.85rem;
+  padding: 0.3rem 0.6rem;
+  background: var(--color-bg);
+  border-radius: var(--radius);
+}
+
+.inv-sales-confirm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: 0.6rem 0.8rem;
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  margin-bottom: 0.5rem;
+}
+
+.inv-sales-confirm-row label {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.inv-sales-confirm-row input {
+  width: 110px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+}

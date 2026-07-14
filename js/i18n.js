@@ -150,7 +150,7 @@
       "demosPage.intro": "Interactive recreations of real products I’ve built — simplified and de-branded, but the functionality is genuine. Jump straight to one below.",
       "demosPage.nav.reporting": "Reporting tool",
       "demosPage.nav.weddingWizard": "Wedding wizard",
-      "demosPage.nav.biDashboard": "BI dashboard",
+      "demosPage.nav.inventory": "Inventory & Order Management",
 
       "demos.comingSoon": "Coming soon",
       "demos.constructionLabel": "Under construction",
@@ -164,8 +164,8 @@
       "demos.weddingWizard.title": "Destination wedding wizard",
       "demos.weddingWizard.description": "An AI-assisted planning wizard for destination weddings — enter your event details, browse venues, and reserve with a deposit, step by step.",
 
-      "demos.biDashboard.title": "Business intelligence dashboard",
-      "demos.biDashboard.description": "A simplified business intelligence dashboard recreating a reporting system I built for a logistics and distribution business."
+      "demos.inventory.title": "Inventory and Order Management System",
+      "demos.inventory.description": "A raw-material intake, inventory, and sales tool I helped design for a fresh seafood exporter — replacing a slow ERP process that was costing real, time-sensitive sales."
     },
 
     es: {
