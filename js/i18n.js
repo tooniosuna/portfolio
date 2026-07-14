@@ -36,9 +36,11 @@
       "nav.contact": "Contact",
       "nav.linkedinAriaLabel": "Antonio Osuna on LinkedIn",
       "nav.toggleAriaLabel": "Toggle navigation menu",
+      "nav.demos": "Real Demos",
 
       "hero.greetingPrefix": "Hello! I’m",
       "hero.srRoles": "Product Owner, Product Manager, Business Analyst",
+      "hero.demosCta": "See real demos →",
 
       "summary.heading": "Professional summary",
       "summary.p1": "Product Owner with a product management mindset and a strong Business Analyst foundation. I turn business goals into clear requirements, aligned teams, and user-friendly digital products, creating shared understanding from idea to delivery.",
@@ -74,6 +76,7 @@
       "skills.core4": "AI-Assisted Product Discovery, Documentation, and Delivery",
 
       "roles.heading": "Roles & experience",
+      "roles.demoBadge": "View demo",
 
       "roles.r1.title": "Product & Business Analyst Consultant",
       "roles.r1.meta": "Urso Core · Cancún, MX · May 2026 – Present",
@@ -141,7 +144,28 @@
       "credentials.earnedHeading": "Earned certifications",
       "credentials.inProgressHeading": "In progress",
       "credentials.viewCredential": "View credential →",
-      "credentials.viewProgram": "View program →"
+      "credentials.viewProgram": "View program →",
+
+      "demosPage.title": "Real demos",
+      "demosPage.intro": "Interactive recreations of real products I’ve built — simplified and de-branded, but the functionality is genuine. Jump straight to one below.",
+      "demosPage.nav.reporting": "Reporting tool",
+      "demosPage.nav.weddingWizard": "Wedding wizard",
+      "demosPage.nav.biDashboard": "BI dashboard",
+
+      "demos.comingSoon": "Coming soon",
+      "demos.constructionLabel": "Under construction",
+      "demos.constructionPageMessage": "This interactive demo is being built — check back soon.",
+      "demos.backToDemos": "← Back to real demos",
+      "demos.viewDemoCta": "View demo →",
+
+      "demos.reporting.title": "Reporting tool",
+      "demos.reporting.description": "An embedded reporting experience recreating a tool I helped build for a national eCommerce platform — dashboards, drillable report sections, sorting, search, and exports, all without leaving the page.",
+
+      "demos.weddingWizard.title": "Destination wedding wizard",
+      "demos.weddingWizard.description": "An AI-assisted planning wizard for destination weddings — enter your event details, browse venues, and reserve with a deposit, step by step.",
+
+      "demos.biDashboard.title": "Business intelligence dashboard",
+      "demos.biDashboard.description": "A simplified business intelligence dashboard recreating a reporting system I built for a logistics and distribution business."
     },
 
     es: {

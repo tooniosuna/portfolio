@@ -296,6 +296,26 @@ main[id] {
   color: var(--color-accent);
 }
 
+/* "Real Demos" gets a filled accent pill instead of a plain text link, so
+   it stands out from Home/Experience/Contact next to it. */
+.nav-menu a.nav-cta {
+  color: var(--color-on-accent);
+  background: var(--color-accent);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease;
+  /* The mobile dropdown is a column flexbox, which stretches items to fill
+     its width by default — fine for plain text links, but it made this
+     pill span edge-to-edge. Shrink it back to just its own content. */
+  align-self: flex-start;
+}
+
+.nav-menu a.nav-cta:hover,
+.nav-menu a.nav-cta:focus-visible {
+  background: var(--color-accent-hover);
+  color: var(--color-on-accent);
+}
+
 /* Desktop: inline nav, no hamburger, no dropdown positioning */
 @media (min-width: 768px) {
   .nav-toggle {
@@ -305,6 +325,7 @@ main[id] {
   .nav-menu {
     position: static;
     flex-direction: row;
+    align-items: center;
     gap: var(--space-lg);
     padding: 0;
     border-bottom: none;
@@ -312,6 +333,10 @@ main[id] {
     opacity: 1;
     visibility: visible;
     transform: none;
+  }
+
+  .nav-menu a.nav-cta {
+    align-self: center;
   }
 }
 
@@ -351,6 +376,27 @@ main[id] {
 .btn-outline:focus-visible {
   background: var(--color-accent);
   color: var(--color-on-accent);
+}
+
+/* Lightweight "back" link used on demo pages — a plain text link with an
+   arrow reads better here than a bordered button for simple back
+   navigation; the arrow nudges away from the text on hover as a subtle
+   cue. */
+.demo-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: color 0.15s ease, gap 0.15s ease;
+}
+
+.demo-back-link:hover,
+.demo-back-link:focus-visible {
+  color: var(--color-accent);
+  gap: 0.6rem;
 }
 
 /* ==========================================================================
@@ -931,4 +977,236 @@ main[id] {
     flex-direction: row;
     justify-content: center;
   }
+}
+
+/* ==========================================================================
+   HERO "SEE REAL DEMOS" CTA
+   ========================================================================== */
+
+.hero-cta {
+  margin-top: var(--space-md);
+}
+
+/* The link itself reuses .btn (see BUTTONS block above) so it reads as a
+   real call-to-action — same solid accent pill as Download CV / Connect
+   on LinkedIn — instead of a plain inline text link. */
+
+/* ==========================================================================
+   "VIEW DEMO" BADGE (attached to role titles that have a demo)
+   Small shiny pill with a light sweep animation on hover.
+   ========================================================================== */
+
+.role-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.demo-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  overflow: hidden;
+}
+
+/* Double diagonal light sweep: two streaks, the second staggered slightly
+   behind the first. On hover both sweep left-to-right; since it's the same
+   "left" property transitioning back to its resting value, un-hovering
+   reverses the exact same path right-to-left, delay and all. */
+.demo-badge::before,
+.demo-badge::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -70%;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+
+.demo-badge::after {
+  left: -110%;
+  transition-delay: 0.12s;
+}
+
+.demo-badge:hover::before,
+.demo-badge:focus-visible::before {
+  left: 140%;
+}
+
+.demo-badge:hover::after,
+.demo-badge:focus-visible::after {
+  left: 170%;
+}
+
+/* ==========================================================================
+   CONSTRUCTION STRIPES (shared: used on hub cards and on each demo's own
+   page until that demo is actually built). One class, toggled off per
+   demo the moment its real content ships.
+   ========================================================================== */
+
+.construction-stripes {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #111111 0,
+    #111111 12px,
+    #f5c400 12px,
+    #f5c400 24px
+  );
+  background-size: 34px 34px;
+  animation: construction-scroll 3s linear infinite;
+}
+
+@keyframes construction-scroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 34px 34px;
+  }
+}
+
+.construction-label {
+  background: rgba(0, 0, 0, 0.78);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   DEMOS HUB PAGE
+   ========================================================================== */
+
+.demos-intro-text {
+  max-width: 65ch;
+  color: var(--color-text-secondary);
+}
+
+.demo-quicknav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: var(--space-md);
+}
+
+.demo-quicknav-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.demo-quicknav-btn:hover,
+.demo-quicknav-btn:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.demo-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.demo-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.demo-media svg {
+  width: 56px;
+  height: 56px;
+  color: var(--color-text-secondary);
+}
+
+.demo-card-body h2 {
+  margin-bottom: 0.4rem;
+}
+
+.demo-card-body p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+/* Disabled-looking stand-in for the CTA while a demo is under construction —
+   a <span>, not a link, so it's not a dead/fake link for a11y or SEO. */
+.demo-cta-disabled {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  cursor: default;
+}
+
+@media (min-width: 768px) {
+  .demo-card {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .demo-media {
+    flex: 0 0 320px;
+  }
+
+  .demo-card-body {
+    flex: 1;
+  }
+}
+
+/* ==========================================================================
+   INDIVIDUAL DEMO PAGE — "under construction" placeholder
+   Swapped out for the real interactive demo, page by page, as each ships.
+   ========================================================================== */
+
+.demo-construction-inner {
+  text-align: center;
+  max-width: 560px;
+}
+
+.construction-banner {
+  position: relative;
+  height: 140px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-md);
+}
+
+.demo-construction-inner p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-md);
 }

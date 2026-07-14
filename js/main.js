@@ -128,4 +128,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // again whenever the window is resized or rotated.
   window.addEventListener("load", sizeHeroBackdrop);
   window.addEventListener("resize", sizeHeroBackdrop);
+
+  // "View demo" badges live inside a role's <summary> (so the role title row
+  // still opens/closes the timeline card as usual). Without this, clicking
+  // the badge link would also toggle that parent <summary>/<details> open or
+  // closed, because the click bubbles up. Stop it there so the badge just
+  // navigates to the demo page.
+  document.querySelectorAll(".demo-badge").forEach((badge) => {
+    badge.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
+  });
 });

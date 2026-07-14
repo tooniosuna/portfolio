@@ -1,0 +1,1388 @@
+/* ==========================================================================
+   reporting.css
+   Styles specific to the Reporting Tool demo. Kept out of the site-wide
+   styles.css on purpose — this demo has enough of its own UI (filters,
+   skeleton loaders, data tables) that bundling it into the shared
+   stylesheet would make that file harder to navigate for the rest of the
+   site. Everything here is prefixed "rpt-" so it can't collide with
+   site-wide class names. Shared tokens (--color-accent, --radius, etc.)
+   come from ../../css/styles.css, loaded before this file.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   FILTER BAR (the always-visible summary strip + its flyout panel)
+   -------------------------------------------------------------------------- */
+
+.rpt-filterbar {
+  position: sticky;
+  /* Site nav is also position:sticky at top:0 (65px tall incl. its
+     border) — without this offset the two competed for the same spot,
+     which is why the bar looked like it wasn't sticking at all. */
+  top: 65px;
+  z-index: 20;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding-block: var(--space-xs);
+}
+
+.rpt-filterbar-inner {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.rpt-filter-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.85rem;
+  font-weight: 500;
+  max-width: 100%;
+}
+
+.rpt-filter-summary:hover,
+.rpt-filter-summary:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.rpt-filter-summary svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--color-accent);
+}
+
+.rpt-filter-summary-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rpt-filter-chevron {
+  transition: transform 0.15s ease;
+}
+
+.rpt-filter-summary[aria-expanded="true"] .rpt-filter-chevron {
+  transform: rotate(180deg);
+}
+
+/* The flyout itself: anchored under the summary button, closed by default. */
+.rpt-filter-flyout {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: var(--space-sm);
+  right: var(--space-sm);
+  /* Above the sticky WhatsApp button (z-index: 200 in styles.css) — a
+     long customer list can push this flyout tall enough on short
+     viewports to otherwise sit behind it. */
+  z-index: 220;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14);
+  padding: var(--space-md);
+
+  /* The flyout itself scrolls if its contents (date + region + customer
+     list + actions) are taller than the viewport allows — otherwise the
+     Apply/Reset row could end up pushed off-screen with no way to reach
+     it, especially with a long customer list on a short window. */
+  max-height: 75vh;
+  overflow-y: auto;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
+}
+
+.rpt-filter-flyout.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+  .rpt-filter-flyout {
+    left: auto;
+    width: 420px;
+  }
+}
+
+.rpt-filter-flyout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.rpt-filter-flyout-header h2 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.rpt-filter-close {
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  padding: 0.2rem 0.5rem;
+}
+
+.rpt-filter-close:hover,
+.rpt-filter-close:focus-visible {
+  color: var(--color-text);
+}
+
+.rpt-filter-section {
+  margin-bottom: var(--space-md);
+}
+
+.rpt-filter-section:last-of-type {
+  margin-bottom: var(--space-sm);
+}
+
+.rpt-filter-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.rpt-filter-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+
+.rpt-filter-label-row .rpt-filter-label {
+  margin-bottom: 0;
+}
+
+.rpt-select-all-btn {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+.rpt-select-all-btn:hover,
+.rpt-select-all-btn:focus-visible {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}
+
+/* The detailed date/customer/region summary, now shown near "Table
+   Views" instead of crammed into the filter button itself. */
+.rpt-filters-detail-line {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-top: var(--space-sm);
+}
+
+.rpt-filter-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.rpt-filter-error {
+  font-size: 0.8rem;
+  color: #c0392b;
+  margin-top: 0.4rem;
+}
+
+.rpt-date-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.rpt-date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  flex: 1;
+}
+
+.rpt-date-field input {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  padding: 0.45rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+}
+
+.rpt-date-field input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* Region chips — small multi-select toggle buttons, same pill language as
+   the rest of the site (.demo-quicknav-btn, .btn) but with a clear
+   pressed/active state since these are toggles, not links. */
+.rpt-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.rpt-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.rpt-chip:hover,
+.rpt-chip:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.rpt-chip.is-active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+/* Customer checkbox list — scrolls internally once it gets long rather
+   than growing the whole flyout. */
+.rpt-customer-list {
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.4rem;
+}
+
+.rpt-customer-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+}
+
+.rpt-customer-item:hover {
+  background: var(--color-bg);
+}
+
+.rpt-customer-item input {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-accent);
+}
+
+.rpt-customer-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rpt-customer-region {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+}
+
+.rpt-flyout-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--color-border);
+}
+
+/* --------------------------------------------------------------------------
+   SKELETON LOADING (shared shimmer, shaped per content type)
+   -------------------------------------------------------------------------- */
+
+@keyframes rpt-shimmer {
+  from { background-position: -200px 0; }
+  to { background-position: 200px 0; }
+}
+
+.rpt-skeleton-bar {
+  border-radius: 6px;
+  background-color: var(--color-border);
+  background-image: linear-gradient(
+    90deg,
+    transparent 0,
+    rgba(255, 255, 255, 0.7) 50%,
+    transparent 100%
+  );
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  animation: rpt-shimmer 1.1s ease-in-out infinite;
+}
+
+/* Both skeletons are now overlays — absolutely positioned over their
+   always-in-flow .rpt-real-content, rather than swapping which one is
+   display:none. That means the container's height is always driven by
+   the real content underneath (which never leaves the layout), so
+   nothing shifts when the 1s loading state starts or ends — only the
+   overlay's own visibility toggles. Their positioning parent
+   (.rpt-active-report-body for tables, .rpt-chart-body for graphs) has
+   position: relative for this to anchor against. */
+
+/* Table skeleton: only the row area is covered — the card's own title
+   stays fully visible while its rows shimmer. Each bar is a fixed height
+   matching a real table row's actual rendered height (~2.5rem, from
+   .rpt-data-table th/td's own padding + line-height), rather than
+   flex: 1 evenly stretching however many bars exist across the *whole*
+   overlay — that was making each bar roughly double a real row's
+   height. The overlay itself is capped at 80% of the real content's
+   height (not a full-height stretch) per Tony's call, with plenty of
+   bars in the markup and overflow: hidden trimming whatever doesn't
+   fit — so this holds up across reports/heights without per-report
+   tuning. */
+.rpt-skeleton-rows {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80%;
+  z-index: 2;
+  background: var(--color-surface);
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: var(--space-md);
+  overflow: hidden;
+}
+
+.rpt-skeleton-rows .rpt-skeleton-bar {
+  flex-shrink: 0;
+  height: 2.5rem;
+  width: 100%;
+}
+
+[data-skeleton-target][data-skeleton-type="table"].is-loading .rpt-skeleton-rows {
+  display: flex;
+}
+
+/* Graph skeleton: same idea as the table's — the card's own title and
+   controls (the Dollars/Cases toggle) stay put, only the chart body
+   swaps out, bar-shaped to match what's actually underneath it. This
+   deliberately matches the table pattern (title stays, body clears)
+   rather than also skeletonizing the title, since a popping-in-and-out
+   heading/toggle read as worse UX in practice — flagged as a call.
+   Bars are flex: 1 (width) with no height cap, same reasoning as the
+   table's above — they need to stretch to fill whatever the real
+   chart's actual footprint turns out to be (full width, and full height
+   via each bar's own inline height percentage), rather than sitting as
+   a small fixed-size cluster in the middle of a much bigger card. */
+.rpt-skeleton-graph-bars {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--color-surface);
+  align-items: flex-end;
+  gap: var(--space-sm);
+  padding: var(--space-lg) var(--space-md) var(--space-md);
+}
+
+.rpt-skeleton-graph-bars .rpt-skeleton-bar {
+  flex: 1;
+  border-radius: 6px 6px 0 0;
+}
+
+[data-skeleton-target][data-skeleton-type="graph"].is-loading .rpt-skeleton-graph-bars {
+  display: flex;
+}
+
+/* --------------------------------------------------------------------------
+   REPORTING HUB (Slice R2)
+   The "Table Views" heading row + Download History, the 3 section cards,
+   and the shared "active report" area that opens below them once a card
+   is clicked (only one section is ever open at a time — see R1 summary's
+   confirmed "single active section" model).
+   -------------------------------------------------------------------------- */
+
+.rpt-hub-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+  position: relative;
+}
+
+.rpt-hub-heading-row h2 {
+  margin: 0;
+}
+
+.rpt-history-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  padding: 0.4rem 0.2rem;
+}
+
+.rpt-history-btn:hover,
+.rpt-history-btn:focus-visible {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}
+
+.rpt-history-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Download History flyout — same interaction pattern as the filter flyout,
+   just anchored to its own button on the right. */
+.rpt-history-flyout {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  /* Same reasoning as the filter flyout above — stay above the WhatsApp button. */
+  z-index: 215;
+  width: min(360px, 90vw);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14);
+  padding: var(--space-md);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
+}
+
+.rpt-history-flyout.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.rpt-history-flyout h3 {
+  font-size: 1rem;
+  margin-bottom: var(--space-sm);
+}
+
+.rpt-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rpt-history-item:last-child {
+  border-bottom: none;
+}
+
+.rpt-history-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.rpt-history-item-name {
+  font-size: 0.88rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rpt-history-item-meta {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+}
+
+.rpt-history-redownload {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
+.rpt-history-redownload:hover,
+.rpt-history-redownload:focus-visible {
+  border-color: var(--color-accent);
+  background: var(--color-bg);
+}
+
+/* Section cards */
+.rpt-section-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .rpt-section-cards {
+    flex-direction: row;
+  }
+}
+
+.rpt-section-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.rpt-section-card:hover,
+.rpt-section-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.1);
+  border-color: var(--color-accent);
+}
+
+.rpt-section-card.is-active {
+  border-color: var(--color-accent);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.1);
+}
+
+.rpt-section-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-accent);
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.rpt-section-card:hover .rpt-section-card-icon,
+.rpt-section-card:focus-visible .rpt-section-card-icon,
+.rpt-section-card.is-active .rpt-section-card-icon {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.rpt-section-card-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.rpt-section-card h3 {
+  margin: 0;
+}
+
+.rpt-section-card p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+}
+
+/* Compliance: same shape, visually muted, not interactive yet. */
+.rpt-section-card.is-disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.rpt-section-card.is-disabled:hover,
+.rpt-section-card.is-disabled:focus-visible {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--color-border);
+}
+
+.rpt-section-card.is-disabled:hover .rpt-section-card-icon {
+  background: var(--color-bg);
+  color: var(--color-accent);
+}
+
+.rpt-card-tag {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+}
+
+/* Shared active-report area: hidden until a live card is clicked. */
+.rpt-active-report {
+  display: none;
+  margin-top: var(--space-md);
+}
+
+.rpt-active-report.is-open {
+  display: block;
+}
+
+.rpt-active-report-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-sm);
+}
+
+.rpt-active-report-header h3 {
+  margin: 0;
+}
+
+/* Report switcher — a segmented control (grey track, accent capsule on the
+   active option), same idea as the Dollars/Cases toggle used later on the
+   Spend by Class graph. Supports any number of options, not just two. */
+.rpt-segment-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.25rem;
+}
+
+.rpt-segment {
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rpt-segment:hover,
+.rpt-segment:focus-visible {
+  color: var(--color-text);
+}
+
+.rpt-segment.is-active {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.rpt-active-report-body {
+  position: relative;
+  min-height: 220px;
+}
+
+.rpt-stub-note {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   REUSABLE DATA TABLE (Slice R3)
+   Markup is generated by dataTable.js (window.RptDataTable) — every report
+   (Invoice History today, Product Usage/Compliance later) gets this same
+   look for free just by passing in its own columns + row data.
+   -------------------------------------------------------------------------- */
+
+.rpt-table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.rpt-table-search {
+  flex: 1;
+  min-width: 180px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.rpt-table-search:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.rpt-table-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.rpt-table-count {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.rpt-table-export {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  white-space: nowrap;
+}
+
+.rpt-table-export:hover,
+.rpt-table-export:focus-visible {
+  border-color: var(--color-accent);
+  background: var(--color-bg);
+}
+
+.rpt-table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.rpt-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.rpt-data-table th,
+.rpt-data-table td {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rpt-data-table th.is-numeric,
+.rpt-data-table td.is-numeric {
+  text-align: right;
+}
+
+.rpt-data-table thead th {
+  background: var(--color-bg);
+  font-weight: 600;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.rpt-th-label {
+  margin-right: 0.3rem;
+}
+
+.rpt-th-sort {
+  font-size: 0.7rem;
+  color: var(--color-accent);
+}
+
+.rpt-data-table th.is-dragging {
+  opacity: 0.4;
+}
+
+.rpt-data-table th.is-drag-over {
+  box-shadow: inset 2px 0 0 var(--color-accent);
+}
+
+.rpt-data-table tbody tr:hover {
+  background: var(--color-bg);
+}
+
+.rpt-cell-truncate {
+  display: inline-block;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.rpt-table-empty {
+  text-align: center !important;
+  color: var(--color-text-secondary);
+  padding: var(--space-md) !important;
+}
+
+.rpt-table-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.rpt-table-pagination button {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
+.rpt-table-pagination button:hover:not(:disabled),
+.rpt-table-pagination button:focus-visible:not(:disabled) {
+  border-color: var(--color-accent);
+  background: var(--color-bg);
+}
+
+.rpt-table-pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.rpt-table-page-label {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   MOBILE REPORT DOWNLOAD FLYOUT (Slice R5)
+   No interactive table below 768px at all — tapping a section card opens
+   this bottom sheet instead. Belt-and-suspenders media queries below make
+   sure the two experiences can never both be visible at once, even if a
+   window gets resized without a reload.
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .rpt-active-report {
+    display: none !important;
+  }
+}
+
+.rpt-mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  /* Above the sticky WhatsApp button (z-index: 200 in styles.css) so the
+     sheet — and its backdrop — sit on top of it instead of behind it. */
+  z-index: 210;
+  background: rgba(15, 23, 42, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.rpt-mobile-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.rpt-mobile-flyout {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 211;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--color-surface);
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+  box-shadow: 0 -12px 32px rgba(15, 23, 42, 0.18);
+  padding: var(--space-md);
+
+  transform: translateY(100%);
+  transition: transform 0.25s ease;
+}
+
+.rpt-mobile-flyout.is-open {
+  transform: translateY(0);
+}
+
+.rpt-mobile-report-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rpt-mobile-report-item:last-child {
+  border-bottom: none;
+}
+
+.rpt-mobile-report-name {
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.rpt-mobile-report-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.rpt-mobile-download-btn {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
+.rpt-mobile-download-btn:hover,
+.rpt-mobile-download-btn:focus-visible {
+  border-color: var(--color-accent);
+  background: var(--color-bg);
+}
+
+/* Desktop never shows the mobile picker, even mid-resize. */
+@media (min-width: 768px) {
+  .rpt-mobile-backdrop,
+  .rpt-mobile-flyout {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   CHARTS (Slice R6) — Spend by Class, plus placeholder cards for the two
+   graphs that aren't scoped yet (Top Products, Compliance Trends).
+   -------------------------------------------------------------------------- */
+
+.rpt-chart-card {
+  position: relative;
+}
+
+.rpt-chart-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+/* Positioning parent for the skeleton overlay — scoped to just the body
+   (below the header) so the title/toggle never get covered while
+   loading, matching .rpt-active-report-body's role for table reports. */
+.rpt-chart-body {
+  position: relative;
+}
+
+.rpt-chart-header h3 {
+  margin: 0;
+}
+
+.rpt-chart-placeholder-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .rpt-chart-placeholder-row {
+    flex-direction: row;
+  }
+}
+
+.rpt-chart-placeholder-row .rpt-chart-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  opacity: 0.65;
+}
+
+/* Spend by Class chart itself. Mobile-first: by default each class is its
+   own row — label + YoY badge on one line, then a horizontal bar that
+   grows left-to-right (width = value) with the exact amount at its end,
+   and the whole list scrolls vertically. At 768px+ it becomes one shared
+   chart instead — a left-hand value axis (the "dynamic amounts", whose
+   scale changes with the Dollars/Cases toggle and the active filters)
+   beside a horizontally-scrolling strip of upright bars (height = value).
+   Same bar element both sizes; only which CSS dimension reads its
+   --bar-fill custom property (set once from JS) changes, via the
+   .rpt-class-bar rule under the desktop media query below.
+   One deliberate mobile adjustment: the exact value shows as plain
+   always-visible text on mobile instead of only-on-hover, since hover
+   doesn't really exist on touch. Desktop keeps the hover tooltip instead
+   so the amount doesn't clutter the shared-axis layout. */
+.rpt-class-chart {
+  display: flex;
+  flex-direction: column;
+}
+
+.rpt-class-chart-axis {
+  display: none;
+}
+
+.rpt-class-chart-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-right: 0.25rem;
+}
+
+.rpt-class-bar-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  row-gap: 0.35rem;
+  column-gap: var(--space-sm);
+  align-items: center;
+}
+
+/* Mobile: only the first 3 classes (already sorted highest-first) show
+   by default; "See more"/"See less" (below) toggles the rest — see
+   .rpt-chart-expand-btn and the .is-expanded class it toggles. */
+.rpt-class-chart-scroll .rpt-class-bar-item:nth-child(n + 4) {
+  display: none;
+}
+
+.rpt-class-chart-scroll.is-expanded .rpt-class-bar-item:nth-child(n + 4) {
+  display: grid;
+}
+
+.rpt-chart-expand-btn {
+  align-self: flex-start;
+  margin-top: var(--space-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+.rpt-chart-expand-btn:hover,
+.rpt-chart-expand-btn:focus-visible {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}
+
+.rpt-class-bar-label {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Horizontal track (mobile default) — a short, wide pill; the bar inside
+   grows in WIDTH via the --bar-fill custom property JS sets once per
+   render. Desktop below flips this back into a tall, narrow vertical
+   track where the bar grows in HEIGHT instead. */
+.rpt-class-bar-track {
+  grid-column: 1;
+  grid-row: 2;
+  position: relative;
+  width: 100%;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  background: var(--color-bg);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.rpt-class-bar {
+  height: 100%;
+  width: var(--bar-fill, 0%);
+  background: var(--color-accent);
+  border-radius: 999px;
+  transition: width 0.3s ease, background 0.15s ease;
+  cursor: pointer;
+}
+
+.rpt-class-bar:hover,
+.rpt-class-bar:focus-visible {
+  background: var(--color-accent-hover);
+}
+
+.rpt-class-bar-amount {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Exact value on hover (desktop only — see .rpt-class-bar-amount above
+   for the mobile equivalent). Plain CSS, no extra JS needed. */
+.rpt-class-bar-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-text);
+  color: var(--color-surface);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.rpt-class-bar-yoy {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.rpt-class-bar-yoy.is-positive {
+  color: #1a7f37;
+  background: rgba(26, 127, 55, 0.12);
+}
+
+.rpt-class-bar-yoy.is-negative {
+  color: #c0392b;
+  background: rgba(192, 57, 43, 0.12);
+}
+
+.rpt-class-bar-yoy.is-neutral {
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+}
+
+@media (min-width: 768px) {
+  .rpt-class-chart {
+    flex-direction: row;
+    gap: var(--space-sm);
+  }
+
+  /* padding-top here reserves room for the hover tooltip above each bar
+     (see .rpt-class-chart-scroll below for why that's needed) — matched
+     exactly so the axis's tick column still lines up with the bars. */
+  .rpt-class-chart-axis {
+    display: flex;
+    flex-shrink: 0;
+    width: 52px;
+    height: 180px;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: right;
+    padding-top: 36px;
+  }
+
+  .rpt-axis-tick {
+    font-size: 0.72rem;
+    color: var(--color-text-secondary);
+  }
+
+  /* overflow-x: auto forces overflow-y to compute as auto too (per the
+     CSS overflow spec, mixing "visible" with a non-visible value on the
+     other axis isn't allowed — the visible axis silently becomes auto),
+     so anything that pokes out above this box — like the hover tooltip,
+     positioned just above the track — gets clipped no matter what
+     overflow-y itself says. padding-top reserves real room inside the
+     box for the tooltip instead of relying on it overflowing outside. */
+  .rpt-class-chart-scroll {
+    flex: 1;
+    flex-direction: row;
+    min-width: 0;
+    max-height: none;
+    gap: var(--space-md);
+    overflow-x: auto;
+    overflow-y: auto;
+    padding-top: 36px;
+    padding-bottom: 0.5rem;
+    padding-right: 0;
+  }
+
+  /* Reset back from mobile's grid to a flex column — desktop stacks
+     track/label/yoy vertically per class via the order values below. */
+  .rpt-class-bar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
+    width: 84px;
+  }
+
+  .rpt-class-bar-label {
+    flex: none;
+    text-align: center;
+    order: 2;
+  }
+
+  /* Back to a tall, narrow, upright track — the bar below grows in
+     height instead of width at this size. overflow reset to visible
+     (mobile sets hidden to clip the horizontal bar's rounded pill ends)
+     so the hover tooltip, which sits just above the track, isn't clipped. */
+  .rpt-class-bar-track {
+    width: 44px;
+    height: 180px;
+    align-items: flex-end;
+    border-radius: 6px;
+    overflow: visible;
+    order: 1;
+  }
+
+  .rpt-class-bar {
+    width: 100%;
+    height: var(--bar-fill, 0%);
+    border-radius: 6px 6px 0 0;
+  }
+
+  .rpt-class-bar-amount {
+    display: none;
+  }
+
+  .rpt-class-bar-tooltip {
+    display: block;
+  }
+
+  .rpt-class-bar-track:hover .rpt-class-bar-tooltip,
+  .rpt-class-bar-track:focus-within .rpt-class-bar-tooltip {
+    opacity: 1;
+  }
+
+  .rpt-class-bar-yoy {
+    order: 3;
+  }
+
+  /* Desktop always shows all 10 classes via horizontal scroll — the
+     mobile 3-then-expand truncation and its button don't apply here. */
+  .rpt-class-chart-scroll .rpt-class-bar-item:nth-child(n + 4) {
+    display: flex;
+  }
+
+  .rpt-chart-expand-btn {
+    display: none;
+  }
+
+  /* Top Products: desktop always shows all 10 rows too — same
+     mobile-3-then-expand pattern, same shared .rpt-chart-expand-btn
+     hide rule above. */
+  .rpt-top-products-list .rpt-top-product-item:nth-child(n + 4) {
+    display: flex;
+  }
+}
+
+/* --------------------------------------------------------------------
+   TOP PRODUCTS CHART
+   A simple ranked list (not bars) — placeholder icon, description,
+   manufacturer/product #, and the total (toggle $ / cases). Mobile
+   shows the first 3 (already sorted highest-first); "See more/See
+   less" reveals the rest, reusing the same .rpt-chart-expand-btn
+   style and hide-on-desktop rule as Spend by Class above.
+   -------------------------------------------------------------------- */
+.rpt-top-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.rpt-top-product-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rpt-top-product-item:last-child {
+  border-bottom: none;
+}
+
+.rpt-top-products-list .rpt-top-product-item:nth-child(n + 4) {
+  display: none;
+}
+
+.rpt-top-products-list.is-expanded .rpt-top-product-item:nth-child(n + 4) {
+  display: flex;
+}
+
+.rpt-top-product-rank {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rpt-top-product-media {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+}
+
+.rpt-top-product-media svg {
+  width: 22px;
+  height: 22px;
+}
+
+.rpt-top-product-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.rpt-top-product-desc {
+  font-weight: 600;
+  font-size: 0.92rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rpt-top-product-meta {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rpt-top-product-value {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: right;
+  white-space: nowrap;
+}
