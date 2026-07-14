@@ -15,12 +15,12 @@
 
 /* --------------------------------------------------------------------------
    PROCESS DIAGRAM
-   Mobile-first: a vertical stack of 3 steps with connectors between them.
-   At 768px+ it becomes a horizontal row. The Receive -> Sell connector is
-   colored and carries a small icon to mark it as the old bottleneck; the
-   actual explanation is a standalone note below the whole diagram
-   (.inv-diagram-bottleneck-note) rather than crammed into the connector
-   itself, so the 3 steps keep even, unobstructed spacing.
+   Mobile-first: a vertical stack of 3 steps, horizontal row at 768px+. The
+   numbered badges (1/2/3) already make the order obvious, so there's no
+   connecting arrow between steps — just the Receive -> Sell gap carries a
+   small clock icon marking the old bottleneck; the actual explanation is a
+   standalone note below the whole diagram (.inv-diagram-bottleneck-note)
+   rather than crammed in between the steps.
    -------------------------------------------------------------------------- */
 .inv-diagram {
   display: flex;
@@ -83,50 +83,20 @@
   color: var(--color-text-secondary);
 }
 
-/* Connector between two steps. Mobile: a short vertical arrow. */
+/* The gap between Receive and Sell — just a small marker icon (no line,
+   no arrow) flagging the old bottleneck. Uses the site's own accent blue
+   instead of a yellow/orange warning color, so it reads as "worth
+   noticing" rather than "something's wrong". */
 .inv-diagram-connector {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0 var(--space-sm);
-}
-
-.inv-diagram-arrow {
-  display: block;
-  width: 2px;
-  height: 28px;
-  background: var(--color-border);
-  position: relative;
-}
-
-.inv-diagram-arrow::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -1px;
-  transform: translateX(-50%);
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 7px solid var(--color-border);
-}
-
-/* The highlighted bottleneck connector — warm/warning color instead of
-   the plain grey used everywhere else, plus a small icon marking it as
-   different. The actual explanation lives below the whole diagram now
-   (.inv-diagram-bottleneck-note), so the diagram row itself stays light
-   and evenly spaced instead of one connector ballooning out. */
-.inv-diagram-connector-blocker .inv-diagram-arrow {
-  background: #d97706;
-}
-
-.inv-diagram-connector-blocker .inv-diagram-arrow::after {
-  border-top-color: #d97706;
+  justify-content: center;
+  padding: 0 var(--space-xs);
 }
 
 .inv-diagram-connector-icon {
   flex-shrink: 0;
-  color: #d97706;
+  color: var(--color-accent);
 }
 
 .inv-diagram-connector-icon svg {
@@ -134,22 +104,23 @@
   height: 18px;
 }
 
-/* Standalone explanation block, same amber treatment as before, now
-   sitting below the full diagram instead of squeezed inside it. */
+/* Standalone explanation block, same accent-blue treatment as the
+   connector above, now sitting below the full diagram instead of
+   squeezed inside it. */
 .inv-diagram-bottleneck-note {
   display: flex;
   align-items: flex-start;
   gap: 0.6rem;
   margin-top: var(--space-sm);
   padding: 0.75rem 1rem;
-  background: #fffaf0;
-  border: 1px solid #f2c94c;
+  background: rgba(47, 111, 237, 0.06);
+  border: 1px solid rgba(47, 111, 237, 0.25);
   border-radius: var(--radius);
 }
 
 .inv-diagram-blocker-icon {
   flex-shrink: 0;
-  color: #d97706;
+  color: var(--color-accent);
   margin-top: 0.1rem;
 }
 
@@ -161,12 +132,12 @@
 .inv-diagram-bottleneck-note p {
   margin: 0;
   font-size: 0.85rem;
-  color: #7c4a03;
+  color: var(--color-text-secondary);
   line-height: 1.5;
 }
 
 .inv-diagram-bottleneck-note strong {
-  color: #7c4a03;
+  color: var(--color-accent-hover);
 }
 
 @media (min-width: 768px) {
@@ -178,43 +149,7 @@
   }
 
   .inv-diagram-connector {
-    flex-direction: row;
-    padding-top: 30px; /* roughly aligns with the icon row, not the badge/text */
-  }
-
-  .inv-diagram-arrow {
-    width: 100%;
-    min-width: 32px;
-    height: 2px;
-  }
-
-  .inv-diagram-arrow::after {
-    left: auto;
-    right: -1px;
-    bottom: 50%;
-    transform: translateY(50%);
-    border-left: 7px solid var(--color-border);
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-right: none;
-  }
-
-  .inv-diagram-connector-blocker .inv-diagram-arrow::after {
-    border-left-color: #d97706;
-  }
-
-  /* This one connector stacks its icon above the arrow instead of
-     going full-row, so the icon reads as a marker on the line rather
-     than another column competing with the steps for space. */
-  .inv-diagram-connector-blocker {
-    flex-direction: column;
-    gap: 0.3rem;
-    padding-top: 22px;
-  }
-
-  .inv-diagram-connector-blocker .inv-diagram-arrow {
-    width: 40px;
-    min-width: 40px;
+    padding-top: 22px; /* roughly aligns with the icon row, not the badge/text */
   }
 }
 
