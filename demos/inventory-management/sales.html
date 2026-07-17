@@ -90,7 +90,7 @@
             <li><a href="../../index.html" data-i18n="nav.home">Home</a></li>
             <li><a href="../index.html" data-i18n="nav.demos">Real Demos</a></li>
             <li><a href="index.html" data-i18n="demos.inventory.title">Inventory and Order Management System</a></li>
-            <li aria-current="page">Sales</li>
+            <li aria-current="page" data-i18n="inventory.sales.hub.heading">Sales</li>
           </ol>
         </nav>
 
@@ -98,38 +98,38 @@
         <div id="hubView">
           <div class="inv-hub-header-row">
             <div>
-              <h1>Sales</h1>
+              <h1 data-i18n="inventory.sales.hub.heading">Sales</h1>
               <p class="inv-hub-date" id="hubDateLabel">Today</p>
             </div>
             <div class="inv-hub-header-actions">
               <label class="inv-admin-toggle">
                 <input type="checkbox" id="adminToggle" />
-                <span>View as admin</span>
+                <span data-i18n="inventory.common.viewAsAdmin">View as admin</span>
               </label>
-              <button type="button" class="btn" id="newOfferBtn">+ New offer</button>
+              <button type="button" class="btn" id="newOfferBtn" data-i18n="inventory.sales.hub.newOfferBtn">+ New offer</button>
             </div>
           </div>
 
           <div class="inv-hub-heading-row">
-            <h2>Open offers</h2>
+            <h2 data-i18n="inventory.sales.hub.openOffersHeading">Open offers</h2>
           </div>
           <div id="openOffersList" class="inv-reception-list"></div>
-          <p class="inv-empty-note" id="openOffersEmptyNote" hidden>No open offers yet today.</p>
+          <p class="inv-empty-note" id="openOffersEmptyNote" hidden data-i18n="inventory.sales.hub.openOffersEmpty">No open offers yet today.</p>
 
           <div class="inv-hub-heading-row">
-            <h2>Completed offers</h2>
+            <h2 data-i18n="inventory.sales.hub.completedOffersHeading">Completed offers</h2>
           </div>
           <div id="completedOffersList" class="inv-reception-list"></div>
-          <p class="inv-empty-note" id="completedOffersEmptyNote" hidden>No completed offers yet today.</p>
+          <p class="inv-empty-note" id="completedOffersEmptyNote" hidden data-i18n="inventory.sales.hub.completedOffersEmpty">No completed offers yet today.</p>
 
           <p style="margin-top: var(--space-md);">
-            <a href="index.html" class="demo-back-link">&larr; Back to Inventory and Order Management</a>
+            <a href="index.html" class="demo-back-link" data-i18n="inventory.common.backToHub">&larr; Back to Inventory and Order Management</a>
           </p>
         </div>
 
         <!-- ====================== DETAIL VIEW ====================== -->
         <div id="detailView" hidden>
-          <button type="button" class="demo-back-link inv-detail-back-btn" id="detailBackBtn">&larr; Back to today's offers</button>
+          <button type="button" class="demo-back-link inv-detail-back-btn" id="detailBackBtn" data-i18n="inventory.sales.detail.backBtn">&larr; Back to today's offers</button>
 
           <div class="inv-detail-header">
             <div>
@@ -140,30 +140,30 @@
           </div>
 
           <div class="inv-hub-heading-row">
-            <h2>Products</h2>
-            <button type="button" class="btn-outline" id="addProductBtn">+ Add product</button>
+            <h2 data-i18n="inventory.common.products">Products</h2>
+            <button type="button" class="btn-outline" id="addProductBtn" data-i18n="inventory.common.addProductBtn">+ Add product</button>
           </div>
           <div id="productList" class="inv-product-list"></div>
-          <p class="inv-empty-note" id="productEmptyNote" hidden>No products added yet &mdash; add at least one to continue.</p>
+          <p class="inv-empty-note" id="productEmptyNote" hidden data-i18n="inventory.common.productEmptyNote">No products added yet &mdash; add at least one to continue.</p>
 
           <div class="inv-detail-footer">
-            <button type="button" class="btn-outline" id="saveOrderBtn" disabled>Save order</button>
-            <button type="button" class="btn" id="completeOrderBtn" hidden>Complete order</button>
-            <p class="inv-detail-footer-hint" id="saveOrderHint">Add at least one product and a price per kilogram for each, then save to continue.</p>
+            <button type="button" class="btn-outline" id="saveOrderBtn" disabled data-i18n="inventory.sales.detail.saveOrderBtn">Save order</button>
+            <button type="button" class="btn" id="completeOrderBtn" hidden data-i18n="inventory.sales.detail.completeOrderBtn">Complete order</button>
+            <p class="inv-detail-footer-hint" id="saveOrderHint" data-i18n="inventory.sales.detail.saveOrderHintDefault">Add at least one product and a price per kilogram for each, then save to continue.</p>
           </div>
 
           <div id="completedSummary" class="inv-final-summary" hidden>
-            <h3>Order summary</h3>
+            <h3 data-i18n="inventory.sales.detail.orderSummaryHeading">Order summary</h3>
             <dl>
-              <dt>Total utilidad</dt>
+              <dt data-i18n="inventory.sales.detail.totalUtilidadLabel">Total utilidad</dt>
               <dd id="totalUtilidadValue">$0.00</dd>
             </dl>
             <div class="inv-sales-completed-actions">
-              <button type="button" class="btn-outline" id="downloadCsvBtn">Download as CSV</button>
-              <button type="button" class="btn-outline" id="sendEmailBtn">Send by email</button>
+              <button type="button" class="btn-outline" id="downloadCsvBtn" data-i18n="inventory.sales.detail.downloadCsvBtn">Download as CSV</button>
+              <button type="button" class="btn-outline" id="sendEmailBtn" data-i18n="inventory.sales.detail.sendEmailBtn">Send by email</button>
             </div>
             <p class="inv-admin-note" id="sentNote" hidden></p>
-            <p class="inv-admin-note" id="editCompletedNote" hidden>
+            <p class="inv-admin-note" id="editCompletedNote" hidden data-i18n="inventory.sales.detail.editCompletedNote">
               Viewing as admin &mdash; you can still adjust prices and costs on this completed offer. Confirmed kilograms stay locked.
             </p>
           </div>
@@ -177,87 +177,87 @@
   <div class="inv-modal-backdrop" id="modalBackdrop"></div>
 
   <!-- New Offer -->
-  <div class="inv-modal" id="newOfferModal" role="dialog" aria-label="New offer">
+  <div class="inv-modal" id="newOfferModal" role="dialog" aria-label="New offer" data-i18n-aria="inventory.sales.modal.newOffer.title">
     <div class="inv-modal-header">
-      <h3>New offer</h3>
-      <button type="button" class="inv-modal-close" id="newOfferCloseBtn" aria-label="Close">&times;</button>
+      <h3 data-i18n="inventory.sales.modal.newOffer.title">New offer</h3>
+      <button type="button" class="inv-modal-close" id="newOfferCloseBtn" aria-label="Close" data-i18n-aria="inventory.common.closeAriaLabel">&times;</button>
     </div>
     <div class="inv-modal-body">
       <label class="inv-field">
-        <span class="inv-field-label">Salesperson *</span>
+        <span class="inv-field-label" data-i18n="inventory.sales.modal.newOffer.salespersonLabel">Salesperson *</span>
         <select id="salespersonSelect"><option value="">Select a salesperson…</option></select>
       </label>
-      <p class="inv-form-error" id="newOfferError" hidden>Please select a salesperson.</p>
+      <p class="inv-form-error" id="newOfferError" hidden data-i18n="inventory.sales.modal.newOffer.errorMsg">Please select a salesperson.</p>
     </div>
     <div class="inv-modal-actions">
-      <button type="button" class="btn-outline" id="newOfferCancelBtn">Cancel</button>
-      <button type="button" class="btn" id="newOfferCreateBtn">Create</button>
+      <button type="button" class="btn-outline" id="newOfferCancelBtn" data-i18n="inventory.common.cancelBtn">Cancel</button>
+      <button type="button" class="btn" id="newOfferCreateBtn" data-i18n="inventory.common.createBtn">Create</button>
     </div>
   </div>
 
   <!-- Add Product -->
-  <div class="inv-modal" id="addProductModal" role="dialog" aria-label="Add product">
+  <div class="inv-modal" id="addProductModal" role="dialog" aria-label="Add product" data-i18n-aria="inventory.common.addProductModalTitle">
     <div class="inv-modal-header">
-      <h3>Add product</h3>
-      <button type="button" class="inv-modal-close" id="addProductCloseBtn" aria-label="Close">&times;</button>
+      <h3 data-i18n="inventory.common.addProductModalTitle">Add product</h3>
+      <button type="button" class="inv-modal-close" id="addProductCloseBtn" aria-label="Close" data-i18n-aria="inventory.common.closeAriaLabel">&times;</button>
     </div>
     <div class="inv-modal-body">
-      <p class="inv-field-hint">Only products still within their shelf life &mdash; and not already fully claimed by another completed offer &mdash; show up here. The full available amount is added automatically.</p>
+      <p class="inv-field-hint" data-i18n="inventory.sales.modal.addProduct.hint">Only products still within their shelf life &mdash; and not already fully claimed by another completed offer &mdash; show up here. The full available amount is added automatically.</p>
       <label class="inv-field">
-        <span class="inv-field-label">Available product *</span>
+        <span class="inv-field-label" data-i18n="inventory.sales.modal.addProduct.availableProductLabel">Available product *</span>
         <select id="availableProductSelect"><option value="">Select a product…</option></select>
       </label>
-      <p class="inv-empty-note-inline" id="addProductEmptyNote" hidden>Nothing available to sell right now &mdash; finish a reception first.</p>
-      <p class="inv-form-error" id="addProductError" hidden>Please select a product.</p>
+      <p class="inv-empty-note-inline" id="addProductEmptyNote" hidden data-i18n="inventory.sales.modal.addProduct.emptyNote">Nothing available to sell right now &mdash; finish a reception first.</p>
+      <p class="inv-form-error" id="addProductError" hidden data-i18n="inventory.sales.modal.addProduct.errorMsg">Please select a product.</p>
     </div>
     <div class="inv-modal-actions">
-      <button type="button" class="btn-outline" id="addProductCancelBtn">Cancel</button>
-      <button type="button" class="btn" id="addProductSaveBtn">Add product</button>
+      <button type="button" class="btn-outline" id="addProductCancelBtn" data-i18n="inventory.common.cancelBtn">Cancel</button>
+      <button type="button" class="btn" id="addProductSaveBtn" data-i18n="inventory.common.addProductSaveBtn">Add product</button>
     </div>
   </div>
 
   <!-- Complete Order -->
-  <div class="inv-modal" id="completeOrderModal" role="dialog" aria-label="Complete order">
+  <div class="inv-modal" id="completeOrderModal" role="dialog" aria-label="Complete order" data-i18n-aria="inventory.sales.modal.completeOrder.title">
     <div class="inv-modal-header">
-      <h3>Complete order</h3>
-      <button type="button" class="inv-modal-close" id="completeOrderCloseBtn" aria-label="Close">&times;</button>
+      <h3 data-i18n="inventory.sales.modal.completeOrder.title">Complete order</h3>
+      <button type="button" class="inv-modal-close" id="completeOrderCloseBtn" aria-label="Close" data-i18n-aria="inventory.common.closeAriaLabel">&times;</button>
     </div>
     <div class="inv-modal-body">
-      <p class="inv-field-hint">Confirm how much of each product the buyer is actually taking &mdash; the full available amount, or less. Whatever you confirm here is deducted from inventory for the rest of today&rsquo;s offers.</p>
+      <p class="inv-field-hint" data-i18n="inventory.sales.modal.completeOrder.hint">Confirm how much of each product the buyer is actually taking &mdash; the full available amount, or less. Whatever you confirm here is deducted from inventory for the rest of today&rsquo;s offers.</p>
       <div id="completeOrderList"></div>
-      <p class="inv-form-hint">Completing locks this offer &mdash; after this, only an admin can adjust prices or costs, and confirmed kilograms can&rsquo;t change.</p>
-      <p class="inv-form-error" id="completeOrderError" hidden>Please confirm a valid amount (greater than 0, up to what&rsquo;s available) for every product.</p>
+      <p class="inv-form-hint" data-i18n="inventory.sales.modal.completeOrder.lockHint">Completing locks this offer &mdash; after this, only an admin can adjust prices or costs, and confirmed kilograms can&rsquo;t change.</p>
+      <p class="inv-form-error" id="completeOrderError" hidden data-i18n="inventory.sales.modal.completeOrder.errorMsg">Please confirm a valid amount (greater than 0, up to what&rsquo;s available) for every product.</p>
     </div>
     <div class="inv-modal-actions">
-      <button type="button" class="btn-outline" id="completeOrderCancelBtn">Cancel</button>
-      <button type="button" class="btn" id="completeOrderConfirmBtn">Confirm &amp; complete</button>
+      <button type="button" class="btn-outline" id="completeOrderCancelBtn" data-i18n="inventory.common.cancelBtn">Cancel</button>
+      <button type="button" class="btn" id="completeOrderConfirmBtn" data-i18n="inventory.sales.modal.completeOrder.confirmBtn">Confirm &amp; complete</button>
     </div>
   </div>
 
   <!-- Send Email -->
-  <div class="inv-modal" id="sendEmailModal" role="dialog" aria-label="Send by email">
+  <div class="inv-modal" id="sendEmailModal" role="dialog" aria-label="Send by email" data-i18n-aria="inventory.sales.modal.sendEmail.title">
     <div class="inv-modal-header">
-      <h3>Send by email</h3>
-      <button type="button" class="inv-modal-close" id="sendEmailCloseBtn" aria-label="Close">&times;</button>
+      <h3 data-i18n="inventory.sales.modal.sendEmail.title">Send by email</h3>
+      <button type="button" class="inv-modal-close" id="sendEmailCloseBtn" aria-label="Close" data-i18n-aria="inventory.common.closeAriaLabel">&times;</button>
     </div>
     <div class="inv-modal-body">
-      <p class="inv-field-label">Possible clients</p>
+      <p class="inv-field-label" data-i18n="inventory.sales.modal.sendEmail.possibleClients">Possible clients</p>
       <div id="clientChecklist" class="inv-sales-client-checklist"></div>
 
       <div class="inv-field">
-        <span class="inv-field-label">Add another email</span>
+        <span class="inv-field-label" data-i18n="inventory.sales.modal.sendEmail.addAnotherLabel">Add another email</span>
         <div class="inv-sales-add-email-row">
           <input type="text" id="newEmailInput" placeholder="name@company.com" />
-          <button type="button" class="btn-outline" id="addEmailBtn">+ Add</button>
+          <button type="button" class="btn-outline" id="addEmailBtn" data-i18n="inventory.sales.modal.sendEmail.addBtn">+ Add</button>
         </div>
       </div>
       <ul class="inv-sales-added-emails" id="addedEmailsList"></ul>
 
-      <p class="inv-form-error" id="sendEmailError" hidden>Please select or add at least one recipient.</p>
+      <p class="inv-form-error" id="sendEmailError" hidden data-i18n="inventory.sales.modal.sendEmail.errorMsg">Please select or add at least one recipient.</p>
     </div>
     <div class="inv-modal-actions">
-      <button type="button" class="btn-outline" id="sendEmailCancelBtn">Cancel</button>
-      <button type="button" class="btn" id="sendEmailSendBtn">Send</button>
+      <button type="button" class="btn-outline" id="sendEmailCancelBtn" data-i18n="inventory.common.cancelBtn">Cancel</button>
+      <button type="button" class="btn" id="sendEmailSendBtn" data-i18n="inventory.sales.modal.sendEmail.sendBtn">Send</button>
     </div>
   </div>
 

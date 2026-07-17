@@ -1,0 +1,1414 @@
+/* ==========================================================================
+   event-wizard.css
+   Styles specific to the Resort Event Wizard demo. Everything here is
+   prefixed "wiz-" so it can't collide with site-wide class names. Shared
+   tokens (--color-accent, --font-heading, --radius, etc.) come from
+   ../../css/styles.css, loaded before this file — this demo uses the same
+   blue accent and typography as the rest of the site rather than its own
+   palette/fonts.
+   ========================================================================== */
+
+:root {
+  --wiz-accent-soft: rgba(47, 111, 237, 0.08);
+  --wiz-accent-softer: rgba(47, 111, 237, 0.05);
+}
+
+/* --------------------------------------------------------------------------
+   PROGRESS BAR — sticky under the site nav, visible the whole flow.
+   -------------------------------------------------------------------------- */
+.wiz-progress-bar {
+  position: sticky;
+  /* Sticks directly under the site nav (fixed 64px tall, see .nav-wrap)
+     rather than top: 0 — both are sticky, and stacking at the same
+     offset would let the nav's higher z-index paint over this bar once
+     scrolled, hiding the Save/Reset buttons entirely. */
+  top: 64px;
+  z-index: 90;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding-top: var(--space-xs);
+}
+
+.wiz-progress-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  padding-bottom: var(--space-xs);
+}
+
+.wiz-phases {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wiz-phase {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.wiz-phase-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.wiz-phase.is-active .wiz-phase-num {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.wiz-phase.is-active .wiz-phase-label {
+  color: var(--color-text);
+}
+
+.wiz-phase.is-done .wiz-phase-num {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: var(--color-on-accent);
+}
+
+.wiz-phase-label {
+  display: none;
+}
+
+@media (min-width: 560px) {
+  .wiz-phase-label {
+    display: inline;
+  }
+}
+
+.wiz-progress-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wiz-save-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-accent);
+  background: var(--wiz-accent-soft);
+  color: var(--color-accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wiz-save-toggle:hover,
+.wiz-save-toggle:focus-visible {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  box-shadow: 0 4px 14px rgba(47, 111, 237, 0.28);
+}
+
+.wiz-save-toggle svg {
+  width: 15px;
+  height: 15px;
+}
+
+.wiz-reset-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.wiz-reset-toggle:hover,
+.wiz-reset-toggle:focus-visible {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+.wiz-reset-toggle svg {
+  width: 15px;
+  height: 15px;
+}
+
+.wiz-btn-danger {
+  background: #c0392b;
+  border-color: #c0392b;
+}
+
+.wiz-btn-danger:hover,
+.wiz-btn-danger:focus-visible {
+  background: #a5301f;
+  border-color: #a5301f;
+}
+
+.wiz-phase-sublabel {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   HERO / INTRO
+   -------------------------------------------------------------------------- */
+.wiz-hero-section {
+  padding-bottom: var(--space-md);
+}
+
+.wiz-hero-section h1 {
+  font-size: 2.2rem;
+  margin: var(--space-sm) 0 var(--space-sm);
+}
+
+.wiz-hero-accent {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-top: 0.3rem;
+  letter-spacing: 0.01em;
+}
+
+.wiz-intro-text {
+  max-width: 70ch;
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   INTEGRATIONS STRIP — small callout for the PMS/CRM connection this
+   wizard would write into in a real deployment. Intentionally simple
+   (icon + label chips, no arrows/diagram) so it renders reliably.
+   -------------------------------------------------------------------------- */
+.wiz-integrations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.wiz-integration-chip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  max-width: 320px;
+}
+
+.wiz-integration-chip-icon {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--wiz-accent-soft);
+  color: var(--color-accent);
+}
+
+.wiz-integration-chip-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.wiz-integration-chip-body strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-text);
+}
+
+.wiz-integration-chip-body span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.1rem;
+}
+
+
+/* --------------------------------------------------------------------------
+   WIZARD SHELL
+   -------------------------------------------------------------------------- */
+.wiz-wizard-section {
+  padding-top: var(--space-md);
+}
+
+.wiz-wizard-container {
+  max-width: 760px;
+}
+
+.wiz-step {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+  scroll-margin-top: 96px; /* clears the sticky progress bar on scrollIntoView */
+}
+
+.wiz-step h2 {
+  font-size: 1.6rem;
+  margin: 0 0 0.3rem;
+}
+
+.wiz-step-sub {
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-md);
+}
+
+.wiz-field-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+@media (min-width: 560px) {
+  .wiz-field-row {
+    flex-direction: row;
+  }
+
+  .wiz-field-row .wiz-field {
+    flex: 1;
+  }
+}
+
+.wiz-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: var(--space-sm);
+}
+
+.wiz-field > span:first-child {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.wiz-field input[type="text"],
+.wiz-field input[type="email"],
+.wiz-field input[type="tel"] {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.wiz-field input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.wiz-field-country {
+  max-width: 110px;
+}
+
+.wiz-field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin: 0 0 0.4rem;
+}
+
+.wiz-field-hint {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  margin-top: 0.15rem;
+}
+
+.wiz-error {
+  color: #c0392b;
+  font-size: 0.85rem;
+  margin: 0.4rem 0;
+}
+
+.wiz-field-error {
+  display: block;
+  color: #c0392b;
+  font-size: 0.78rem;
+  margin-top: 0.25rem;
+}
+
+.wiz-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  margin: var(--space-sm) 0;
+}
+
+.wiz-checkbox-row input {
+  margin-top: 0.2rem;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.wiz-link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-accent);
+  text-decoration: underline;
+  font: inherit;
+  cursor: pointer;
+}
+
+.wiz-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.wiz-actions-end {
+  justify-content: flex-end;
+}
+
+.wiz-actions-start {
+  justify-content: flex-start;
+}
+
+.wiz-actions-center {
+  justify-content: center;
+}
+
+/* --------------------------------------------------------------------------
+   CALENDAR
+   -------------------------------------------------------------------------- */
+.wiz-calendar {
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+
+.wiz-calendar-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.wiz-calendar-month {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-text);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.wiz-calendar-month:hover,
+.wiz-calendar-month:focus-visible {
+  border-color: var(--color-border);
+  color: var(--color-accent);
+}
+
+.wiz-calendar-jump {
+  position: absolute;
+  top: calc(100% + 0.3rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+}
+
+.wiz-calendar-jump select {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.wiz-calendar-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.wiz-calendar-nav:hover,
+.wiz-calendar-nav:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.wiz-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.wiz-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.wiz-calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.wiz-calendar-day:hover:not(:disabled) {
+  background: var(--wiz-accent-soft);
+}
+
+.wiz-calendar-day:disabled {
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.wiz-calendar-day.is-unavailable {
+  background: var(--color-border);
+  color: var(--color-text-secondary);
+  text-decoration: line-through;
+  opacity: 1;
+}
+
+.wiz-calendar-day.is-empty {
+  visibility: hidden;
+}
+
+.wiz-calendar-day.is-selected {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: 700;
+}
+
+.wiz-calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.wiz-calendar-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.wiz-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.wiz-legend-dot.is-available {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+.wiz-legend-dot.is-unavailable {
+  background: var(--color-border);
+}
+
+.wiz-legend-dot.is-selected {
+  background: var(--color-accent);
+}
+
+.wiz-selected-date {
+  margin: var(--space-sm) 0 0;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* --------------------------------------------------------------------------
+   GUEST COUNTER
+   -------------------------------------------------------------------------- */
+.wiz-guest-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.wiz-guest-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: 1.3rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.wiz-guest-btn:hover,
+.wiz-guest-btn:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.wiz-guest-value-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 110px;
+}
+
+.wiz-guest-value {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.wiz-guest-value-label {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+}
+
+.wiz-guest-slider {
+  width: 100%;
+  accent-color: var(--color-accent);
+  margin-bottom: var(--space-sm);
+}
+
+.wiz-guest-counter-sm .wiz-guest-value {
+  font-size: 1.6rem;
+}
+
+.wiz-guests-1000-row {
+  margin-top: 0;
+}
+
+.wiz-overnight-block {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+/* --------------------------------------------------------------------------
+   EVENT TYPE CARDS
+   -------------------------------------------------------------------------- */
+.wiz-eventtype-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 560px) {
+  .wiz-eventtype-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.wiz-eventtype-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: var(--space-md);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  background: var(--color-surface);
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wiz-eventtype-card:hover,
+.wiz-eventtype-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+}
+
+.wiz-eventtype-card.is-selected {
+  border-color: var(--color-accent);
+  background: var(--wiz-accent-soft);
+}
+
+.wiz-eventtype-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.wiz-eventtype-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   VENUE CARDS (main event space + reception)
+   -------------------------------------------------------------------------- */
+.wiz-venue-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.wiz-venue-card {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  background: var(--color-surface);
+  font: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wiz-venue-card:hover,
+.wiz-venue-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+}
+
+.wiz-venue-card.is-selected {
+  border-color: var(--color-accent);
+}
+
+.wiz-venue-card-media {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.wiz-venue-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wiz-venue-card-icon {
+  width: 44px;
+  height: 44px;
+  color: rgba(15, 23, 42, 0.45);
+}
+
+.wiz-venue-card-body {
+  padding: var(--space-md);
+}
+
+.wiz-venue-card-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.wiz-venue-card-top h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+}
+
+.wiz-venue-card-cap {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.wiz-venue-card-tagline {
+  margin: 0.15rem 0 0.6rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.wiz-venue-card-features {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.wiz-venue-card-features li {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.wiz-venue-card-features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.wiz-venue-card-fee {
+  margin: 0.6rem 0 0;
+  font-weight: 700;
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+@media (min-width: 640px) {
+  .wiz-venue-card {
+    flex-direction: row;
+  }
+
+  .wiz-venue-card-media {
+    width: 160px;
+    height: auto;
+    flex-shrink: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   MOOD CARDS (weddings only)
+   -------------------------------------------------------------------------- */
+.wiz-mood-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 560px) {
+  .wiz-mood-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 860px) {
+  .wiz-mood-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.wiz-mood-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: var(--space-md);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wiz-mood-card:hover,
+.wiz-mood-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+}
+
+.wiz-mood-card.is-selected {
+  border-color: var(--color-accent);
+}
+
+.wiz-mood-swatch {
+  height: 44px;
+  border-radius: var(--radius);
+}
+
+.wiz-mood-card h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+}
+
+.wiz-mood-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   QUOTE + PACKAGE + FINAL TOTAL
+   -------------------------------------------------------------------------- */
+.wiz-quote-card {
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+
+.wiz-quote-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.92rem;
+}
+
+.wiz-quote-row:last-child {
+  border-bottom: none;
+}
+
+.wiz-quote-row-label {
+  color: var(--color-text-secondary);
+}
+
+.wiz-quote-row-value {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.wiz-quote-row.is-total {
+  font-size: 1.1rem;
+  padding-top: 0.75rem;
+}
+
+.wiz-quote-row.is-total .wiz-quote-row-label,
+.wiz-quote-row.is-total .wiz-quote-row-value {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.wiz-package-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 780px) {
+  .wiz-package-list {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+
+.wiz-package-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: var(--space-md);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  background: var(--color-surface);
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wiz-package-card:hover,
+.wiz-package-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+}
+
+.wiz-package-card.is-selected {
+  border-color: var(--color-accent);
+  background: var(--wiz-accent-soft);
+}
+
+.wiz-package-card h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--color-text);
+}
+
+.wiz-package-rate {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.wiz-package-cost {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+.wiz-package-section-label {
+  margin: 0.3rem 0 0.1rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+}
+
+.wiz-package-card ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.wiz-package-card ul li {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.wiz-package-card ul li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.wiz-final-total-card {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: var(--wiz-accent-soft);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.wiz-final-total-label {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.wiz-final-total-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* --------------------------------------------------------------------------
+   TERMS
+   -------------------------------------------------------------------------- */
+.wiz-terms-card {
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.wiz-terms-card ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--color-text-secondary);
+  font-size: 0.92rem;
+}
+
+/* --------------------------------------------------------------------------
+   CHECKOUT — order summary is a collapsed <details> card (native
+   disclosure, no JS needed to toggle) sitting above a single full-width
+   payment card, rather than the old side-by-side grid that could squeeze
+   the payment form narrower than its own content on mid-size screens.
+   -------------------------------------------------------------------------- */
+.wiz-order-summary {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-md);
+  overflow: hidden;
+}
+
+.wiz-order-summary-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.wiz-order-summary-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.wiz-order-summary-toggle::marker {
+  content: "";
+}
+
+.wiz-order-summary-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.wiz-order-summary-chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-secondary);
+  transition: transform 0.15s ease;
+}
+
+.wiz-order-summary[open] .wiz-order-summary-chevron {
+  transform: rotate(90deg);
+}
+
+.wiz-order-summary-total {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent);
+}
+
+.wiz-order-summary-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.4rem var(--space-sm);
+  margin: 0;
+  padding: 0 var(--space-md) var(--space-md);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-sm);
+}
+
+.wiz-order-summary-list dt {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.wiz-order-summary-list dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.wiz-order-summary-list dd.is-total {
+  color: var(--color-text);
+  font-size: 1.05rem;
+}
+
+.wiz-payment-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+
+.wiz-expiry-selects {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.wiz-expiry-selects select {
+  flex: 1;
+  min-width: 0;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.wiz-expiry-selects select:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.wiz-payment-card h3 {
+  margin: 0 0 0.2rem;
+}
+
+.wiz-save-required-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  margin: var(--space-sm) 0;
+  background: var(--wiz-accent-soft);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  color: var(--color-text);
+}
+
+.wiz-save-required-note svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: var(--color-accent);
+  margin-top: 0.05rem;
+}
+
+.wiz-pay-btn {
+  width: 100%;
+  margin-top: var(--space-sm);
+  font-size: 1rem;
+  padding: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   CONFIRMATION
+   -------------------------------------------------------------------------- */
+.wiz-confirmation-check {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--space-sm);
+  color: #1a7f37;
+}
+
+.wiz-step:has(.wiz-confirmation-check) h2 {
+  text-align: center;
+}
+
+.wiz-step:has(.wiz-confirmation-check) .wiz-step-sub {
+  text-align: center;
+  max-width: 46ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wiz-balance-card {
+  background: var(--wiz-accent-soft);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  text-align: center;
+  margin: var(--space-md) 0;
+}
+
+.wiz-balance-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0.1rem 0 var(--space-sm);
+}
+
+.wiz-countdown {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.wiz-countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 52px;
+}
+
+.wiz-countdown-unit span {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.wiz-countdown-unit label {
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.wiz-schedule-confirmation {
+  text-align: center;
+  margin-top: var(--space-sm);
+  color: #1a7f37;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   SAVE PROGRESS FLYOUT — slides in from the right, shared backdrop with
+   the site's modal system (reuses .inv-modal-backdrop's z-index tier for
+   privacy/schedule modals, this flyout sits just above it).
+   -------------------------------------------------------------------------- */
+.wiz-save-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  z-index: 310;
+}
+
+.wiz-save-backdrop.is-open {
+  display: block;
+}
+
+.wiz-save-flyout {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(380px, 100vw);
+  background: var(--color-surface);
+  box-shadow: -20px 0 40px rgba(15, 23, 42, 0.2);
+  z-index: 311;
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  overflow-y: auto;
+}
+
+.wiz-save-flyout.is-open {
+  transform: translateX(0);
+}
+
+.wiz-save-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.wiz-save-header h3 {
+  margin: 0;
+}
+
+.wiz-save-body {
+  padding: var(--space-md);
+}
+
+.wiz-save-body p {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.wiz-save-flyout-required-note {
+  padding: 0.65rem 0.85rem;
+  margin: 0 0 var(--space-sm);
+  background: var(--wiz-accent-soft);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text) !important;
+}
+
+.wiz-or {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  margin: 0.3rem 0;
+}
+
+.wiz-save-confirmation {
+  margin-top: var(--space-sm);
+  color: #1a7f37;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   SCHEDULE-CALL SLOTS
+   -------------------------------------------------------------------------- */
+.wiz-schedule-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.wiz-schedule-slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.wiz-schedule-slot:hover,
+.wiz-schedule-slot:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.wiz-schedule-slot.is-selected {
+  border-color: var(--color-accent);
+  background: var(--wiz-accent-soft);
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE — step padding tightens on small screens
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .wiz-step {
+    padding: var(--space-md);
+  }
+
+  .wiz-hero-section h1 {
+    font-size: 1.7rem;
+  }
+
+  .wiz-step h2 {
+    font-size: 1.35rem;
+  }
+}

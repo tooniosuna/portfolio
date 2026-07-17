@@ -92,8 +92,8 @@
           </ol>
         </nav>
 
-        <h1>Inventory and Order Management System</h1>
-        <p class="inv-intro-text">
+        <h1 data-i18n="demos.inventory.title">Inventory and Order Management System</h1>
+        <p class="inv-intro-text" data-i18n="inventory.hub.intro">
           Fresh seafood from the Yucatán Peninsula was caught, processed, and
           often sold and flown to US buyers within hours &mdash; but the data
           behind it lived in a slow, manual ERP. As the business analyst, I
@@ -105,7 +105,7 @@
              Receive -> Sell -> Ship, with the Receive-to-Sell transition
              called out as the old bottleneck this project fixed: manual
              ERP entry ate the time margin that made or lost a sale. -->
-        <div class="inv-diagram" role="img" aria-label="Process diagram: Receive, then Sell, then Ship. The transition from Receive to Sell used to be a slow, manual bottleneck that cost sales.">
+        <div class="inv-diagram" role="img" aria-label="Process diagram: Receive, then Sell, then Ship. The transition from Receive to Sell used to be a slow, manual bottleneck that cost sales." data-i18n-aria="inventory.hub.diagram.ariaLabel">
           <div class="inv-diagram-step">
             <span class="inv-diagram-badge">1</span>
             <div class="inv-diagram-icon" aria-hidden="true">
@@ -116,8 +116,8 @@
                 <circle cx="34" cy="34" r="4" />
               </svg>
             </div>
-            <h3>Receive</h3>
-            <p>Fresh catch arrives, gets classified by species and size, and is stored fast.</p>
+            <h3 data-i18n="inventory.hub.diagram.step1.title">Receive</h3>
+            <p data-i18n="inventory.hub.diagram.step1.desc">Fresh catch arrives, gets classified by species and size, and is stored fast.</p>
           </div>
 
           <div class="inv-diagram-connector">
@@ -139,8 +139,8 @@
                 <path d="M14 20h26l-3 12H17" />
               </svg>
             </div>
-            <h3>Sell</h3>
-            <p>Sales sees what&rsquo;s really available and books the order on the spot.</p>
+            <h3 data-i18n="inventory.hub.diagram.step2.title">Sell</h3>
+            <p data-i18n="inventory.hub.diagram.step2.desc">Sales sees what&rsquo;s really available and books the order on the spot.</p>
           </div>
 
           <div class="inv-diagram-step">
@@ -152,8 +152,8 @@
                 <path d="M20 28l-4 10-4-2" />
               </svg>
             </div>
-            <h3>Ship</h3>
-            <p>Order is packed and flown out the same day &mdash; sometimes the same hour.</p>
+            <h3 data-i18n="inventory.hub.diagram.step3.title">Ship</h3>
+            <p data-i18n="inventory.hub.diagram.step3.desc">Order is packed and flown out the same day &mdash; sometimes the same hour.</p>
           </div>
         </div>
 
@@ -164,11 +164,24 @@
               <path d="M12 7v6l4 2" />
             </svg>
           </span>
-          <p><strong>The old bottleneck:</strong> product sat waiting while someone hand-keyed it into a slow ERP &mdash; hours that cost real, time-sensitive sales.</p>
+          <p><strong data-i18n="inventory.hub.bottleneck.label">The old bottleneck:</strong> <span data-i18n="inventory.hub.bottleneck.text">product sat waiting while someone hand-keyed it into a slow ERP &mdash; hours that cost real, time-sensitive sales.</span></p>
+        </div>
+
+        <div class="demo-quicktour">
+          <p class="demo-quicktour-heading">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 6 1.5 1.5L7 5" /><path d="M10 6h11" /><path d="m3 12 1.5 1.5L7 11" /><path d="M10 12h11" /><path d="m3 18 1.5 1.5L7 16" /><path d="M10 18h11" /></svg>
+            <strong data-i18n="inventory.quickTour.heading">Quick tour &mdash; the happy path</strong>
+          </p>
+          <ul class="demo-quicktour-list">
+            <li class="demo-quicktour-item"><span class="demo-quicktour-num">1</span><p data-i18n="inventory.quickTour.step1">Log a truck's intake in Reception &mdash; species, size, and quantity.</p></li>
+            <li class="demo-quicktour-item"><span class="demo-quicktour-num">2</span><p data-i18n="inventory.quickTour.step2">Check real, live inventory before building a Sales order.</p></li>
+            <li class="demo-quicktour-item"><span class="demo-quicktour-num">3</span><p data-i18n="inventory.quickTour.step3">See cost and margin per order as you build it.</p></li>
+            <li class="demo-quicktour-item"><span class="demo-quicktour-num">4</span><p data-i18n="inventory.quickTour.step4">Everything updates instantly &mdash; no more waiting on a slow ERP.</p></li>
+          </ul>
         </div>
 
         <div class="inv-hub-heading-row">
-          <h2>2 modules</h2>
+          <h2 data-i18n="inventory.hub.modulesHeading">2 modules</h2>
         </div>
 
         <div class="inv-module-cards">
@@ -180,9 +193,9 @@
                 <path d="M24 25v16" />
               </svg>
             </span>
-            <h3>Reception of raw material</h3>
-            <p>Register each truck as it arrives &mdash; provider, products, quantities, and storage &mdash; the moment it pulls in.</p>
-            <span class="inv-module-card-cta">Open module &rarr;</span>
+            <h3 data-i18n="inventory.hub.card1.title">Reception of raw material</h3>
+            <p data-i18n="inventory.hub.card1.desc">Register each truck as it arrives &mdash; provider, products, quantities, and storage &mdash; the moment it pulls in.</p>
+            <span class="inv-module-card-cta" data-i18n="inventory.hub.card.cta">Open module &rarr;</span>
           </a>
 
           <a href="sales.html" class="card inv-module-card">
@@ -194,9 +207,9 @@
                 <path d="M14 20h26l-3 12H17" />
               </svg>
             </span>
-            <h3>Sales</h3>
-            <p>Check available inventory and put together a sales order in minutes, not hours.</p>
-            <span class="inv-module-card-cta">Open module &rarr;</span>
+            <h3 data-i18n="inventory.hub.card2.title">Sales</h3>
+            <p data-i18n="inventory.hub.card2.desc">Check available inventory and put together a sales order in minutes, not hours.</p>
+            <span class="inv-module-card-cta" data-i18n="inventory.hub.card.cta">Open module &rarr;</span>
           </a>
         </div>
 

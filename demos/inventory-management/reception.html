@@ -90,7 +90,7 @@
             <li><a href="../../index.html" data-i18n="nav.home">Home</a></li>
             <li><a href="../index.html" data-i18n="nav.demos">Real Demos</a></li>
             <li><a href="index.html" data-i18n="demos.inventory.title">Inventory and Order Management System</a></li>
-            <li aria-current="page">Reception of Raw Material</li>
+            <li aria-current="page" data-i18n="inventory.reception.hub.heading">Reception of Raw Material</li>
           </ol>
         </nav>
 
@@ -98,38 +98,38 @@
         <div id="hubView">
           <div class="inv-hub-header-row">
             <div>
-              <h1>Reception of Raw Material</h1>
+              <h1 data-i18n="inventory.reception.hub.heading">Reception of Raw Material</h1>
               <p class="inv-hub-date" id="hubDateLabel">Today</p>
             </div>
             <div class="inv-hub-header-actions">
               <label class="inv-admin-toggle">
                 <input type="checkbox" id="adminToggle" />
-                <span>View as admin</span>
+                <span data-i18n="inventory.common.viewAsAdmin">View as admin</span>
               </label>
-              <button type="button" class="btn" id="newReceptionBtn">+ New reception</button>
+              <button type="button" class="btn" id="newReceptionBtn" data-i18n="inventory.reception.hub.newReceptionBtn">+ New reception</button>
             </div>
           </div>
 
           <div class="inv-hub-heading-row">
-            <h2>In progress</h2>
+            <h2 data-i18n="inventory.common.inProgress">In progress</h2>
           </div>
           <div id="inProgressList" class="inv-reception-list"></div>
-          <p class="inv-empty-note" id="inProgressEmptyNote" hidden>No receptions in progress yet today.</p>
+          <p class="inv-empty-note" id="inProgressEmptyNote" hidden data-i18n="inventory.reception.hub.inProgressEmpty">No receptions in progress yet today.</p>
 
           <div class="inv-hub-heading-row">
-            <h2>Finished receptions</h2>
+            <h2 data-i18n="inventory.reception.hub.finishedHeading">Finished receptions</h2>
           </div>
           <div id="finishedList" class="inv-reception-list"></div>
-          <p class="inv-empty-note" id="finishedEmptyNote" hidden>No finished receptions yet today.</p>
+          <p class="inv-empty-note" id="finishedEmptyNote" hidden data-i18n="inventory.reception.hub.finishedEmpty">No finished receptions yet today.</p>
 
           <p style="margin-top: var(--space-md);">
-            <a href="index.html" class="demo-back-link">&larr; Back to Inventory and Order Management</a>
+            <a href="index.html" class="demo-back-link" data-i18n="inventory.common.backToHub">&larr; Back to Inventory and Order Management</a>
           </p>
         </div>
 
         <!-- ====================== DETAIL VIEW ====================== -->
         <div id="detailView" hidden>
-          <button type="button" class="demo-back-link inv-detail-back-btn" id="detailBackBtn">&larr; Back to today's receptions</button>
+          <button type="button" class="demo-back-link inv-detail-back-btn" id="detailBackBtn" data-i18n="inventory.reception.detail.backBtn">&larr; Back to today's receptions</button>
 
           <div class="inv-detail-header">
             <div>
@@ -140,26 +140,26 @@
           </div>
 
           <div class="inv-hub-heading-row">
-            <h2>Products</h2>
-            <button type="button" class="btn-outline" id="addProductBtn">+ Add product</button>
+            <h2 data-i18n="inventory.common.products">Products</h2>
+            <button type="button" class="btn-outline" id="addProductBtn" data-i18n="inventory.common.addProductBtn">+ Add product</button>
           </div>
           <div id="productList" class="inv-product-list"></div>
-          <p class="inv-empty-note" id="productEmptyNote" hidden>No products added yet &mdash; add at least one to continue.</p>
+          <p class="inv-empty-note" id="productEmptyNote" hidden data-i18n="inventory.common.productEmptyNote">No products added yet &mdash; add at least one to continue.</p>
 
           <div class="inv-detail-footer">
-            <button type="button" class="btn" id="addFinalDetailsBtn" disabled>Add final details</button>
-            <p class="inv-detail-footer-hint" id="finalDetailsHint">Add at least one product with at least one load first.</p>
+            <button type="button" class="btn" id="addFinalDetailsBtn" disabled data-i18n="inventory.reception.detail.addFinalDetailsBtn">Add final details</button>
+            <p class="inv-detail-footer-hint" id="finalDetailsHint" data-i18n="inventory.reception.detail.finalDetailsHint">Add at least one product with at least one load first.</p>
           </div>
 
           <div id="finalDetailsSummary" class="inv-final-summary" hidden>
-            <h3>Final details</h3>
+            <h3 data-i18n="inventory.reception.detail.finalDetailsHeading">Final details</h3>
             <dl>
-              <dt>Average temperature</dt>
+              <dt data-i18n="inventory.reception.detail.avgTempLabel">Average temperature</dt>
               <dd id="finalTempValue"></dd>
-              <dt>Shelf life</dt>
+              <dt data-i18n="inventory.reception.detail.shelfLifeLabel">Shelf life</dt>
               <dd id="finalShelfLifeValue"></dd>
             </dl>
-            <p class="inv-admin-note" id="editFinalDetailsNote" hidden>
+            <p class="inv-admin-note" id="editFinalDetailsNote" hidden data-i18n="inventory.reception.detail.editFinalDetailsNote">
               Viewing as admin &mdash; you can still add products and loads to this finished reception.
             </p>
           </div>
@@ -173,135 +173,135 @@
   <div class="inv-modal-backdrop" id="modalBackdrop"></div>
 
   <!-- New Reception -->
-  <div class="inv-modal" id="newReceptionModal" role="dialog" aria-label="New reception">
+  <div class="inv-modal" id="newReceptionModal" role="dialog" aria-label="New reception" data-i18n-aria="inventory.reception.modal.newReception.title">
     <div class="inv-modal-header">
-      <h3>New reception</h3>
-      <button type="button" class="inv-modal-close" id="newReceptionCloseBtn" aria-label="Close">&times;</button>
+      <h3 data-i18n="inventory.reception.modal.newReception.title">New reception</h3>
+      <button type="button" class="inv-modal-close" id="newReceptionCloseBtn" aria-label="Close" data-i18n-aria="inventory.common.closeAriaLabel">&times;</button>
     </div>
     <div class="inv-modal-body">
-      <p class="inv-field-label">Arrival lot</p>
+      <p class="inv-field-label" data-i18n="inventory.reception.modal.newReception.arrivalLotLabel">Arrival lot</p>
       <p class="inv-arrival-lot" id="newArrivalLotDisplay">LOT-XXXXXXXX</p>
 
       <label class="inv-field">
-        <span class="inv-field-label">Provider *</span>
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.newReception.providerLabel">Provider *</span>
         <select id="providerSelect"><option value="">Select a provider…</option></select>
       </label>
       <label class="inv-field">
-        <span class="inv-field-label">Port *</span>
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.newReception.portLabel">Port *</span>
         <select id="portSelect" disabled><option value="">Select a provider first…</option></select>
       </label>
       <label class="inv-field">
-        <span class="inv-field-label">Vessel *</span>
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.newReception.vesselLabel">Vessel *</span>
         <select id="vesselSelect" disabled><option value="">Select a provider first…</option></select>
       </label>
       <label class="inv-field">
-        <span class="inv-field-label">Delivery driver *</span>
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.newReception.driverLabel">Delivery driver *</span>
         <select id="driverSelect" disabled><option value="">Select a provider first…</option></select>
       </label>
       <label class="inv-field">
-        <span class="inv-field-label">Car plates *</span>
-        <input type="text" id="platesInput" placeholder="e.g. YUC-4521" />
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.newReception.platesLabel">Car plates *</span>
+        <input type="text" id="platesInput" placeholder="e.g. YUC-4521" data-i18n-placeholder="inventory.reception.modal.newReception.platesPlaceholder" />
       </label>
       <div class="inv-field">
-        <span class="inv-field-label">Start time</span>
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.newReception.startTimeLabel">Start time</span>
         <p class="inv-readonly-value" id="startTimeDisplay">Today, --:--</p>
       </div>
 
-      <p class="inv-form-error" id="newReceptionError" hidden>Please fill in every field.</p>
+      <p class="inv-form-error" id="newReceptionError" hidden data-i18n="inventory.reception.modal.newReception.errorMsg">Please fill in every field.</p>
     </div>
     <div class="inv-modal-actions">
-      <button type="button" class="btn-outline" id="newReceptionCancelBtn">Cancel</button>
-      <button type="button" class="btn" id="newReceptionCreateBtn">Create</button>
+      <button type="button" class="btn-outline" id="newReceptionCancelBtn" data-i18n="inventory.common.cancelBtn">Cancel</button>
+      <button type="button" class="btn" id="newReceptionCreateBtn" data-i18n="inventory.common.createBtn">Create</button>
     </div>
   </div>
 
   <!-- Add Product -->
-  <div class="inv-modal" id="addProductModal" role="dialog" aria-label="Add product">
+  <div class="inv-modal" id="addProductModal" role="dialog" aria-label="Add product" data-i18n-aria="inventory.common.addProductModalTitle">
     <div class="inv-modal-header">
-      <h3>Add product</h3>
-      <button type="button" class="inv-modal-close" id="addProductCloseBtn" aria-label="Close">&times;</button>
+      <h3 data-i18n="inventory.common.addProductModalTitle">Add product</h3>
+      <button type="button" class="inv-modal-close" id="addProductCloseBtn" aria-label="Close" data-i18n-aria="inventory.common.closeAriaLabel">&times;</button>
     </div>
     <div class="inv-modal-body">
-      <p class="inv-field-label">Product</p>
+      <p class="inv-field-label" data-i18n="inventory.reception.modal.addProduct.productLabel">Product</p>
       <p class="inv-product-preview" id="productPreviewLabel">Select a family to begin…</p>
 
       <label class="inv-field">
-        <span class="inv-field-label">Family *</span>
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.addProduct.familyLabel">Family *</span>
         <select id="familySelect"><option value="">Select a family…</option></select>
       </label>
       <label class="inv-field">
-        <span class="inv-field-label">Group *</span>
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.addProduct.groupLabel">Group *</span>
         <select id="groupSelect" disabled><option value="">Select a family first…</option></select>
       </label>
       <label class="inv-field">
-        <span class="inv-field-label">Species *</span>
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.addProduct.speciesLabel">Species *</span>
         <select id="speciesSelect" disabled><option value="">Select a group first…</option></select>
       </label>
       <label class="inv-field">
-        <span class="inv-field-label">Size *</span>
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.addProduct.sizeLabel">Size *</span>
         <select id="sizeSelect" disabled><option value="">Select a species first…</option></select>
       </label>
       <label class="inv-field">
-        <span class="inv-field-label">Quality *</span>
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.addProduct.qualityLabel">Quality *</span>
         <select id="qualitySelect" disabled><option value="">Select a size first…</option></select>
       </label>
 
-      <p class="inv-form-error" id="addProductError" hidden>Please complete every field.</p>
+      <p class="inv-form-error" id="addProductError" hidden data-i18n="inventory.reception.modal.addProduct.errorMsg">Please complete every field.</p>
     </div>
     <div class="inv-modal-actions">
-      <button type="button" class="btn-outline" id="addProductCancelBtn">Cancel</button>
-      <button type="button" class="btn" id="addProductSaveBtn">Add product</button>
+      <button type="button" class="btn-outline" id="addProductCancelBtn" data-i18n="inventory.common.cancelBtn">Cancel</button>
+      <button type="button" class="btn" id="addProductSaveBtn" data-i18n="inventory.common.addProductSaveBtn">Add product</button>
     </div>
   </div>
 
   <!-- Add Load -->
-  <div class="inv-modal" id="addLoadModal" role="dialog" aria-label="Add load">
+  <div class="inv-modal" id="addLoadModal" role="dialog" aria-label="Add load" data-i18n-aria="inventory.reception.modal.addLoad.title">
     <div class="inv-modal-header">
-      <h3>Add load</h3>
-      <button type="button" class="inv-modal-close" id="addLoadCloseBtn" aria-label="Close">&times;</button>
+      <h3 data-i18n="inventory.reception.modal.addLoad.title">Add load</h3>
+      <button type="button" class="inv-modal-close" id="addLoadCloseBtn" aria-label="Close" data-i18n-aria="inventory.common.closeAriaLabel">&times;</button>
     </div>
     <div class="inv-modal-body">
       <p class="inv-field-label" id="addLoadProductLabel">Product</p>
 
       <label class="inv-field">
-        <span class="inv-field-label">Kilograms *</span>
-        <input type="number" id="loadKgInput" min="0.1" step="0.1" placeholder="e.g. 120.5" />
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.addLoad.kgLabel">Kilograms *</span>
+        <input type="number" id="loadKgInput" min="0.1" step="0.1" placeholder="e.g. 120.5" data-i18n-placeholder="inventory.reception.modal.addLoad.kgPlaceholder" />
       </label>
       <label class="inv-field">
-        <span class="inv-field-label">Tote *</span>
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.addLoad.toteLabel">Tote *</span>
         <select id="toteSelect"><option value="">Select a tote…</option></select>
-        <span class="inv-field-hint">Only totes that are empty or already hold this exact product are shown, to avoid cross-contamination.</span>
+        <span class="inv-field-hint" data-i18n="inventory.reception.modal.addLoad.toteHint">Only totes that are empty or already hold this exact product are shown, to avoid cross-contamination.</span>
       </label>
 
-      <p class="inv-form-error" id="addLoadError" hidden>Please fill in every field.</p>
+      <p class="inv-form-error" id="addLoadError" hidden data-i18n="inventory.reception.modal.addLoad.errorMsg">Please fill in every field.</p>
     </div>
     <div class="inv-modal-actions">
-      <button type="button" class="btn-outline" id="addLoadCancelBtn">Cancel</button>
-      <button type="button" class="btn" id="addLoadSaveBtn">Add load</button>
+      <button type="button" class="btn-outline" id="addLoadCancelBtn" data-i18n="inventory.common.cancelBtn">Cancel</button>
+      <button type="button" class="btn" id="addLoadSaveBtn" data-i18n="inventory.reception.modal.addLoad.saveBtn">Add load</button>
     </div>
   </div>
 
   <!-- Final Details -->
-  <div class="inv-modal" id="finalDetailsModal" role="dialog" aria-label="Add final details">
+  <div class="inv-modal" id="finalDetailsModal" role="dialog" aria-label="Add final details" data-i18n-aria="inventory.reception.modal.finalDetails.title">
     <div class="inv-modal-header">
-      <h3>Add final details</h3>
-      <button type="button" class="inv-modal-close" id="finalDetailsCloseBtn" aria-label="Close">&times;</button>
+      <h3 data-i18n="inventory.reception.modal.finalDetails.title">Add final details</h3>
+      <button type="button" class="inv-modal-close" id="finalDetailsCloseBtn" aria-label="Close" data-i18n-aria="inventory.common.closeAriaLabel">&times;</button>
     </div>
     <div class="inv-modal-body">
       <label class="inv-field">
-        <span class="inv-field-label">Average temperature (°C) *</span>
-        <input type="number" id="avgTempInput" step="0.1" placeholder="e.g. 2.5" />
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.finalDetails.avgTempLabel">Average temperature (°C) *</span>
+        <input type="number" id="avgTempInput" step="0.1" placeholder="e.g. 2.5" data-i18n-placeholder="inventory.reception.modal.finalDetails.avgTempPlaceholder" />
       </label>
       <label class="inv-field">
-        <span class="inv-field-label">Shelf life (days) *</span>
-        <input type="number" id="shelfLifeInput" min="0" step="1" placeholder="e.g. 5" />
+        <span class="inv-field-label" data-i18n="inventory.reception.modal.finalDetails.shelfLifeLabel">Shelf life (days) *</span>
+        <input type="number" id="shelfLifeInput" min="0" step="1" placeholder="e.g. 5" data-i18n-placeholder="inventory.reception.modal.finalDetails.shelfLifePlaceholder" />
       </label>
-      <p class="inv-form-hint">Saving locks this reception &mdash; after this, only an admin can edit it.</p>
-      <p class="inv-form-error" id="finalDetailsError" hidden>Please fill in every field.</p>
+      <p class="inv-form-hint" data-i18n="inventory.reception.modal.finalDetails.lockHint">Saving locks this reception &mdash; after this, only an admin can edit it.</p>
+      <p class="inv-form-error" id="finalDetailsError" hidden data-i18n="inventory.reception.modal.finalDetails.errorMsg">Please fill in every field.</p>
     </div>
     <div class="inv-modal-actions">
-      <button type="button" class="btn-outline" id="finalDetailsCancelBtn">Cancel</button>
-      <button type="button" class="btn" id="finalDetailsSaveBtn">Save &amp; finish</button>
+      <button type="button" class="btn-outline" id="finalDetailsCancelBtn" data-i18n="inventory.common.cancelBtn">Cancel</button>
+      <button type="button" class="btn" id="finalDetailsSaveBtn" data-i18n="inventory.reception.modal.finalDetails.saveBtn">Save &amp; finish</button>
     </div>
   </div>
 

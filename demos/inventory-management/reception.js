@@ -51,12 +51,19 @@
     return new Date();
   }
 
+  // Locale for human-readable dates/times follows the active language;
+  // kilogram/currency figures stay in a fixed en-US number format on
+  // purpose (see formatKg below and inventory-data.js's formatCurrency).
+  function currentLocale() {
+    return window.i18n && window.i18n.getLang() === "es" ? "es-MX" : "en-US";
+  }
+
   function formatDate(d) {
-    return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+    return d.toLocaleDateString(currentLocale(), { weekday: "long", month: "long", day: "numeric", year: "numeric" });
   }
 
   function formatTime(d) {
-    return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+    return d.toLocaleTimeString(currentLocale(), { hour: "numeric", minute: "2-digit" });
   }
 
   function formatKg(kg) {
@@ -79,7 +86,7 @@
     var species = Data.findById(Data.SPECIES, product.speciesId);
     var size = Data.findById(Data.SIZES, product.sizeId);
     var quality = Data.findById(Data.QUALITIES, product.qualityId);
-    return species.name + " — " + size.name + " — " + quality.name;
+    return Data.speciesLabel(species) + " — " + Data.sizeLabel(size) + " — " + Data.qualityLabel(quality);
   }
 
   // ------------------------------------------------------------------------
@@ -177,7 +184,7 @@
   // HUB VIEW — today's receptions
   // ------------------------------------------------------------------------
   function renderHubDate() {
-    hubDateLabel.textContent = "Today — " + formatDate(today());
+    hubDateLabel.textContent = window.i18n.t("inventory.common.todayPrefix") + " — " + formatDate(today());
   }
 
   function renderReceptionCard(reception) {
@@ -197,7 +204,9 @@
 
     var badge = document.createElement("span");
     badge.className = "inv-status-badge " + (reception.status === "finished" ? "is-finished" : "is-progress");
-    badge.textContent = reception.status === "finished" ? "Finished" : "In progress";
+    badge.textContent = reception.status === "finished"
+      ? window.i18n.t("inventory.reception.status.finished")
+      : window.i18n.t("inventory.common.inProgress");
 
     top.appendChild(lot);
     top.appendChild(badge);
@@ -214,7 +223,7 @@
     var stats = document.createElement("p");
     stats.className = "inv-reception-card-stats";
     stats.textContent =
-      reception.products.length + " product" + (reception.products.length === 1 ? "" : "s") +
+      reception.products.length + " " + window.i18n.t(reception.products.length === 1 ? "inventory.common.productSingular" : "inventory.common.productPlural") +
       " · " + formatKg(totalKg);
 
     card.appendChild(top);
@@ -281,7 +290,7 @@
 
     var providerOpts = document.createElement("option");
     providerOpts.value = "";
-    providerOpts.textContent = "Select a provider…";
+    providerOpts.textContent = window.i18n.t("inventory.reception.modal.newReception.providerPlaceholder");
     providerSelect.innerHTML = "";
     providerSelect.appendChild(providerOpts);
     Data.PROVIDERS.forEach(function (p) {
@@ -291,16 +300,16 @@
       providerSelect.appendChild(el);
     });
 
-    populateSelect(portSelect, [], "Select a provider first…");
-    populateSelect(vesselSelect, [], "Select a provider first…");
-    populateSelect(driverSelect, [], "Select a provider first…");
+    populateSelect(portSelect, [], window.i18n.t("inventory.reception.modal.newReception.selectProviderFirst"));
+    populateSelect(vesselSelect, [], window.i18n.t("inventory.reception.modal.newReception.selectProviderFirst"));
+    populateSelect(driverSelect, [], window.i18n.t("inventory.reception.modal.newReception.selectProviderFirst"));
     portSelect.disabled = true;
     vesselSelect.disabled = true;
     driverSelect.disabled = true;
 
     platesInput.value = "";
     pendingStartTimestamp = today();
-    startTimeDisplay.textContent = "Today, " + formatTime(pendingStartTimestamp);
+    startTimeDisplay.textContent = window.i18n.t("inventory.common.todayPrefix") + ", " + formatTime(pendingStartTimestamp);
     newReceptionError.hidden = true;
   }
 
@@ -312,17 +321,17 @@
   providerSelect.addEventListener("change", function () {
     var provider = Data.findById(Data.PROVIDERS, providerSelect.value);
     if (!provider) {
-      populateSelect(portSelect, [], "Select a provider first…");
-      populateSelect(vesselSelect, [], "Select a provider first…");
-      populateSelect(driverSelect, [], "Select a provider first…");
+      populateSelect(portSelect, [], window.i18n.t("inventory.reception.modal.newReception.selectProviderFirst"));
+      populateSelect(vesselSelect, [], window.i18n.t("inventory.reception.modal.newReception.selectProviderFirst"));
+      populateSelect(driverSelect, [], window.i18n.t("inventory.reception.modal.newReception.selectProviderFirst"));
       portSelect.disabled = true;
       vesselSelect.disabled = true;
       driverSelect.disabled = true;
       return;
     }
-    populateSelect(portSelect, provider.ports, "Select a port…");
-    populateSelect(vesselSelect, provider.vessels, "Select a vessel…");
-    populateSelect(driverSelect, provider.drivers, "Select a driver…");
+    populateSelect(portSelect, provider.ports, window.i18n.t("inventory.reception.modal.newReception.portPlaceholder"));
+    populateSelect(vesselSelect, provider.vessels, window.i18n.t("inventory.reception.modal.newReception.vesselPlaceholder"));
+    populateSelect(driverSelect, provider.drivers, window.i18n.t("inventory.reception.modal.newReception.driverPlaceholder"));
     portSelect.disabled = false;
     vesselSelect.disabled = false;
     driverSelect.disabled = false;
@@ -410,7 +419,7 @@
     } else {
       var noLoads = document.createElement("p");
       noLoads.className = "inv-empty-note-inline";
-      noLoads.textContent = "No loads yet — add at least one.";
+      noLoads.textContent = window.i18n.t("inventory.reception.detail.noLoadsYet");
       row.appendChild(noLoads);
     }
 
@@ -418,7 +427,7 @@
       var addLoadRowBtn = document.createElement("button");
       addLoadRowBtn.type = "button";
       addLoadRowBtn.className = "btn-outline inv-add-load-btn";
-      addLoadRowBtn.textContent = "+ Add load";
+      addLoadRowBtn.textContent = window.i18n.t("inventory.reception.detail.addLoadBtn");
       addLoadRowBtn.addEventListener("click", function () {
         openAddLoadModal(product.id);
       });
@@ -438,11 +447,14 @@
     detailLotLabel.textContent = reception.arrivalLot;
     detailMetaLine.textContent =
       provider.name + " · " + reception.port + " · " + reception.vessel +
-      " · Driver: " + reception.driver + " · Plates: " + reception.plates +
-      " · Started " + formatTime(reception.startTimestamp);
+      " · " + window.i18n.t("inventory.reception.detail.driverLabel") + ": " + reception.driver +
+      " · " + window.i18n.t("inventory.reception.detail.platesLabel") + ": " + reception.plates +
+      " · " + window.i18n.t("inventory.reception.detail.startedLabel") + " " + formatTime(reception.startTimestamp);
 
     detailStatusBadge.className = "inv-status-badge " + (reception.status === "finished" ? "is-finished" : "is-progress");
-    detailStatusBadge.textContent = reception.status === "finished" ? "Finished" : "In progress";
+    detailStatusBadge.textContent = reception.status === "finished"
+      ? window.i18n.t("inventory.reception.status.finished")
+      : window.i18n.t("inventory.common.inProgress");
 
     productList.innerHTML = "";
     reception.products.forEach(function (product) {
@@ -458,7 +470,7 @@
       finalDetailsSummary.hidden = false;
       finalTempValue.textContent = reception.finalDetails.avgTemp.toFixed(1) + " °C";
       finalShelfLifeValue.textContent =
-        reception.finalDetails.shelfLifeDays + " day" + (reception.finalDetails.shelfLifeDays === 1 ? "" : "s");
+        reception.finalDetails.shelfLifeDays + " " + window.i18n.t(reception.finalDetails.shelfLifeDays === 1 ? "inventory.common.daySingular" : "inventory.common.dayPlural");
       editFinalDetailsNote.hidden = !isAdminMode;
     } else {
       finalDetailsSummary.hidden = true;
@@ -482,31 +494,31 @@
     var species = Data.findById(Data.SPECIES, speciesSelect.value);
     var size = Data.findById(Data.SIZES, sizeSelect.value);
     var quality = Data.findById(Data.QUALITIES, qualitySelect.value);
-    if (family) parts.push(family.name);
-    if (group) parts.push(group.name);
-    if (species) parts.push(species.name);
-    if (size) parts.push(size.name);
-    if (quality) parts.push(quality.name);
-    productPreviewLabel.textContent = parts.length > 0 ? parts.join(" → ") : "Select a family to begin…";
+    if (family) parts.push(Data.familyLabel(family));
+    if (group) parts.push(Data.groupLabel(group));
+    if (species) parts.push(Data.speciesLabel(species));
+    if (size) parts.push(Data.sizeLabel(size));
+    if (quality) parts.push(Data.qualityLabel(quality));
+    productPreviewLabel.textContent = parts.length > 0 ? parts.join(" → ") : window.i18n.t("inventory.reception.modal.addProduct.previewPlaceholder");
   }
 
   function resetAddProductForm() {
     var familyOpt = document.createElement("option");
     familyOpt.value = "";
-    familyOpt.textContent = "Select a family…";
+    familyOpt.textContent = window.i18n.t("inventory.reception.modal.addProduct.familyPlaceholder");
     familySelect.innerHTML = "";
     familySelect.appendChild(familyOpt);
     Data.FAMILIES.forEach(function (f) {
       var el = document.createElement("option");
       el.value = f.id;
-      el.textContent = f.name;
+      el.textContent = Data.familyLabel(f);
       familySelect.appendChild(el);
     });
 
-    populateSelect(groupSelect, [], "Select a family first…");
-    populateSelect(speciesSelect, [], "Select a group first…");
-    populateSelect(sizeSelect, [], "Select a species first…");
-    populateSelect(qualitySelect, [], "Select a size first…");
+    populateSelect(groupSelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectFamilyFirst"));
+    populateSelect(speciesSelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectGroupFirst"));
+    populateSelect(sizeSelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectSpeciesFirst"));
+    populateSelect(qualitySelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectSizeFirst"));
     groupSelect.disabled = true;
     speciesSelect.disabled = true;
     sizeSelect.disabled = true;
@@ -522,13 +534,13 @@
   function populateSizeAndQualitySelects() {
     var sizeOpt = document.createElement("option");
     sizeOpt.value = "";
-    sizeOpt.textContent = "Select a size…";
+    sizeOpt.textContent = window.i18n.t("inventory.reception.modal.addProduct.sizePlaceholder");
     sizeSelect.innerHTML = "";
     sizeSelect.appendChild(sizeOpt);
     Data.SIZES.forEach(function (s) {
       var el = document.createElement("option");
       el.value = s.id;
-      el.textContent = s.name + " (" + s.hint + ")";
+      el.textContent = Data.sizeLabel(s) + " (" + Data.sizeHintLabel(s) + ")";
       sizeSelect.appendChild(el);
     });
     sizeSelect.disabled = false;
@@ -537,13 +549,13 @@
   function populateQualitySelect() {
     var qualOpt = document.createElement("option");
     qualOpt.value = "";
-    qualOpt.textContent = "Select a quality…";
+    qualOpt.textContent = window.i18n.t("inventory.reception.modal.addProduct.qualityPlaceholder");
     qualitySelect.innerHTML = "";
     qualitySelect.appendChild(qualOpt);
     Data.QUALITIES.forEach(function (q) {
       var el = document.createElement("option");
       el.value = q.id;
-      el.textContent = q.name;
+      el.textContent = Data.qualityLabel(q);
       qualitySelect.appendChild(el);
     });
     qualitySelect.disabled = false;
@@ -556,15 +568,15 @@
 
   familySelect.addEventListener("change", function () {
     var family = Data.findById(Data.FAMILIES, familySelect.value);
-    populateSelect(speciesSelect, [], "Select a group first…");
-    populateSelect(sizeSelect, [], "Select a species first…");
-    populateSelect(qualitySelect, [], "Select a size first…");
+    populateSelect(speciesSelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectGroupFirst"));
+    populateSelect(sizeSelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectSpeciesFirst"));
+    populateSelect(qualitySelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectSizeFirst"));
     speciesSelect.disabled = true;
     sizeSelect.disabled = true;
     qualitySelect.disabled = true;
 
     if (!family) {
-      populateSelect(groupSelect, [], "Select a family first…");
+      populateSelect(groupSelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectFamilyFirst"));
       groupSelect.disabled = true;
       updateProductPreview();
       return;
@@ -572,13 +584,13 @@
 
     var groupOpt = document.createElement("option");
     groupOpt.value = "";
-    groupOpt.textContent = "Select a group…";
+    groupOpt.textContent = window.i18n.t("inventory.reception.modal.addProduct.groupPlaceholder");
     groupSelect.innerHTML = "";
     groupSelect.appendChild(groupOpt);
     Data.getGroupsForFamily(family.id).forEach(function (g) {
       var el = document.createElement("option");
       el.value = g.id;
-      el.textContent = g.name;
+      el.textContent = Data.groupLabel(g);
       groupSelect.appendChild(el);
     });
     groupSelect.disabled = false;
@@ -587,13 +599,13 @@
 
   groupSelect.addEventListener("change", function () {
     var group = Data.findById(Data.GROUPS, groupSelect.value);
-    populateSelect(sizeSelect, [], "Select a species first…");
-    populateSelect(qualitySelect, [], "Select a size first…");
+    populateSelect(sizeSelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectSpeciesFirst"));
+    populateSelect(qualitySelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectSizeFirst"));
     sizeSelect.disabled = true;
     qualitySelect.disabled = true;
 
     if (!group) {
-      populateSelect(speciesSelect, [], "Select a group first…");
+      populateSelect(speciesSelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectGroupFirst"));
       speciesSelect.disabled = true;
       updateProductPreview();
       return;
@@ -601,13 +613,13 @@
 
     var speciesOpt = document.createElement("option");
     speciesOpt.value = "";
-    speciesOpt.textContent = "Select a species…";
+    speciesOpt.textContent = window.i18n.t("inventory.reception.modal.addProduct.speciesPlaceholder");
     speciesSelect.innerHTML = "";
     speciesSelect.appendChild(speciesOpt);
     Data.getSpeciesForGroup(group.id).forEach(function (s) {
       var el = document.createElement("option");
       el.value = s.id;
-      el.textContent = s.name;
+      el.textContent = Data.speciesLabel(s);
       speciesSelect.appendChild(el);
     });
     speciesSelect.disabled = false;
@@ -615,10 +627,10 @@
   });
 
   speciesSelect.addEventListener("change", function () {
-    populateSelect(qualitySelect, [], "Select a size first…");
+    populateSelect(qualitySelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectSizeFirst"));
     qualitySelect.disabled = true;
     if (!speciesSelect.value) {
-      populateSelect(sizeSelect, [], "Select a species first…");
+      populateSelect(sizeSelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectSpeciesFirst"));
       sizeSelect.disabled = true;
       updateProductPreview();
       return;
@@ -629,7 +641,7 @@
 
   sizeSelect.addEventListener("change", function () {
     if (!sizeSelect.value) {
-      populateSelect(qualitySelect, [], "Select a size first…");
+      populateSelect(qualitySelect, [], window.i18n.t("inventory.reception.modal.addProduct.selectSizeFirst"));
       qualitySelect.disabled = true;
       updateProductPreview();
       return;
@@ -659,7 +671,7 @@
 
     if (!familyId || !groupId || !speciesId || !sizeId || !qualityId) {
       addProductError.hidden = false;
-      addProductError.textContent = "Please complete every field.";
+      addProductError.textContent = window.i18n.t("inventory.reception.modal.addProduct.errorMsg");
       return;
     }
 
@@ -668,7 +680,7 @@
     });
     if (alreadyExists) {
       addProductError.hidden = false;
-      addProductError.textContent = "This exact product is already on this reception — add a load to it instead.";
+      addProductError.textContent = window.i18n.t("inventory.reception.modal.addProduct.duplicateError");
       return;
     }
 
@@ -707,13 +719,13 @@
     var available = Data.getAvailableTotes(product.speciesId, product.sizeId, product.qualityId);
     var toteOpt = document.createElement("option");
     toteOpt.value = "";
-    toteOpt.textContent = "Select a tote…";
+    toteOpt.textContent = window.i18n.t("inventory.reception.modal.addLoad.totePlaceholder");
     toteSelect.innerHTML = "";
     toteSelect.appendChild(toteOpt);
     available.forEach(function (t) {
       var el = document.createElement("option");
       el.value = t.id;
-      el.textContent = t.label + (t.contents ? " (already holds this product)" : " (empty)");
+      el.textContent = t.label + (t.contents ? window.i18n.t("inventory.reception.modal.addLoad.toteHoldsProduct") : window.i18n.t("inventory.reception.modal.addLoad.toteEmpty"));
       toteSelect.appendChild(el);
     });
 
@@ -798,6 +810,32 @@
 
     closeModals();
     showHub();
+  });
+
+  // ------------------------------------------------------------------------
+  // LIVE LANGUAGE SWITCHING — re-render whatever's currently on screen so
+  // dynamic content (which isn't covered by data-i18n) updates immediately
+  // instead of waiting for a reload.
+  // ------------------------------------------------------------------------
+  window.addEventListener("langchange", function () {
+    renderHubDate();
+    if (!hubView.hidden) renderHubLists();
+    if (!detailView.hidden && currentReceptionId) renderDetail();
+
+    if (newReceptionModal.classList.contains("is-open")) {
+      if (providerSelect.options.length) {
+        providerSelect.options[0].textContent = window.i18n.t("inventory.reception.modal.newReception.providerPlaceholder");
+      }
+      var dependentPlaceholder = window.i18n.t("inventory.reception.modal.newReception.selectProviderFirst");
+      [portSelect, vesselSelect, driverSelect].forEach(function (sel) {
+        if (sel.disabled && sel.options.length) sel.options[0].textContent = dependentPlaceholder;
+      });
+      startTimeDisplay.textContent = window.i18n.t("inventory.common.todayPrefix") + ", " + formatTime(pendingStartTimestamp);
+    }
+
+    if (addProductModal.classList.contains("is-open")) {
+      updateProductPreview();
+    }
   });
 
   // ------------------------------------------------------------------------

@@ -59,12 +59,19 @@
     return Math.floor((later - earlier) / (1000 * 60 * 60 * 24));
   }
 
+  // Locale for human-readable dates/times follows the active language;
+  // kilogram/currency figures stay in a fixed en-US number format on
+  // purpose (see formatKg below and inventory-data.js's formatCurrency).
+  function currentLocale() {
+    return window.i18n && window.i18n.getLang() === "es" ? "es-MX" : "en-US";
+  }
+
   function formatDate(d) {
-    return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+    return d.toLocaleDateString(currentLocale(), { weekday: "long", month: "long", day: "numeric", year: "numeric" });
   }
 
   function formatTime(d) {
-    return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+    return d.toLocaleTimeString(currentLocale(), { hour: "numeric", minute: "2-digit" });
   }
 
   function formatKg(kg) {
@@ -75,7 +82,7 @@
     var species = Data.findById(Data.SPECIES, product.speciesId);
     var size = Data.findById(Data.SIZES, product.sizeId);
     var quality = Data.findById(Data.QUALITIES, product.qualityId);
-    return species.name + " — " + size.name + " — " + quality.name;
+    return Data.speciesLabel(species) + " — " + Data.sizeLabel(size) + " — " + Data.qualityLabel(quality);
   }
 
   function matchKey(speciesId, sizeId, qualityId) {
@@ -258,7 +265,7 @@
   // HUB VIEW — today's offers
   // ------------------------------------------------------------------------
   function renderHubDate() {
-    hubDateLabel.textContent = "Today — " + formatDate(today());
+    hubDateLabel.textContent = window.i18n.t("inventory.common.todayPrefix") + " — " + formatDate(today());
   }
 
   function renderOfferCard(offer) {
@@ -277,7 +284,9 @@
 
     var badge = document.createElement("span");
     badge.className = "inv-status-badge " + (offer.status === "completed" ? "is-finished" : "is-progress");
-    badge.textContent = offer.status === "completed" ? "Completed" : "In progress";
+    badge.textContent = offer.status === "completed"
+      ? window.i18n.t("inventory.sales.status.completed")
+      : window.i18n.t("inventory.common.inProgress");
 
     top.appendChild(num);
     top.appendChild(badge);
@@ -288,11 +297,11 @@
 
     var meta = document.createElement("p");
     meta.className = "inv-reception-card-meta";
-    meta.textContent = "Created " + formatTime(offer.createdAt);
+    meta.textContent = window.i18n.t("inventory.sales.hub.createdLabel") + " " + formatTime(offer.createdAt);
 
     var stats = document.createElement("p");
     stats.className = "inv-reception-card-stats";
-    stats.textContent = offer.products.length + " product" + (offer.products.length === 1 ? "" : "s");
+    stats.textContent = offer.products.length + " " + window.i18n.t(offer.products.length === 1 ? "inventory.common.productSingular" : "inventory.common.productPlural");
 
     card.appendChild(top);
     card.appendChild(salespersonLine);
@@ -342,7 +351,7 @@
     salespersonSelect.innerHTML = "";
     var placeholder = document.createElement("option");
     placeholder.value = "";
-    placeholder.textContent = "Select a salesperson…";
+    placeholder.textContent = window.i18n.t("inventory.sales.modal.newOffer.salespersonPlaceholder");
     salespersonSelect.appendChild(placeholder);
     Data.SALESPEOPLE.forEach(function (sp) {
       var el = document.createElement("option");
@@ -425,12 +434,12 @@
     saveOrderBtn.disabled = !ready;
     if (offer.savedAt) {
       completeOrderBtn.hidden = false;
-      saveOrderHint.textContent = "Saved — you can now complete the order.";
+      saveOrderHint.textContent = window.i18n.t("inventory.sales.detail.saveOrderHintSaved");
     } else {
       completeOrderBtn.hidden = true;
       saveOrderHint.textContent = ready
-        ? "Ready — click Save order to continue."
-        : "Add at least one product and a price per kilogram for each, then save to continue.";
+        ? window.i18n.t("inventory.sales.detail.saveOrderHintReady")
+        : window.i18n.t("inventory.sales.detail.saveOrderHintDefault");
     }
   }
 
@@ -457,7 +466,7 @@
 
     var qtyLabel = document.createElement("span");
     qtyLabel.className = "inv-product-row-total";
-    qtyLabel.textContent = (isCompleted ? "Confirmed: " : "Available now: ") + formatKg(qty);
+    qtyLabel.textContent = (isCompleted ? window.i18n.t("inventory.sales.detail.confirmedLabel") : window.i18n.t("inventory.sales.detail.availableNowLabel")) + formatKg(qty);
 
     head.appendChild(name);
     head.appendChild(qtyLabel);
@@ -474,15 +483,15 @@
 
       var label = document.createElement("span");
       label.className = "inv-field-label";
-      label.textContent = cat.label;
+      label.textContent = Data.costCategoryLabel(cat);
       field.appendChild(label);
 
       var select = document.createElement("select");
       select.disabled = !canEdit;
-      cat.options.forEach(function (opt) {
+      cat.options.forEach(function (opt, optIndex) {
         var el = document.createElement("option");
         el.value = opt.value;
-        el.textContent = opt.label + " (" + Data.formatCurrency(opt.value) + ")";
+        el.textContent = Data.costOptionLabel(cat, opt, optIndex) + " (" + Data.formatCurrency(opt.value) + ")";
         select.appendChild(el);
       });
       var currentValue = product.costs[cat.key];
@@ -490,7 +499,7 @@
       if (!matchesPreset) {
         var customOpt = document.createElement("option");
         customOpt.value = currentValue;
-        customOpt.textContent = "Custom (" + Data.formatCurrency(currentValue) + ")";
+        customOpt.textContent = window.i18n.t("inventory.sales.detail.customCostOption") + " (" + Data.formatCurrency(currentValue) + ")";
         select.appendChild(customOpt);
       }
       select.value = String(currentValue);
@@ -533,12 +542,12 @@
     priceField.className = "inv-field";
     var priceLabel = document.createElement("span");
     priceLabel.className = "inv-field-label";
-    priceLabel.textContent = "Price per kilogram (USD) *";
+    priceLabel.textContent = window.i18n.t("inventory.sales.detail.pricePerKgLabel");
     var priceInput = document.createElement("input");
     priceInput.type = "number";
     priceInput.step = "0.01";
     priceInput.min = "0";
-    priceInput.placeholder = "e.g. 4.50";
+    priceInput.placeholder = window.i18n.t("inventory.sales.detail.pricePerKgPlaceholder");
     priceInput.disabled = !canEdit;
     if (typeof product.pricePerKg === "number") priceInput.value = product.pricePerKg;
 
@@ -557,7 +566,7 @@
     utilidadBox.className = "inv-sales-utilidad";
     var utilidadLabel = document.createElement("span");
     utilidadLabel.className = "inv-field-label";
-    utilidadLabel.textContent = "Utilidad";
+    utilidadLabel.textContent = window.i18n.t("inventory.sales.detail.utilidadLabel");
     var utilidadValue = document.createElement("span");
     utilidadValue.className = "inv-sales-utilidad-value";
     utilidadValue.setAttribute("data-role", "utilidad-value");
@@ -582,10 +591,12 @@
 
     detailOfferLabel.textContent = offer.offerNumber;
     detailMetaLine.textContent =
-      salesperson.name + " · Created " + formatDate(offer.createdAt) + ", " + formatTime(offer.createdAt);
+      salesperson.name + " · " + window.i18n.t("inventory.sales.hub.createdLabel") + " " + formatDate(offer.createdAt) + ", " + formatTime(offer.createdAt);
 
     detailStatusBadge.className = "inv-status-badge " + (offer.status === "completed" ? "is-finished" : "is-progress");
-    detailStatusBadge.textContent = offer.status === "completed" ? "Completed" : "In progress";
+    detailStatusBadge.textContent = offer.status === "completed"
+      ? window.i18n.t("inventory.sales.status.completed")
+      : window.i18n.t("inventory.common.inProgress");
 
     productList.innerHTML = "";
     offer.products.forEach(function (product) {
@@ -606,7 +617,7 @@
       updateTotalUtilidadDisplay(offer);
       if (offer.sentAt) {
         sentNote.hidden = false;
-        sentNote.textContent = "Sent " + formatDate(offer.sentAt) + " to: " + offer.recipients.join(", ");
+        sentNote.textContent = window.i18n.t("inventory.sales.detail.sentPrefix") + " " + formatDate(offer.sentAt) + " " + window.i18n.t("inventory.sales.detail.sentTo") + " " + offer.recipients.join(", ");
       } else {
         sentNote.hidden = true;
       }
@@ -645,7 +656,7 @@
     availableProductSelect.innerHTML = "";
     var placeholder = document.createElement("option");
     placeholder.value = "";
-    placeholder.textContent = "Select a product…";
+    placeholder.textContent = window.i18n.t("inventory.sales.modal.addProduct.selectPlaceholder");
     availableProductSelect.appendChild(placeholder);
     available.forEach(function (item) {
       var species = Data.findById(Data.SPECIES, item.speciesId);
@@ -653,8 +664,8 @@
       var quality = Data.findById(Data.QUALITIES, item.qualityId);
       var el = document.createElement("option");
       el.value = matchKey(item.speciesId, item.sizeId, item.qualityId);
-      el.textContent = species.name + " — " + size.name + " — " + quality.name +
-        " (" + formatKg(item.availableKg) + " available)";
+      el.textContent = Data.speciesLabel(species) + " — " + Data.sizeLabel(size) + " — " + Data.qualityLabel(quality) +
+        " (" + formatKg(item.availableKg) + " " + window.i18n.t("inventory.sales.modal.addProduct.availableSuffix") + ")";
       availableProductSelect.appendChild(el);
     });
 
@@ -713,7 +724,7 @@
       row.className = "inv-sales-confirm-row";
 
       var label = document.createElement("label");
-      label.textContent = productLabel(product) + " — available " + formatKg(avail);
+      label.textContent = productLabel(product) + " — " + window.i18n.t("inventory.sales.modal.completeOrder.availableLabel") + " " + formatKg(avail);
 
       var input = document.createElement("input");
       input.type = "number";
@@ -786,7 +797,7 @@
       removeBtn.className = "inv-modal-close";
       removeBtn.style.fontSize = "1rem";
       removeBtn.style.padding = "0";
-      removeBtn.setAttribute("aria-label", "Remove " + email);
+      removeBtn.setAttribute("aria-label", window.i18n.t("inventory.sales.modal.sendEmail.removeAriaLabel") + " " + email);
       removeBtn.textContent = "×";
       removeBtn.addEventListener("click", function () {
         pendingExtraEmails.splice(idx, 1);
@@ -890,35 +901,44 @@
     if (!offer) return;
 
     var rows = [];
-    rows.push([
-      "Species", "Size", "Quality", "Kilograms", "Price per kg",
-      "Mano de obra", "Ingredientes", "Empaque primario", "Complemento primario",
-      "Empaque secundario", "Complemento secundario", "Custom & handling",
-      "Total costs", "Revenue", "Utilidad"
-    ]);
+    var costHeaders = Data.COST_CATEGORIES.map(function (cat) { return Data.costCategoryLabel(cat); });
+    rows.push(
+      [
+        window.i18n.t("inventory.sales.csv.species"),
+        window.i18n.t("inventory.sales.csv.size"),
+        window.i18n.t("inventory.sales.csv.quality"),
+        window.i18n.t("inventory.sales.csv.kilograms"),
+        window.i18n.t("inventory.sales.csv.pricePerKg")
+      ].concat(costHeaders, [
+        window.i18n.t("inventory.sales.csv.totalCosts"),
+        window.i18n.t("inventory.sales.csv.revenue"),
+        window.i18n.t("inventory.sales.detail.utilidadLabel")
+      ])
+    );
 
     offer.products.forEach(function (p) {
-      var species = Data.findById(Data.SPECIES, p.speciesId).name;
-      var size = Data.findById(Data.SIZES, p.sizeId).name;
-      var quality = Data.findById(Data.QUALITIES, p.qualityId).name;
+      var species = Data.speciesLabel(Data.findById(Data.SPECIES, p.speciesId));
+      var size = Data.sizeLabel(Data.findById(Data.SIZES, p.sizeId));
+      var quality = Data.qualityLabel(Data.findById(Data.QUALITIES, p.qualityId));
       var kg = p.confirmedKg || 0;
       var costs = totalCostsFor(p);
       var revenue = (p.pricePerKg || 0) * kg;
       var utilidad = revenue - costs;
+      var costValues = Data.COST_CATEGORIES.map(function (cat) { return (p.costs[cat.key] || 0).toFixed(2); });
 
-      rows.push([
-        species, size, quality, kg.toFixed(1), (p.pricePerKg || 0).toFixed(2),
-        p.costs.manoDeObra.toFixed(2), p.costs.ingredientes.toFixed(2),
-        p.costs.empaquePrimario.toFixed(2), p.costs.complementoPrimario.toFixed(2),
-        p.costs.empaqueSecundario.toFixed(2), p.costs.complementoSecundario.toFixed(2),
-        p.costs.customHandling.toFixed(2),
-        costs.toFixed(2), revenue.toFixed(2), utilidad.toFixed(2)
-      ]);
+      rows.push(
+        [species, size, quality, kg.toFixed(1), (p.pricePerKg || 0).toFixed(2)]
+          .concat(costValues, [costs.toFixed(2), revenue.toFixed(2), utilidad.toFixed(2)])
+      );
     });
 
     var totalUtilidad = offer.products.reduce(function (sum, p) { return sum + (computeLineUtilidad(offer, p) || 0); }, 0);
+    var blankCols = [];
+    for (var blankCount = 5 + Data.COST_CATEGORIES.length + 2; blankCount > 0; blankCount--) {
+      blankCols.push("");
+    }
     rows.push([]);
-    rows.push(["", "", "", "", "", "", "", "", "", "", "", "", "", "Total utilidad", totalUtilidad.toFixed(2)]);
+    rows.push(blankCols.concat([window.i18n.t("inventory.sales.detail.totalUtilidadLabel"), totalUtilidad.toFixed(2)]));
 
     var csvContent = rows.map(function (row) {
       return row.map(csvCell).join(",");
@@ -933,6 +953,33 @@
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  });
+
+  // ------------------------------------------------------------------------
+  // LIVE LANGUAGE SWITCHING — re-render whatever's currently on screen so
+  // dynamic content (which isn't covered by data-i18n) updates immediately
+  // instead of waiting for a reload.
+  // ------------------------------------------------------------------------
+  window.addEventListener("langchange", function () {
+    renderHubDate();
+    if (!hubView.hidden) renderHubLists();
+    if (!detailView.hidden && currentOfferId) renderDetail();
+
+    if (newOfferModal.classList.contains("is-open") && salespersonSelect.options.length) {
+      salespersonSelect.options[0].textContent = window.i18n.t("inventory.sales.modal.newOffer.salespersonPlaceholder");
+    }
+
+    if (addProductModal.classList.contains("is-open") && availableProductSelect.options.length) {
+      availableProductSelect.options[0].textContent = window.i18n.t("inventory.sales.modal.addProduct.selectPlaceholder");
+    }
+
+    if (completeOrderModal.classList.contains("is-open")) {
+      openCompleteOrderModal();
+    }
+
+    if (sendEmailModal.classList.contains("is-open")) {
+      renderAddedEmails();
+    }
   });
 
   // ------------------------------------------------------------------------

@@ -447,6 +447,90 @@ main[id] {
 }
 
 /* ==========================================================================
+   MODAL SYSTEM
+   Shared centered-dialog pattern used across demo pages (Inventory's
+   Reception/Sales modals, Event Wizard's privacy/schedule modals, and
+   any future demo that needs one). A single shared backdrop; only one
+   modal is ever open at a time — each page's own JS handles that. Kept
+   the "inv-" prefix from where this first shipped (Inventory) rather than
+   rename it now that it's shared — purely a class-name detail, invisible
+   to visitors either way.
+   ========================================================================== */
+.inv-modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 300;
+}
+
+.inv-modal-backdrop.is-open {
+  display: block;
+}
+
+.inv-modal {
+  display: none;
+  position: fixed;
+  z-index: 301;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(480px, calc(100vw - 2rem));
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.25);
+}
+
+.inv-modal.is-open {
+  display: block;
+}
+
+.inv-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.inv-modal-header h3 {
+  margin: 0;
+}
+
+.inv-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+}
+
+.inv-modal-close:hover,
+.inv-modal-close:focus-visible {
+  color: var(--color-text);
+}
+
+.inv-modal-body {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.inv-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+/* ==========================================================================
    STICKY WHATSAPP BUTTON
    Fixed to the bottom-right corner on every page.
    ========================================================================== */
@@ -1196,6 +1280,119 @@ main[id] {
   color: var(--color-text-secondary);
 }
 
+/* Each demo card gets its own soft accent tint behind the icon instead of
+   uniform grey, so the three cards are easier to tell apart at a glance. */
+.demo-media-reporting {
+  background: #e8f0fe;
+  color: #2f6fed;
+}
+
+.demo-media-events {
+  background: #e3f6f1;
+  color: #0f9d78;
+}
+
+.demo-media-inventory {
+  background: #fdf1e0;
+  color: #c9791b;
+}
+
+.demo-media-reporting svg,
+.demo-media-events svg,
+.demo-media-inventory svg {
+  color: inherit;
+}
+
+/* ==========================================================================
+   DEMO QUICK-TOUR CALLOUT
+   A short, colorful "happy path" checklist dropped right before a demo's
+   actual interactive tool (after its intro paragraph, and after its
+   diagram where one exists), so a visitor skimming the page gets the gist
+   in a few seconds without needing to click all the way through it.
+   Deliberately more colorful than the rest of the site's blue/white/black
+   palette so it reads as a distinct "read this first" callout rather than
+   blending into the surrounding content.
+   ========================================================================== */
+.demo-quicktour {
+  margin: var(--space-lg) 0;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(120deg, #eaf1ff 0%, #eafaf3 55%, #fff6e6 100%);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.demo-quicktour-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 var(--space-sm);
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.demo-quicktour-heading svg {
+  width: 18px;
+  height: 18px;
+  color: #7c4fe0;
+  flex-shrink: 0;
+}
+
+.demo-quicktour-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+@media (min-width: 700px) {
+  .demo-quicktour-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem var(--space-lg);
+  }
+}
+
+.demo-quicktour-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.demo-quicktour-num {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.demo-quicktour-item p {
+  margin: 0.05rem 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.demo-quicktour-item:nth-child(4n+1) .demo-quicktour-num {
+  background: #2f6fed;
+}
+
+.demo-quicktour-item:nth-child(4n+2) .demo-quicktour-num {
+  background: #0f9d78;
+}
+
+.demo-quicktour-item:nth-child(4n+3) .demo-quicktour-num {
+  background: #c9791b;
+}
+
+.demo-quicktour-item:nth-child(4n+4) .demo-quicktour-num {
+  background: #a5309c;
+}
+
 .demo-card-body h2 {
   margin-bottom: 0.4rem;
 }
@@ -1218,6 +1415,28 @@ main[id] {
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   cursor: default;
+}
+
+/* When a demo card needs a second, lower-key action next to "View demo".
+   Not currently used by any card — Event Wizard's "skip to checkout" dev
+   shortcut moved inside the demo itself — but kept for future demos. */
+.demo-card-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.demo-cheat-link {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.demo-cheat-link:hover,
+.demo-cheat-link:focus-visible {
+  color: var(--color-accent);
 }
 
 @media (min-width: 768px) {

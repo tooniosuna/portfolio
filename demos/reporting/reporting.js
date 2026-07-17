@@ -18,6 +18,16 @@
 (function () {
   "use strict";
 
+  // Small i18n helper mirroring the fallback pattern used across the site:
+  // if window.i18n isn't available (or the key is missing) fall back to
+  // the English string passed in, so chrome text never renders blank.
+  // Used ONLY for UI chrome (headings, labels, buttons, empty states) —
+  // never inside the mock data-generation code below.
+  function t(key, fallback) {
+    var val = window.i18n && window.i18n.t ? window.i18n.t(key) : null;
+    return typeof val === "string" ? val : fallback;
+  }
+
   // ------------------------------------------------------------------------
   // MOCK DATA
   // 16 fictional foodservice customers spread across 4 US regions.
@@ -58,6 +68,20 @@
   // Recomputed from CUSTOMERS rather than hardcoded, so this stays correct
   // automatically if the mock roster changes later.
   var REGIONS = Array.from(new Set(CUSTOMERS.map(function (c) { return c.region; })));
+
+  // Region names are filter option chrome (chip labels + the small region
+  // tag shown per customer in the filter list) — not report row data (no
+  // report column ever displays "region"), so these translate.
+  var REGION_LABEL_KEYS = {
+    "Northeast": "reporting.filters.region.northeast",
+    "Southeast": "reporting.filters.region.southeast",
+    "Midwest": "reporting.filters.region.midwest",
+    "West": "reporting.filters.region.west"
+  };
+  function getRegionLabel(region) {
+    var key = REGION_LABEL_KEYS[region];
+    return key ? t(key, region) : region;
+  }
 
   var MS_PER_DAY = 24 * 60 * 60 * 1000;
   var LOOKBACK_DAYS = 730; // ~2 years
@@ -468,16 +492,20 @@
   // Naming convention kept consistent across every report on purpose:
   // "Total ($)" / "Cases" / "Weight (lb)" mean the same thing whether
   // they're an invoice total, a line item, or a product aggregate.
+  // Column "label" strings below stay as the English fallback (same
+  // pattern as the rest of the site); "labelKey" is what actually renders
+  // once i18n.js is loaded, via dataTable.js's getColumnLabel(). These are
+  // column HEADERS — chrome — never the generated row values underneath.
   var REPORTS = {
     "Invoice History": {
       columns: [
-        { key: "invoiceNumber", label: "Invoice #" },
-        { key: "invoiceDate", label: "Invoice Date" },
-        { key: "customerName", label: "Customer Name", truncate: true },
-        { key: "customerNumber", label: "Customer #" },
-        { key: "totalAmount", label: "Total ($)", numeric: true, currency: true },
-        { key: "totalCases", label: "Cases", numeric: true },
-        { key: "totalWeight", label: "Weight (lb)", numeric: true }
+        { key: "invoiceNumber", label: "Invoice #", labelKey: "reporting.table.columnHeader.invoiceNumber" },
+        { key: "invoiceDate", label: "Invoice Date", labelKey: "reporting.table.columnHeader.invoiceDate" },
+        { key: "customerName", label: "Customer Name", labelKey: "reporting.table.columnHeader.customerName", truncate: true },
+        { key: "customerNumber", label: "Customer #", labelKey: "reporting.table.columnHeader.customerNumber" },
+        { key: "totalAmount", label: "Total ($)", labelKey: "reporting.table.columnHeader.total", numeric: true, currency: true },
+        { key: "totalCases", label: "Cases", labelKey: "reporting.table.columnHeader.cases", numeric: true },
+        { key: "totalWeight", label: "Weight (lb)", labelKey: "reporting.table.columnHeader.weight", numeric: true }
       ],
       getRows: buildInvoiceHistoryRows,
       defaultSortKey: "invoiceDate",
@@ -485,15 +513,15 @@
     },
     "Invoice Details": {
       columns: [
-        { key: "productNumber", label: "Product #" },
-        { key: "productDescription", label: "Product Description", truncate: true },
-        { key: "invoiceNumber", label: "Invoice #" },
-        { key: "invoiceDate", label: "Invoice Date" },
-        { key: "customerName", label: "Customer Name", truncate: true },
-        { key: "customerNumber", label: "Customer #" },
-        { key: "totalAmount", label: "Total ($)", numeric: true, currency: true },
-        { key: "totalCases", label: "Cases", numeric: true },
-        { key: "totalWeight", label: "Weight (lb)", numeric: true }
+        { key: "productNumber", label: "Product #", labelKey: "reporting.table.columnHeader.productNumber" },
+        { key: "productDescription", label: "Product Description", labelKey: "reporting.table.columnHeader.productDescription", truncate: true },
+        { key: "invoiceNumber", label: "Invoice #", labelKey: "reporting.table.columnHeader.invoiceNumber" },
+        { key: "invoiceDate", label: "Invoice Date", labelKey: "reporting.table.columnHeader.invoiceDate" },
+        { key: "customerName", label: "Customer Name", labelKey: "reporting.table.columnHeader.customerName", truncate: true },
+        { key: "customerNumber", label: "Customer #", labelKey: "reporting.table.columnHeader.customerNumber" },
+        { key: "totalAmount", label: "Total ($)", labelKey: "reporting.table.columnHeader.total", numeric: true, currency: true },
+        { key: "totalCases", label: "Cases", labelKey: "reporting.table.columnHeader.cases", numeric: true },
+        { key: "totalWeight", label: "Weight (lb)", labelKey: "reporting.table.columnHeader.weight", numeric: true }
       ],
       getRows: buildInvoiceDetailsRows,
       defaultSortKey: "invoiceDate",
@@ -501,26 +529,29 @@
     },
     "Purchase Summary": {
       columns: [
-        { key: "productNumber", label: "Product #" },
-        { key: "productDescription", label: "Product Description", truncate: true },
-        { key: "totalAmount", label: "Total ($)", numeric: true, currency: true },
-        { key: "totalCases", label: "Cases", numeric: true },
-        { key: "totalWeight", label: "Weight (lb)", numeric: true }
+        { key: "productNumber", label: "Product #", labelKey: "reporting.table.columnHeader.productNumber" },
+        { key: "productDescription", label: "Product Description", labelKey: "reporting.table.columnHeader.productDescription", truncate: true },
+        { key: "totalAmount", label: "Total ($)", labelKey: "reporting.table.columnHeader.total", numeric: true, currency: true },
+        { key: "totalCases", label: "Cases", labelKey: "reporting.table.columnHeader.cases", numeric: true },
+        { key: "totalWeight", label: "Weight (lb)", labelKey: "reporting.table.columnHeader.weight", numeric: true }
       ],
       getRows: buildPurchaseSummaryRows,
       defaultSortKey: "totalAmount",
       defaultSortDir: "desc"
     },
     "Purchase Trends": {
+      // Month columns mix a real computed month/year (left in en-US, same
+      // convention as every other date on this page) with a translated
+      // unit suffix — labelFn recomputes that suffix live on langchange.
       columns: [
-        { key: "productNumber", label: "Product #" },
-        { key: "productDescription", label: "Product Description", truncate: true },
-        { key: "m0Amount", label: TREND_MONTHS[0].label + " ($)", numeric: true, currency: true },
-        { key: "m1Amount", label: TREND_MONTHS[1].label + " ($)", numeric: true, currency: true },
-        { key: "m2Amount", label: TREND_MONTHS[2].label + " ($)", numeric: true, currency: true },
-        { key: "m0Cases", label: TREND_MONTHS[0].label + " (Cases)", numeric: true },
-        { key: "m1Cases", label: TREND_MONTHS[1].label + " (Cases)", numeric: true },
-        { key: "m2Cases", label: TREND_MONTHS[2].label + " (Cases)", numeric: true }
+        { key: "productNumber", label: "Product #", labelKey: "reporting.table.columnHeader.productNumber" },
+        { key: "productDescription", label: "Product Description", labelKey: "reporting.table.columnHeader.productDescription", truncate: true },
+        { key: "m0Amount", label: TREND_MONTHS[0].label + " ($)", labelFn: function () { return TREND_MONTHS[0].label + " (" + t("reporting.table.columnHeader.dollarsUnit", "$") + ")"; }, numeric: true, currency: true },
+        { key: "m1Amount", label: TREND_MONTHS[1].label + " ($)", labelFn: function () { return TREND_MONTHS[1].label + " (" + t("reporting.table.columnHeader.dollarsUnit", "$") + ")"; }, numeric: true, currency: true },
+        { key: "m2Amount", label: TREND_MONTHS[2].label + " ($)", labelFn: function () { return TREND_MONTHS[2].label + " (" + t("reporting.table.columnHeader.dollarsUnit", "$") + ")"; }, numeric: true, currency: true },
+        { key: "m0Cases", label: TREND_MONTHS[0].label + " (Cases)", labelFn: function () { return TREND_MONTHS[0].label + " (" + t("reporting.table.columnHeader.casesUnit", "Cases") + ")"; }, numeric: true },
+        { key: "m1Cases", label: TREND_MONTHS[1].label + " (Cases)", labelFn: function () { return TREND_MONTHS[1].label + " (" + t("reporting.table.columnHeader.casesUnit", "Cases") + ")"; }, numeric: true },
+        { key: "m2Cases", label: TREND_MONTHS[2].label + " (Cases)", labelFn: function () { return TREND_MONTHS[2].label + " (" + t("reporting.table.columnHeader.casesUnit", "Cases") + ")"; }, numeric: true }
       ],
       getRows: buildPurchaseTrendsRows,
       defaultSortKey: "m0Amount",
@@ -528,20 +559,20 @@
     },
     "Purchase Details": {
       columns: [
-        { key: "productNumber", label: "Product #" },
-        { key: "productDescription", label: "Product Description", truncate: true },
-        { key: "sku", label: "SKU" },
-        { key: "manufacturer", label: "Manufacturer Name", truncate: true },
-        { key: "storageType", label: "Storage Type" },
-        { key: "classNumber", label: "Class #" },
-        { key: "classDescription", label: "Class Description", truncate: true },
-        { key: "categoryNumber", label: "Category #" },
-        { key: "categoryDescription", label: "Category Description", truncate: true },
-        { key: "groupNumber", label: "Group #" },
-        { key: "groupDescription", label: "Group Description", truncate: true },
-        { key: "totalAmount", label: "Total ($)", numeric: true, currency: true },
-        { key: "totalCases", label: "Cases", numeric: true },
-        { key: "totalWeight", label: "Weight (lb)", numeric: true }
+        { key: "productNumber", label: "Product #", labelKey: "reporting.table.columnHeader.productNumber" },
+        { key: "productDescription", label: "Product Description", labelKey: "reporting.table.columnHeader.productDescription", truncate: true },
+        { key: "sku", label: "SKU", labelKey: "reporting.table.columnHeader.sku" },
+        { key: "manufacturer", label: "Manufacturer Name", labelKey: "reporting.table.columnHeader.manufacturer", truncate: true },
+        { key: "storageType", label: "Storage Type", labelKey: "reporting.table.columnHeader.storageType" },
+        { key: "classNumber", label: "Class #", labelKey: "reporting.table.columnHeader.classNumber" },
+        { key: "classDescription", label: "Class Description", labelKey: "reporting.table.columnHeader.classDescription", truncate: true },
+        { key: "categoryNumber", label: "Category #", labelKey: "reporting.table.columnHeader.categoryNumber" },
+        { key: "categoryDescription", label: "Category Description", labelKey: "reporting.table.columnHeader.categoryDescription", truncate: true },
+        { key: "groupNumber", label: "Group #", labelKey: "reporting.table.columnHeader.groupNumber" },
+        { key: "groupDescription", label: "Group Description", labelKey: "reporting.table.columnHeader.groupDescription", truncate: true },
+        { key: "totalAmount", label: "Total ($)", labelKey: "reporting.table.columnHeader.total", numeric: true, currency: true },
+        { key: "totalCases", label: "Cases", labelKey: "reporting.table.columnHeader.cases", numeric: true },
+        { key: "totalWeight", label: "Weight (lb)", labelKey: "reporting.table.columnHeader.weight", numeric: true }
       ],
       getRows: buildPurchaseDetailsRows,
       defaultSortKey: "totalAmount",
@@ -549,21 +580,39 @@
     },
     "Compliance Summary": {
       columns: [
-        { key: "productNumber", label: "Product #" },
-        { key: "productDescription", label: "Product Description", truncate: true },
-        { key: "totalAmount", label: "Total ($)", numeric: true, currency: true },
-        { key: "contractedAmount", label: "Contracted ($)", numeric: true, currency: true },
-        { key: "contractedPctAmount", label: "Contracted % ($)", numeric: true, percent: true },
-        { key: "totalCases", label: "Cases", numeric: true },
-        { key: "contractedCases", label: "Contracted Cases", numeric: true },
-        { key: "contractedPctCases", label: "Contracted % (Cases)", numeric: true, percent: true },
-        { key: "totalWeight", label: "Weight (lb)", numeric: true }
+        { key: "productNumber", label: "Product #", labelKey: "reporting.table.columnHeader.productNumber" },
+        { key: "productDescription", label: "Product Description", labelKey: "reporting.table.columnHeader.productDescription", truncate: true },
+        { key: "totalAmount", label: "Total ($)", labelKey: "reporting.table.columnHeader.total", numeric: true, currency: true },
+        { key: "contractedAmount", label: "Contracted ($)", labelKey: "reporting.table.columnHeader.contractedAmount", numeric: true, currency: true },
+        { key: "contractedPctAmount", label: "Contracted % ($)", labelKey: "reporting.table.columnHeader.contractedPctAmount", numeric: true, percent: true },
+        { key: "totalCases", label: "Cases", labelKey: "reporting.table.columnHeader.cases", numeric: true },
+        { key: "contractedCases", label: "Contracted Cases", labelKey: "reporting.table.columnHeader.contractedCases", numeric: true },
+        { key: "contractedPctCases", label: "Contracted % (Cases)", labelKey: "reporting.table.columnHeader.contractedPctCases", numeric: true, percent: true },
+        { key: "totalWeight", label: "Weight (lb)", labelKey: "reporting.table.columnHeader.weight", numeric: true }
       ],
       getRows: buildComplianceSummaryRows,
       defaultSortKey: "totalAmount",
       defaultSortDir: "desc"
     }
   };
+
+  // Maps each fixed report name (used as both a REPORTS/segment-button
+  // display string and, unrelated, as the REPORTS object's lookup key) to
+  // its translated display label. The English name itself keeps being
+  // used internally for lookups (REPORTS[name], dataset.reportName, the
+  // History entries below) — only what's shown on screen changes.
+  var REPORT_NAME_KEYS = {
+    "Invoice History": "reporting.reportName.invoiceHistory",
+    "Invoice Details": "reporting.reportName.invoiceDetails",
+    "Purchase Summary": "reporting.reportName.purchaseSummary",
+    "Purchase Trends": "reporting.reportName.purchaseTrends",
+    "Purchase Details": "reporting.reportName.purchaseDetails",
+    "Compliance Summary": "reporting.reportName.complianceSummary"
+  };
+  function getReportDisplayName(reportName) {
+    var key = REPORT_NAME_KEYS[reportName];
+    return key ? t(key, reportName) : reportName;
+  }
 
   // ------------------------------------------------------------------------
   // FILTER STATE
@@ -623,15 +672,18 @@
   }
 
   function renderSummary() {
-    summaryText.textContent = "Filters (" + countActiveFilters() + ")";
+    summaryText.textContent = t("reporting.filters.summaryLabel", "Filters") + " (" + countActiveFilters() + ")";
 
     var custCount = state.customerIds.length;
+    var custNoun = custCount === 1
+      ? t("reporting.filters.customerSingular", "customer")
+      : t("reporting.filters.customerPlural", "customers");
     var custLabel = custCount === CUSTOMERS.length
-      ? "All " + custCount + " customers"
-      : custCount + " customer" + (custCount === 1 ? "" : "s");
+      ? t("reporting.filters.allCustomersPrefix", "All") + " " + custCount + " " + custNoun
+      : custCount + " " + custNoun;
     var regionLabel = state.regions.length === 0
-      ? "All regions"
-      : state.regions.join(", ");
+      ? t("reporting.filters.allRegions", "All regions")
+      : state.regions.map(getRegionLabel).join(", ");
 
     if (filtersDetailLine) {
       filtersDetailLine.textContent =
@@ -647,7 +699,7 @@
       chip.type = "button";
       chip.className = "rpt-chip";
       if (pending.regions.indexOf(region) !== -1) chip.classList.add("is-active");
-      chip.textContent = region;
+      chip.textContent = getRegionLabel(region);
       chip.setAttribute("aria-pressed", pending.regions.indexOf(region) !== -1 ? "true" : "false");
       chip.addEventListener("click", function () {
         var idx = pending.regions.indexOf(region);
@@ -682,7 +734,9 @@
     var allChecked = visible.length > 0 && visible.every(function (c) {
       return pending.customerIds.indexOf(c.id) !== -1;
     });
-    selectAllBtn.textContent = allChecked ? "Unselect all" : "Select all";
+    selectAllBtn.textContent = allChecked
+      ? t("reporting.filters.unselectAll", "Unselect all")
+      : t("reporting.filters.selectAll", "Select all");
   }
 
   function renderCustomerList() {
@@ -716,7 +770,7 @@
 
       var region = document.createElement("span");
       region.className = "rpt-customer-region";
-      region.textContent = customer.region;
+      region.textContent = getRegionLabel(customer.region);
 
       item.appendChild(checkbox);
       item.appendChild(name);
@@ -731,7 +785,7 @@
     var valid = true;
 
     if (pending.startDate > pending.endDate) {
-      dateError.textContent = "Start date must be on or before the end date.";
+      dateError.textContent = t("reporting.filters.dateError", "Start date must be on or before the end date.");
       dateError.hidden = false;
       valid = false;
     } else {
@@ -894,17 +948,24 @@
   var SECTIONS = {
     invoiceHistory: {
       title: "Invoice History",
+      titleKey: "reporting.section.invoiceHistory.title",
       reports: ["Invoice History", "Invoice Details"]
     },
     productUsage: {
       title: "Product Usage",
+      titleKey: "reporting.section.productUsage.title",
       reports: ["Purchase Summary", "Purchase Trends", "Purchase Details"]
     },
     compliance: {
       title: "Compliance",
+      titleKey: "reporting.section.compliance.title",
       reports: ["Compliance Summary"]
     }
   };
+  function getSectionDisplayTitle(sectionKey) {
+    var section = SECTIONS[sectionKey];
+    return t(section.titleKey, section.title);
+  }
 
   var sectionCards = document.querySelectorAll(".rpt-section-card[data-section]");
   var activeReport = document.getElementById("activeReport");
@@ -937,7 +998,9 @@
       activeReportTableHost.innerHTML = "";
       activeReportStub.hidden = false;
       activeReportStub.textContent =
-        "The interactive table for “" + activeReportName + "” lands in a later slice.";
+        t("reporting.stub.prefix", "The interactive table for “") +
+        getReportDisplayName(activeReportName) +
+        t("reporting.stub.suffix", "” lands in a later slice.");
       return;
     }
 
@@ -977,12 +1040,12 @@
         var seg = document.createElement("button");
         seg.type = "button";
         seg.className = "rpt-segment";
-        seg.textContent = reportName;
+        seg.textContent = getReportDisplayName(reportName);
         seg.dataset.reportName = reportName;
         seg.addEventListener("click", function () {
           if (reportName === activeReportName) return;
           activeReportName = reportName;
-          activeReportTitle.textContent = activeReportName;
+          activeReportTitle.textContent = getReportDisplayName(activeReportName);
           updateSegmentGroupState();
           runSkeleton(activeReport);
           renderActiveReportContent();
@@ -1053,7 +1116,7 @@
 
     renderSegmentGroup();
     activeReport.classList.add("is-open");
-    activeReportTitle.textContent = activeReportName;
+    activeReportTitle.textContent = getReportDisplayName(activeReportName);
     scrollToActiveReport();
     runSkeleton(activeReport);
     renderActiveReportContent();
@@ -1091,6 +1154,10 @@
   var mobileFlyoutTitle = document.getElementById("mobileReportFlyoutTitle");
   var mobileReportList = document.getElementById("mobileReportList");
   var mobileCloseBtn = document.getElementById("mobileReportCloseBtn");
+  // Tracks whichever section's reports are currently listed in the mobile
+  // flyout, purely so a langchange while it's open can re-render its
+  // chrome (title, report names, "Coming soon" tag) in the new language.
+  var openMobileSectionKey = null;
 
   function downloadReportAs(reportName) {
     var reportDef = REPORTS[reportName];
@@ -1107,7 +1174,7 @@
 
   function renderMobileReportList(sectionKey) {
     var section = SECTIONS[sectionKey];
-    mobileFlyoutTitle.textContent = section.title;
+    mobileFlyoutTitle.textContent = getSectionDisplayTitle(sectionKey);
     mobileReportList.innerHTML = "";
 
     section.reports.forEach(function (reportName) {
@@ -1117,7 +1184,7 @@
 
       var name = document.createElement("span");
       name.className = "rpt-mobile-report-name";
-      name.textContent = reportName;
+      name.textContent = getReportDisplayName(reportName);
       item.appendChild(name);
 
       if (reportDef) {
@@ -1140,7 +1207,7 @@
       } else {
         var tag = document.createElement("span");
         tag.className = "rpt-card-tag";
-        tag.textContent = "Coming soon";
+        tag.textContent = t("demos.comingSoon", "Coming soon");
         item.appendChild(tag);
       }
 
@@ -1149,6 +1216,7 @@
   }
 
   function openMobileReportFlyout(sectionKey) {
+    openMobileSectionKey = sectionKey;
     renderMobileReportList(sectionKey);
     mobileBackdrop.classList.add("is-open");
     mobileFlyout.classList.add("is-open");
@@ -1159,6 +1227,7 @@
     mobileBackdrop.classList.remove("is-open");
     mobileFlyout.classList.remove("is-open");
     document.removeEventListener("keydown", handleMobileEscape);
+    openMobileSectionKey = null;
   }
 
   function handleMobileEscape(event) {
@@ -1274,7 +1343,7 @@
     if (priorVal === 0) {
       return currentVal === 0
         ? { label: "0%", cls: "is-neutral" }
-        : { label: "New", cls: "is-positive" };
+        : { label: t("reporting.charts.yoyNew", "New"), cls: "is-positive" };
     }
     var pct = ((currentVal - priorVal) / priorVal) * 100;
     var label = (pct >= 0 ? "+" : "") + pct.toFixed(1) + "%";
@@ -1287,7 +1356,7 @@
   // for dollars, per Tony's call.
   function formatExactValue(value, metric) {
     var formatted = value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    return metric === "amount" ? "$" + formatted : formatted + " cases";
+    return metric === "amount" ? "$" + formatted : formatted + " " + t("reporting.charts.casesSuffix", "cases");
   }
 
   function formatAxisValue(value, metric) {
@@ -1305,8 +1374,8 @@
   function renderClassMetricToggle() {
     if (classMetricToggle.children.length === 0) {
       [
-        { key: "amount", label: "Dollars ($)" },
-        { key: "cases", label: "Cases" }
+        { key: "amount", label: t("reporting.charts.metricToggle.dollars", "Dollars ($)") },
+        { key: "cases", label: t("reporting.charts.metricToggle.cases", "Cases") }
       ].forEach(function (opt) {
         var seg = document.createElement("button");
         seg.type = "button";
@@ -1351,7 +1420,7 @@
     if (grandTotal === 0) {
       var empty = document.createElement("p");
       empty.className = "rpt-stub-note";
-      empty.textContent = "No purchases match the current filters.";
+      empty.textContent = t("reporting.charts.emptyState", "No purchases match the current filters.");
       classChartScroll.appendChild(empty);
       classChartExpandBtn.hidden = true;
       return;
@@ -1426,8 +1495,8 @@
     if (data.length > 3) {
       classChartExpandBtn.hidden = false;
       classChartExpandBtn.textContent = classChartExpanded
-        ? "See less"
-        : "See more (" + (data.length - 3) + ")";
+        ? t("reporting.charts.seeLess", "See less")
+        : t("reporting.charts.seeMorePrefix", "See more") + " (" + (data.length - 3) + ")";
     } else {
       classChartExpandBtn.hidden = true;
     }
@@ -1493,8 +1562,8 @@
   function renderTopProductsMetricToggle() {
     if (topProductsMetricToggle.children.length === 0) {
       [
-        { key: "amount", label: "Dollars ($)" },
-        { key: "cases", label: "Cases" }
+        { key: "amount", label: t("reporting.charts.metricToggle.dollars", "Dollars ($)") },
+        { key: "cases", label: t("reporting.charts.metricToggle.cases", "Cases") }
       ].forEach(function (opt) {
         var seg = document.createElement("button");
         seg.type = "button";
@@ -1540,7 +1609,7 @@
     if (data.length === 0) {
       var empty = document.createElement("p");
       empty.className = "rpt-stub-note";
-      empty.textContent = "No purchases match the current filters.";
+      empty.textContent = t("reporting.charts.emptyState", "No purchases match the current filters.");
       topProductsList.appendChild(empty);
       topProductsExpandBtn.hidden = true;
       return;
@@ -1590,8 +1659,8 @@
     if (data.length > 3) {
       topProductsExpandBtn.hidden = false;
       topProductsExpandBtn.textContent = topProductsExpanded
-        ? "See less"
-        : "See more (" + (data.length - 3) + ")";
+        ? t("reporting.charts.seeLess", "See less")
+        : t("reporting.charts.seeMorePrefix", "See more") + " (" + (data.length - 3) + ")";
     } else {
       topProductsExpandBtn.hidden = true;
     }
@@ -1665,8 +1734,8 @@
 
       var name = document.createElement("span");
       name.className = "rpt-history-item-name";
-      name.textContent = entry.reportName;
-      name.title = entry.reportName;
+      name.textContent = getReportDisplayName(entry.reportName);
+      name.title = getReportDisplayName(entry.reportName);
 
       var meta = document.createElement("span");
       meta.className = "rpt-history-item-meta";
@@ -1678,7 +1747,7 @@
       var redownload = document.createElement("button");
       redownload.type = "button";
       redownload.className = "rpt-history-redownload";
-      redownload.textContent = "Re-download";
+      redownload.textContent = t("reporting.history.redownloadBtn", "Re-download");
       redownload.addEventListener("click", function () {
         var filename = entry.reportName.replace(/\s+/g, "-").toLowerCase() + "-history.csv";
         window.RptDownloadCsv(entry.rows, filename);
@@ -1719,6 +1788,61 @@
       closeHistoryFlyout();
     } else {
       openHistoryFlyout();
+    }
+  });
+
+  // ------------------------------------------------------------------------
+  // LIVE LANGUAGE SWITCH
+  // Re-renders CHROME ONLY — filter labels, region/report/section names,
+  // column headers, buttons, empty states, pagination. ALL_INVOICES, the
+  // mock CONTRACT_TABLE, CUSTOMERS, and PRODUCTS are never touched or
+  // regenerated here; getRows()/getFilteredInvoices() just re-read the
+  // exact same fixed dataset, so the report rows themselves never change
+  // when the language toggles.
+  // ------------------------------------------------------------------------
+  window.addEventListener("langchange", function () {
+    renderSummary();
+
+    // The filter flyout's region chips/customer list only exist once it's
+    // been opened at least once ("pending" stays null until then).
+    if (pending) {
+      renderRegionChips();
+      renderCustomerList();
+      validate();
+    }
+
+    if (activeSectionKey) {
+      Array.prototype.forEach.call(segmentGroup.children, function (btn) {
+        btn.textContent = getReportDisplayName(btn.dataset.reportName);
+      });
+      activeReportTitle.textContent = getReportDisplayName(activeReportName);
+
+      if (currentTableInstance) {
+        currentTableInstance.retranslate();
+      } else {
+        // Stub report (no REPORTS[...] entry yet) — re-render its message.
+        renderActiveReportContent();
+      }
+    }
+
+    renderHistoryList();
+
+    Array.prototype.forEach.call(classMetricToggle.children, function (btn) {
+      btn.textContent = btn.dataset.key === "amount"
+        ? t("reporting.charts.metricToggle.dollars", "Dollars ($)")
+        : t("reporting.charts.metricToggle.cases", "Cases");
+    });
+    renderClassChart();
+
+    Array.prototype.forEach.call(topProductsMetricToggle.children, function (btn) {
+      btn.textContent = btn.dataset.key === "amount"
+        ? t("reporting.charts.metricToggle.dollars", "Dollars ($)")
+        : t("reporting.charts.metricToggle.cases", "Cases");
+    });
+    renderTopProducts();
+
+    if (openMobileSectionKey && mobileFlyout.classList.contains("is-open")) {
+      renderMobileReportList(openMobileSectionKey);
     }
   });
 

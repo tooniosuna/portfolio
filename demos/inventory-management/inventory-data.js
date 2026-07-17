@@ -314,6 +314,64 @@
     return null;
   }
 
+  // ------------------------------------------------------------------------
+  // TRANSLATED LABELS
+  // Family/Group/Species/Size/Quality names, and the cost category/option
+  // labels, are generic classification vocabulary (not proper nouns like
+  // provider, vessel, driver, salesperson, or client names), so they're
+  // translated through i18n.js. Each item's own .name/.label stays as the
+  // English fallback if i18n.js hasn't loaded for some reason. Reception.js
+  // and Sales.js call these instead of reading .name/.label directly, and
+  // re-run their render functions on "langchange" so labels update live.
+  // ------------------------------------------------------------------------
+  function translated(key, fallback) {
+    if (window.i18n && typeof window.i18n.t === "function") {
+      var value = window.i18n.t(key);
+      if (typeof value === "string") return value;
+    }
+    return fallback;
+  }
+
+  function familyLabel(family) {
+    if (!family) return "";
+    return translated("inventory.data.family." + family.id, family.name);
+  }
+
+  function groupLabel(group) {
+    if (!group) return "";
+    return translated("inventory.data.group." + group.id, group.name);
+  }
+
+  function speciesLabel(species) {
+    if (!species) return "";
+    return translated("inventory.data.species." + species.id, species.name);
+  }
+
+  function sizeLabel(size) {
+    if (!size) return "";
+    return translated("inventory.data.size." + size.id + ".name", size.name);
+  }
+
+  function sizeHintLabel(size) {
+    if (!size) return "";
+    return translated("inventory.data.size." + size.id + ".hint", size.hint);
+  }
+
+  function qualityLabel(quality) {
+    if (!quality) return "";
+    return translated("inventory.data.quality." + quality.id, quality.name);
+  }
+
+  function costCategoryLabel(category) {
+    if (!category) return "";
+    return translated("inventory.data.costCategory." + category.key, category.label);
+  }
+
+  function costOptionLabel(category, option, index) {
+    if (!category || !option) return "";
+    return translated("inventory.data.costOption." + category.key + "." + index, option.label);
+  }
+
   function getGroupsForFamily(familyId) {
     return GROUPS.filter(function (g) { return g.familyId === familyId; });
   }
@@ -362,6 +420,14 @@
     getGroupsForFamily: getGroupsForFamily,
     getSpeciesForGroup: getSpeciesForGroup,
     getAvailableTotes: getAvailableTotes,
-    claimTote: claimTote
+    claimTote: claimTote,
+    familyLabel: familyLabel,
+    groupLabel: groupLabel,
+    speciesLabel: speciesLabel,
+    sizeLabel: sizeLabel,
+    sizeHintLabel: sizeHintLabel,
+    qualityLabel: qualityLabel,
+    costCategoryLabel: costCategoryLabel,
+    costOptionLabel: costOptionLabel
   };
 })();

@@ -14,6 +14,25 @@
 (function () {
   "use strict";
 
+  // Small i18n helper mirroring the fallback pattern used across the site:
+  // if window.i18n isn't available (or the key is missing) fall back to
+  // the English string passed in, so the table never renders blank text.
+  function t(key, fallback) {
+    var val = window.i18n && window.i18n.t ? window.i18n.t(key) : null;
+    return typeof val === "string" ? val : fallback;
+  }
+
+  // Column labels come either from a static labelKey (most columns) or a
+  // labelFn (Purchase Trends' month columns, whose label mixes a
+  // dynamically-computed month with a translated unit suffix — see
+  // reporting.js). Either way this is CHROME (the column header), never
+  // the row values underneath it.
+  function getColumnLabel(col) {
+    if (typeof col.labelFn === "function") return col.labelFn();
+    if (col.labelKey) return t(col.labelKey, col.label);
+    return col.label;
+  }
+
   // Turns an array-of-arrays (header row + data rows) into a real,
   // downloadable CSV file. Shared by the data table's export buttons and
   // reporting.js's Download History re-downloads, so there's exactly one
@@ -72,11 +91,11 @@
 
     container.innerHTML =
       '<div class="rpt-table-toolbar">' +
-        '<input type="search" class="rpt-table-search" placeholder="Search this report…" aria-label="Search this report" />' +
+        '<input type="search" class="rpt-table-search" placeholder="' + t("reporting.table.searchPlaceholder", "Search this report…") + '" aria-label="' + t("reporting.table.searchAriaLabel", "Search this report") + '" />' +
         '<div class="rpt-table-toolbar-actions">' +
           '<span class="rpt-table-count"></span>' +
-          '<button type="button" class="rpt-table-export" data-format="csv">Download CSV</button>' +
-          '<button type="button" class="rpt-table-export" data-format="excel">Download Excel</button>' +
+          '<button type="button" class="rpt-table-export" data-format="csv">' + t("reporting.table.downloadCsv", "Download CSV") + '</button>' +
+          '<button type="button" class="rpt-table-export" data-format="excel">' + t("reporting.table.downloadExcel", "Download Excel") + '</button>' +
         "</div>" +
       "</div>" +
       '<div class="rpt-table-scroll"><table class="rpt-data-table"><thead></thead><tbody></tbody></table></div>' +
@@ -131,7 +150,7 @@
 
         var labelSpan = document.createElement("span");
         labelSpan.className = "rpt-th-label";
-        labelSpan.textContent = col.label;
+        labelSpan.textContent = getColumnLabel(col);
         th.appendChild(labelSpan);
 
         if (sortKey === key) {
@@ -195,7 +214,7 @@
         var emptyTd = document.createElement("td");
         emptyTd.colSpan = columnOrder.length;
         emptyTd.className = "rpt-table-empty";
-        emptyTd.textContent = "No rows match the current filters and search.";
+        emptyTd.textContent = t("reporting.table.emptyState", "No rows match the current filters and search.");
         emptyTr.appendChild(emptyTd);
         tbodyEl.appendChild(emptyTr);
         return;
@@ -241,7 +260,7 @@
 
       var prevBtn = document.createElement("button");
       prevBtn.type = "button";
-      prevBtn.textContent = "Prev";
+      prevBtn.textContent = t("reporting.pagination.prev", "Prev");
       prevBtn.disabled = currentPage <= 1;
       prevBtn.addEventListener("click", function () {
         currentPage -= 1;
@@ -250,11 +269,11 @@
 
       var pageLabel = document.createElement("span");
       pageLabel.className = "rpt-table-page-label";
-      pageLabel.textContent = "Page " + currentPage + " of " + totalPages;
+      pageLabel.textContent = t("reporting.pagination.pageWord", "Page") + " " + currentPage + " " + t("reporting.pagination.ofWord", "of") + " " + totalPages;
 
       var nextBtn = document.createElement("button");
       nextBtn.type = "button";
-      nextBtn.textContent = "Next";
+      nextBtn.textContent = t("reporting.pagination.next", "Next");
       nextBtn.disabled = currentPage >= totalPages;
       nextBtn.addEventListener("click", function () {
         currentPage += 1;
@@ -269,7 +288,10 @@
     function renderAll() {
       renderHead();
       var rows = getFilteredSortedRows();
-      countEl.textContent = rows.length.toLocaleString("en-US") + " row" + (rows.length === 1 ? "" : "s");
+      var rowNoun = rows.length === 1
+        ? t("reporting.table.rowSingular", "row")
+        : t("reporting.table.rowPlural", "rows");
+      countEl.textContent = rows.length.toLocaleString("en-US") + " " + rowNoun;
       var start = (currentPage - 1) * pageSize;
       renderBody(rows.slice(start, start + pageSize));
       renderPagination(rows.length);
@@ -286,7 +308,7 @@
         // Export honors the current search (what you're looking at) but
         // isn't limited to just the visible page — the whole matching set.
         var rows = getFilteredSortedRows();
-        var header = columnOrder.map(function (key) { return columnsByKey[key].label; });
+        var header = columnOrder.map(function (key) { return getColumnLabel(columnsByKey[key]); });
         var body = rows.map(function (row) {
           return columnOrder.map(function (key) { return row[key]; });
         });
@@ -302,6 +324,23 @@
     return {
       refresh: function () {
         currentPage = 1;
+        renderAll();
+      },
+      // Re-renders CHROME only (search placeholder/aria-label, export
+      // button labels, column headers, pagination, empty state) for a
+      // live language switch — deliberately does NOT reset currentPage,
+      // since the underlying rows (and the visitor's position in them)
+      // don't change just because the language did.
+      retranslate: function () {
+        searchInput.setAttribute("placeholder", t("reporting.table.searchPlaceholder", "Search this report…"));
+        searchInput.setAttribute("aria-label", t("reporting.table.searchAriaLabel", "Search this report"));
+        Array.prototype.forEach.call(exportBtns, function (btn) {
+          if (btn.getAttribute("data-format") === "csv") {
+            btn.textContent = t("reporting.table.downloadCsv", "Download CSV");
+          } else {
+            btn.textContent = t("reporting.table.downloadExcel", "Download Excel");
+          }
+        });
         renderAll();
       }
     };

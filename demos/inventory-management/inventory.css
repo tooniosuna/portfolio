@@ -547,85 +547,9 @@
   color: var(--color-accent);
 }
 
-/* --------------------------------------------------------------------------
-   MODAL SYSTEM
-   Shared by New Reception, Add Product, Add Load, and Final Details — a
-   centered dialog with a shared backdrop. Only one is ever open at once
-   (reception.js only ever adds .is-open to a single modal at a time).
-   -------------------------------------------------------------------------- */
-.inv-modal-backdrop {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.45);
-  z-index: 300;
-}
-
-.inv-modal-backdrop.is-open {
-  display: block;
-}
-
-.inv-modal {
-  display: none;
-  position: fixed;
-  z-index: 301;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(480px, calc(100vw - 2rem));
-  max-height: calc(100vh - 4rem);
-  overflow-y: auto;
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.25);
-}
-
-.inv-modal.is-open {
-  display: block;
-}
-
-.inv-modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
-  padding: var(--space-md);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.inv-modal-header h3 {
-  margin: 0;
-}
-
-.inv-modal-close {
-  background: none;
-  border: none;
-  font-size: 1.4rem;
-  line-height: 1;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  padding: 0.2rem 0.4rem;
-}
-
-.inv-modal-close:hover,
-.inv-modal-close:focus-visible {
-  color: var(--color-text);
-}
-
-.inv-modal-body {
-  padding: var(--space-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.inv-modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--space-sm);
-  padding: var(--space-md);
-  border-top: 1px solid var(--color-border);
-}
+/* Modal system (.inv-modal-backdrop/.inv-modal/etc.) now lives in the
+   global stylesheet (../../css/styles.css) since Event Wizard reuses it
+   too — see that file for the shared rules. */
 
 /* --------------------------------------------------------------------------
    FORM FIELDS (shared across all 4 modals)

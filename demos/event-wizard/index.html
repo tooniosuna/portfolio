@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Antonio Osuna — Resort Event Wizard Demo</title>
+
+  <!-- Google Fonts: Sora (headings), Inter (body) — same pairing as the
+       rest of the site, no demo-specific font. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Two levels deeper than the root, so css/js need "../../" -->
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <link rel="stylesheet" href="event-wizard.css" />
+</head>
+<body>
+
+  <!-- ============================== NAVBAR ============================== -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <div class="nav-brand">
+        <a href="../../index.html" class="nav-logo">Antonio Osuna</a>
+        <a
+          href="https://www.linkedin.com/in/antonio-osuna/"
+          target="_blank"
+          rel="noopener"
+          class="nav-linkedin"
+          aria-label="Antonio Osuna on LinkedIn"
+          data-i18n-aria="nav.linkedinAriaLabel"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.446-2.136 2.940v5.666H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="nav-right">
+        <div class="nav-lang" role="group" aria-label="Language">
+          <button class="lang-btn" data-lang="en" aria-label="English" aria-pressed="true">
+            <svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="60" height="36" fill="#00247d" />
+              <path d="M0,0 L60,36 M60,0 L0,36" stroke="#fff" stroke-width="6" />
+              <path d="M0,0 L60,36 M60,0 L0,36" stroke="#cf142b" stroke-width="2" />
+              <path d="M30,0 V36 M0,18 H60" stroke="#fff" stroke-width="10" />
+              <path d="M30,0 V36 M0,18 H60" stroke="#cf142b" stroke-width="6" />
+            </svg>
+          </button>
+          <button class="lang-btn" data-lang="es" aria-label="Español" aria-pressed="false">
+            <svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="60" height="36" fill="#c60b1e" />
+              <rect y="9" width="60" height="18" fill="#ffc400" />
+            </svg>
+          </button>
+        </div>
+
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          aria-expanded="false"
+          aria-controls="navMenu"
+          aria-label="Toggle navigation menu"
+          data-i18n-aria="nav.toggleAriaLabel"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="nav-menu" id="navMenu">
+          <a href="../../index.html#home" data-i18n="nav.home">Home</a>
+          <a href="../../index.html#experience" data-i18n="nav.experience">Experience</a>
+          <a href="../../index.html#contact" data-i18n="nav.contact">Contact</a>
+          <a href="../index.html" class="nav-cta" data-i18n="nav.demos">Real Demos</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================= WIZARD PROGRESS BAR =======================
+       Sticky under the nav, visible through the whole flow. Shows only
+       the 3 big phases (Details / Selection / Deposit); the sub-label
+       underneath names the current screen within that phase. -->
+  <div class="wiz-progress-bar" id="wizProgressBar">
+    <div class="container wiz-progress-inner">
+      <ol class="wiz-phases" id="wizPhases">
+        <li class="wiz-phase" data-phase="details">
+          <span class="wiz-phase-num">1</span>
+          <span class="wiz-phase-label" data-i18n="eventWizard.progress.phase.details">Details</span>
+        </li>
+        <li class="wiz-phase" data-phase="selection">
+          <span class="wiz-phase-num">2</span>
+          <span class="wiz-phase-label" data-i18n="eventWizard.progress.phase.selection">Selection</span>
+        </li>
+        <li class="wiz-phase" data-phase="deposit">
+          <span class="wiz-phase-num">3</span>
+          <span class="wiz-phase-label" data-i18n="eventWizard.progress.phase.deposit">Deposit</span>
+        </li>
+      </ol>
+      <div class="wiz-progress-actions">
+        <button type="button" class="wiz-save-toggle" id="saveProgressToggleBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 3h11l3 3v15H5z" />
+            <path d="M8 3v6h8V3" />
+            <path d="M8 21v-7h8v7" />
+          </svg>
+          <span data-i18n="eventWizard.progress.saveBtn">Save progress</span>
+        </button>
+        <button type="button" class="wiz-reset-toggle" id="resetWizardBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 12a9 9 0 1 1 2.64 6.36" />
+            <path d="M3 21v-6h6" />
+          </svg>
+          <span data-i18n="eventWizard.progress.resetBtn">Reset</span>
+        </button>
+      </div>
+    </div>
+    <p class="wiz-phase-sublabel container" id="wizPhaseSubLabel" data-i18n="eventWizard.sublabel.name">Let's start with you</p>
+  </div>
+
+  <!-- ============================ PAGE CONTENT ============================ -->
+  <main>
+    <section class="section wiz-hero-section">
+      <div class="container">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="../../index.html" data-i18n="nav.home">Home</a></li>
+            <li><a href="../index.html" data-i18n="nav.demos">Real Demos</a></li>
+            <li aria-current="page" data-i18n="demos.eventWizard.title">Resort event wizard</li>
+          </ol>
+        </nav>
+
+        <h1>Osuna Resort &amp; Spa <span class="wiz-hero-accent" data-i18n="eventWizard.hero.accent">— Resort Event Wizard</span></h1>
+        <p class="wiz-intro-text" data-i18n="eventWizard.hero.intro">
+          A self-serve planning flow for booking a private event at a
+          beachfront resort &mdash; weddings, corporate retreats, milestone
+          celebrations, family reunions, and more. Pick a date, browse
+          event and reception venues, choose a package, and reserve with a
+          deposit, without a single phone call.
+        </p>
+
+        <div class="wiz-integrations">
+          <div class="wiz-integration-chip">
+            <span class="wiz-integration-chip-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 21V8l8-5 8 5v13" />
+                <path d="M9 21v-7h6v7" />
+                <path d="M9 12h.01M15 12h.01M9 8h.01M15 8h.01" />
+              </svg>
+            </span>
+            <span class="wiz-integration-chip-body">
+              <strong data-i18n="eventWizard.hero.chip1.title">Connected to the PMS</strong>
+              <span data-i18n="eventWizard.hero.chip1.body">Property Management System &mdash; holds the rooms and event spaces the moment a deposit clears.</span>
+            </span>
+          </div>
+          <div class="wiz-integration-chip">
+            <span class="wiz-integration-chip-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="8" r="3.25" />
+                <path d="M3.5 20c0-3.5 2.5-6 5.5-6s5.5 2.5 5.5 6" />
+                <path d="M16 4.5c1.5.3 2.6 1.7 2.6 3.3s-1.1 3-2.6 3.3M20.5 20c0-3-2-5.3-4.5-5.9" />
+              </svg>
+            </span>
+            <span class="wiz-integration-chip-body">
+              <strong data-i18n="eventWizard.hero.chip2.title">Connected to the CRM</strong>
+              <span data-i18n="eventWizard.hero.chip2.body">Customer Relationship Management &mdash; gives sales full guest and event context before they ever call.</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="demo-quicktour">
+          <p class="demo-quicktour-heading">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 6 1.5 1.5L7 5" /><path d="M10 6h11" /><path d="m3 12 1.5 1.5L7 11" /><path d="M10 12h11" /><path d="m3 18 1.5 1.5L7 16" /><path d="M10 18h11" /></svg>
+            <strong data-i18n="eventWizard.quickTour.heading">Quick tour &mdash; the happy path</strong>
+          </p>
+          <ul class="demo-quicktour-list">
+            <li class="demo-quicktour-item"><span class="demo-quicktour-num">1</span><p data-i18n="eventWizard.quickTour.step1">Tell us what you're planning and how many guests.</p></li>
+            <li class="demo-quicktour-item"><span class="demo-quicktour-num">2</span><p data-i18n="eventWizard.quickTour.step2">Pick an available date and browse real venues, priced live.</p></li>
+            <li class="demo-quicktour-item"><span class="demo-quicktour-num">3</span><p data-i18n="eventWizard.quickTour.step3">Get an instant estimate &mdash; a package for weddings, straight to your total otherwise.</p></li>
+            <li class="demo-quicktour-item"><span class="demo-quicktour-num">4</span><p data-i18n="eventWizard.quickTour.step4">Reserve with a simulated deposit and see it confirmed in seconds.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wiz-wizard-section">
+      <div class="container wiz-wizard-container">
+
+        <!-- ====================== STEP: NAME ====================== -->
+        <section class="wiz-step" id="step-name" data-step="name" data-phase="details">
+          <h2 data-i18n="eventWizard.step.name.heading">What's your name?</h2>
+          <div class="wiz-field-row">
+            <label class="wiz-field">
+              <span data-i18n="eventWizard.step.name.firstNameLabel">First name *</span>
+              <input type="text" id="firstNameInput" placeholder="e.g. Jamie" data-i18n-placeholder="eventWizard.step.name.firstNamePlaceholder" autocomplete="given-name" />
+            </label>
+            <label class="wiz-field">
+              <span data-i18n="eventWizard.step.name.lastNameLabel">Last name *</span>
+              <input type="text" id="lastNameInput" placeholder="e.g. Rivera" data-i18n-placeholder="eventWizard.step.name.lastNamePlaceholder" autocomplete="family-name" />
+            </label>
+          </div>
+          <p class="wiz-error" id="nameError" hidden data-i18n="eventWizard.errors.nameRequired">Please enter both a first and last name.</p>
+          <div class="wiz-actions wiz-actions-end">
+            <button type="button" class="btn" id="nameNextBtn" data-i18n="eventWizard.actions.continue">Continue &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ====================== STEP: EVENT TYPE ====================== -->
+        <section class="wiz-step" id="step-event-type" data-step="event-type" data-phase="details" hidden>
+          <h2 data-i18n="eventWizard.step.eventType.heading">What are you planning?</h2>
+          <div class="wiz-eventtype-list" id="eventTypeList"></div>
+          <p class="wiz-error" id="eventTypeError" hidden data-i18n="eventWizard.errors.pleaseChooseEventType">Please choose an event type.</p>
+          <div class="wiz-actions">
+            <button type="button" class="btn-outline" id="eventTypeBackBtn" data-i18n="eventWizard.actions.back">&larr; Back</button>
+            <button type="button" class="btn" id="eventTypeNextBtn" data-i18n="eventWizard.actions.continue">Continue &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ====================== STEP: GUESTS ====================== -->
+        <section class="wiz-step" id="step-guests" data-step="guests" data-phase="details" hidden>
+          <h2 data-i18n="eventWizard.step.guests.heading">How many guests?</h2>
+          <p class="wiz-step-sub" data-i18n="eventWizard.step.guests.sub">A rough headcount for your event.</p>
+
+          <div class="wiz-guest-counter">
+            <button type="button" class="wiz-guest-btn" id="guestsMinusBtn" aria-label="Fewer guests" data-i18n-aria="eventWizard.guests.fewerAriaLabel">&minus;</button>
+            <div class="wiz-guest-value-wrap">
+              <span class="wiz-guest-value" id="totalGuestsValue">120</span>
+              <span class="wiz-guest-value-label" data-i18n="eventWizard.guests.label">guests</span>
+            </div>
+            <button type="button" class="wiz-guest-btn" id="guestsPlusBtn" aria-label="More guests" data-i18n-aria="eventWizard.guests.moreAriaLabel">&plus;</button>
+          </div>
+          <input type="range" id="totalGuestsSlider" min="10" max="1000" step="10" value="120" class="wiz-guest-slider" />
+
+          <label class="wiz-checkbox-row wiz-guests-1000-row">
+            <input type="checkbox" id="guests1000PlusToggle" />
+            <span data-i18n="eventWizard.guests.the1000PlusLabel">Actually, we're planning for 1,000+ guests</span>
+          </label>
+
+          <div id="overnightGuestsBlock" class="wiz-overnight-block">
+            <p class="wiz-field-label">
+              <span data-i18n="eventWizard.guests.overnightQuestion">Of those, about how many will stay 3 nights at the resort?</span>
+              <span class="wiz-field-hint" data-i18n="eventWizard.guests.overnightHint">Arrival night, event night, and the night after.</span>
+            </p>
+            <div class="wiz-guest-counter wiz-guest-counter-sm">
+              <button type="button" class="wiz-guest-btn" id="overnightMinusBtn" aria-label="Fewer overnight guests" data-i18n-aria="eventWizard.guests.fewerOvernightAriaLabel">&minus;</button>
+              <div class="wiz-guest-value-wrap">
+                <span class="wiz-guest-value" id="overnightGuestsValue">70</span>
+                <span class="wiz-guest-value-label" data-i18n="eventWizard.guests.overnightLabel">staying overnight</span>
+              </div>
+              <button type="button" class="wiz-guest-btn" id="overnightPlusBtn" aria-label="More overnight guests" data-i18n-aria="eventWizard.guests.moreOvernightAriaLabel">&plus;</button>
+            </div>
+            <input type="range" id="overnightGuestsSlider" min="0" max="120" step="5" value="70" class="wiz-guest-slider" />
+          </div>
+
+          <p class="wiz-error" id="guestsError" hidden data-i18n="eventWizard.errors.invalidGuestCount">Please enter a valid guest count.</p>
+          <div class="wiz-actions">
+            <button type="button" class="btn-outline" id="guestsBackBtn" data-i18n="eventWizard.actions.back">&larr; Back</button>
+            <button type="button" class="btn" id="guestsNextBtn" data-i18n="eventWizard.actions.continue">Continue &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ============== STEP: 1,000+ CONTACT BRANCH ============== -->
+        <section class="wiz-step" id="step-contact-branch" data-step="contact-branch" data-phase="details" hidden>
+          <h2 data-i18n="eventWizard.step.contactBranch.heading">Let's plan something big, together</h2>
+          <p class="wiz-step-sub" data-i18n="eventWizard.step.contactBranch.sub">
+            Events of 1,000+ guests get a dedicated planning team instead of
+            a self-serve quote. Save your details, or grab a time on their
+            calendar now.
+          </p>
+          <div class="wiz-actions wiz-actions-start">
+            <button type="button" class="btn-outline" id="contactBranchBackBtn" data-i18n="eventWizard.step.contactBranch.backBtn">&larr; Change guest count</button>
+            <button type="button" class="btn" id="contactBranchScheduleBtn" data-i18n="eventWizard.step.contactBranch.scheduleBtn">Schedule a call &rarr;</button>
+          </div>
+          <p class="wiz-schedule-confirmation" id="contactBranchScheduleNote" hidden></p>
+        </section>
+
+        <!-- ====================== STEP: DATE ====================== -->
+        <section class="wiz-step" id="step-date" data-step="date" data-phase="details" hidden>
+          <h2 data-i18n="eventWizard.step.date.heading">When's your event?</h2>
+          <p class="wiz-step-sub" data-i18n="eventWizard.step.date.sub">Grayed-out days are already booked for a group your size.</p>
+
+          <div class="wiz-calendar" id="wizCalendar">
+            <div class="wiz-calendar-header">
+              <button type="button" class="wiz-calendar-nav" id="calendarPrevBtn" aria-label="Previous month" data-i18n-aria="eventWizard.calendar.prevAriaLabel">&larr;</button>
+              <button type="button" class="wiz-calendar-month" id="calendarMonthLabel" aria-label="Jump to a month or year" data-i18n-aria="eventWizard.calendar.jumpAriaLabel">Month Year</button>
+              <button type="button" class="wiz-calendar-nav" id="calendarNextBtn" aria-label="Next month" data-i18n-aria="eventWizard.calendar.nextAriaLabel">&rarr;</button>
+            </div>
+            <div class="wiz-calendar-jump" id="calendarJumpPanel" hidden>
+              <select id="calendarJumpMonth" aria-label="Jump to month" data-i18n-aria="eventWizard.calendar.jumpMonthAriaLabel"></select>
+              <select id="calendarJumpYear" aria-label="Jump to year" data-i18n-aria="eventWizard.calendar.jumpYearAriaLabel"></select>
+            </div>
+            <div class="wiz-calendar-weekdays">
+              <span data-i18n="eventWizard.calendar.weekday.su">Su</span><span data-i18n="eventWizard.calendar.weekday.mo">Mo</span><span data-i18n="eventWizard.calendar.weekday.tu">Tu</span><span data-i18n="eventWizard.calendar.weekday.we">We</span><span data-i18n="eventWizard.calendar.weekday.th">Th</span><span data-i18n="eventWizard.calendar.weekday.fr">Fr</span><span data-i18n="eventWizard.calendar.weekday.sa">Sa</span>
+            </div>
+            <div class="wiz-calendar-grid" id="calendarGrid"></div>
+            <div class="wiz-calendar-legend">
+              <span><i class="wiz-legend-dot is-available"></i> <span data-i18n="eventWizard.calendar.legend.available">Available</span></span>
+              <span><i class="wiz-legend-dot is-unavailable"></i> <span data-i18n="eventWizard.calendar.legend.unavailable">Already booked</span></span>
+              <span><i class="wiz-legend-dot is-selected"></i> <span data-i18n="eventWizard.calendar.legend.selected">Your date</span></span>
+            </div>
+          </div>
+
+          <p class="wiz-selected-date" id="selectedDateDisplay">No date selected yet.</p>
+          <p class="wiz-error" id="dateError" hidden data-i18n="eventWizard.errors.pleaseChooseDate">Please pick an available date.</p>
+          <div class="wiz-actions">
+            <button type="button" class="btn-outline" id="dateBackBtn" data-i18n="eventWizard.actions.back">&larr; Back</button>
+            <button type="button" class="btn" id="dateNextBtn" data-i18n="eventWizard.actions.continue">Continue &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ================ STEP: MAIN VENUE (copy adapts to event type) ================ -->
+        <section class="wiz-step" id="step-main-venue" data-step="main-venue" data-phase="details" hidden>
+          <h2 id="mainVenueHeading" data-i18n="eventWizard.step.mainVenue.heading">Choose your venue</h2>
+          <p class="wiz-step-sub" id="mainVenueSub" data-i18n="eventWizard.step.mainVenue.sub">Where your event takes place.</p>
+          <div class="wiz-venue-list" id="mainVenueList"></div>
+          <p class="wiz-error" id="mainVenueError" hidden data-i18n="eventWizard.errors.pleaseChooseMainVenue">Please choose a venue.</p>
+          <div class="wiz-actions">
+            <button type="button" class="btn-outline" id="mainVenueBackBtn" data-i18n="eventWizard.actions.back">&larr; Back</button>
+            <button type="button" class="btn" id="mainVenueNextBtn" data-i18n="eventWizard.actions.continue">Continue &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ================ STEP: RECEPTION VENUE (weddings only) ================ -->
+        <section class="wiz-step" id="step-reception-venue" data-step="reception-venue" data-phase="details" hidden>
+          <h2 data-i18n="eventWizard.step.receptionVenue.heading">Choose your reception space</h2>
+          <p class="wiz-step-sub" data-i18n="eventWizard.step.receptionVenue.sub">Where you'll gather afterward.</p>
+          <div class="wiz-venue-list" id="receptionVenueList"></div>
+          <p class="wiz-error" id="receptionVenueError" hidden data-i18n="eventWizard.errors.pleaseChooseReceptionVenue">Please choose a reception space.</p>
+          <div class="wiz-actions">
+            <button type="button" class="btn-outline" id="receptionBackBtn" data-i18n="eventWizard.actions.back">&larr; Back</button>
+            <button type="button" class="btn" id="receptionNextBtn" data-i18n="eventWizard.actions.continue">Continue &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ====================== STEP: MOOD (weddings only) ====================== -->
+        <section class="wiz-step" id="step-mood" data-step="mood" data-phase="details" hidden>
+          <h2 data-i18n="eventWizard.step.mood.heading">What's the mood?</h2>
+          <div class="wiz-mood-list" id="moodList"></div>
+          <p class="wiz-error" id="moodError" hidden data-i18n="eventWizard.errors.pleaseChooseMood">Please choose a mood.</p>
+          <div class="wiz-actions">
+            <button type="button" class="btn-outline" id="moodBackBtn" data-i18n="eventWizard.actions.back">&larr; Back</button>
+            <button type="button" class="btn" id="moodNextBtn" data-i18n="eventWizard.step.mood.nextBtn">See my estimate &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ====================== STEP: QUOTE ====================== -->
+        <section class="wiz-step" id="step-quote" data-step="quote" data-phase="selection" hidden>
+          <h2 data-i18n="eventWizard.step.quote.heading">Your estimate</h2>
+          <p class="wiz-step-sub" id="quoteStepSub" data-i18n="eventWizard.step.quote.sub">Pick a package next to see your final total.</p>
+          <div class="wiz-quote-card" id="quoteBreakdown"></div>
+          <div class="wiz-actions">
+            <button type="button" class="btn-outline" id="quoteBackBtn" data-i18n="eventWizard.actions.back">&larr; Back</button>
+            <button type="button" class="btn" id="quoteNextBtn" data-i18n="eventWizard.step.quote.nextBtn">Choose a package &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ==================== STEP: PACKAGE (weddings only) ==================== -->
+        <section class="wiz-step" id="step-package" data-step="package" data-phase="selection" hidden>
+          <h2 data-i18n="eventWizard.step.package.heading">Choose your package</h2>
+          <p class="wiz-step-sub" data-i18n="eventWizard.step.package.sub">Every package is priced per guest, on top of your estimate.</p>
+          <div class="wiz-package-list" id="packageList"></div>
+          <div class="wiz-final-total-card" id="finalTotalCard" hidden></div>
+          <p class="wiz-error" id="packageError" hidden data-i18n="eventWizard.errors.pleaseChoosePackage">Please choose a package.</p>
+          <div class="wiz-actions">
+            <button type="button" class="btn-outline" id="packageBackBtn" data-i18n="eventWizard.actions.back">&larr; Back</button>
+            <button type="button" class="btn" id="packageNextBtn" data-i18n="eventWizard.step.package.nextBtn">Continue to terms &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ====================== STEP: TERMS ====================== -->
+        <section class="wiz-step" id="step-terms" data-step="terms" data-phase="deposit" hidden>
+          <h2 data-i18n="eventWizard.step.terms.heading">Terms &amp; conditions</h2>
+          <div class="wiz-terms-card">
+            <ul>
+              <li data-i18n="eventWizard.terms.bullet1">Your $1,500 deposit holds your date and venue for 5 days.</li>
+              <li data-i18n="eventWizard.terms.bullet2">The balance is due within those same 5 days, or the hold may be released.</li>
+              <li data-i18n="eventWizard.terms.bullet3">Guest counts and venue selections can be adjusted up to 30 days before the event.</li>
+              <li data-i18n="eventWizard.terms.bullet4">Cancel more than 90 days out for a full refund; inside 90 days, the deposit isn't refundable.</li>
+              <li data-i18n="eventWizard.terms.bullet5">All prices here are estimates and will be finalized with your event specialist.</li>
+            </ul>
+          </div>
+          <label class="wiz-checkbox-row">
+            <input type="checkbox" id="termsAcceptCheckbox" />
+            <span data-i18n="eventWizard.terms.acceptCheckbox">I've read and accept these terms</span>
+          </label>
+          <p class="wiz-error" id="termsError" hidden data-i18n="eventWizard.errors.pleaseAcceptTerms">Please accept the terms to continue.</p>
+          <div class="wiz-actions">
+            <button type="button" class="btn-outline" id="termsBackBtn" data-i18n="eventWizard.actions.back">&larr; Back</button>
+            <button type="button" class="btn" id="termsNextBtn" data-i18n="eventWizard.step.terms.nextBtn">Continue to checkout &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ==================== STEP: CHECKOUT ==================== -->
+        <section class="wiz-step" id="step-checkout" data-step="checkout" data-phase="deposit" hidden>
+          <h2 data-i18n="eventWizard.step.checkout.heading">Review &amp; pay your deposit</h2>
+
+          <details class="wiz-order-summary">
+            <summary class="wiz-order-summary-toggle">
+              <span class="wiz-order-summary-toggle-label">
+                <svg class="wiz-order-summary-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
+                <span data-i18n="eventWizard.orderSummary.heading">Order summary</span>
+              </span>
+              <span class="wiz-order-summary-total" id="orderSummaryTotalPreview"></span>
+            </summary>
+            <dl class="wiz-order-summary-list" id="orderSummary"></dl>
+          </details>
+
+          <div class="wiz-payment-card">
+            <h3 data-i18n="eventWizard.checkout.paymentHeading">Payment</h3>
+            <p class="wiz-field-hint" data-i18n="eventWizard.checkout.simulatedNote">Simulated payment &mdash; no real card is charged.</p>
+
+            <div class="wiz-save-required-note" id="saveRequiredNote" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v5M12 16h.01" />
+              </svg>
+              <span data-i18n="eventWizard.checkout.saveRequiredNote">Save your progress first &mdash; that's how your specialist follows up.</span>
+            </div>
+
+            <label class="wiz-field">
+              <span data-i18n="eventWizard.checkout.cardNameLabel">Name on card *</span>
+              <input type="text" id="cardNameInput" placeholder="e.g. Jamie Rivera" data-i18n-placeholder="eventWizard.checkout.cardNamePlaceholder" />
+              <span class="wiz-field-error" id="cardNameFieldError" hidden data-i18n="eventWizard.errors.cardNameRequired">Enter the name on the card.</span>
+            </label>
+            <label class="wiz-field">
+              <span data-i18n="eventWizard.checkout.cardNumberLabel">Card number *</span>
+              <input type="text" id="cardNumberInput" placeholder="4242 4242 4242 4242" inputmode="numeric" maxlength="19" />
+              <span class="wiz-field-error" id="cardNumberFieldError" hidden data-i18n="eventWizard.errors.cardNumberInvalid">Enter a valid card number.</span>
+            </label>
+            <div class="wiz-field-row">
+              <label class="wiz-field">
+                <span data-i18n="eventWizard.checkout.expiryLabel">Expiry *</span>
+                <span class="wiz-expiry-selects">
+                  <select id="cardExpiryMonthSelect" aria-label="Expiry month" data-i18n-aria="eventWizard.checkout.expiryMonthAriaLabel"></select>
+                  <select id="cardExpiryYearSelect" aria-label="Expiry year" data-i18n-aria="eventWizard.checkout.expiryYearAriaLabel"></select>
+                </span>
+                <span class="wiz-field-error" id="cardExpiryFieldError" hidden data-i18n="eventWizard.errors.cardExpiryRequired">Select an expiry month and year.</span>
+              </label>
+              <label class="wiz-field">
+                <span data-i18n="eventWizard.checkout.cvvLabel">CVV *</span>
+                <input type="text" id="cardCvvInput" placeholder="123" inputmode="numeric" maxlength="4" />
+                <span class="wiz-field-error" id="cardCvvFieldError" hidden data-i18n="eventWizard.errors.cardCvvInvalid">Enter a valid CVV.</span>
+              </label>
+            </div>
+
+            <button type="button" class="btn wiz-pay-btn" id="payDepositBtn">Pay $1,500 deposit</button>
+          </div>
+
+          <div class="wiz-actions wiz-actions-start">
+            <button type="button" class="btn-outline" id="checkoutBackBtn" data-i18n="eventWizard.actions.back">&larr; Back</button>
+          </div>
+        </section>
+
+        <!-- =================== STEP: CONFIRMATION =================== -->
+        <section class="wiz-step" id="step-confirmation" data-step="confirmation" data-phase="deposit" hidden>
+          <div class="wiz-confirmation-check" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="24" cy="24" r="20" />
+              <path d="M15 24l6 6 12-13" />
+            </svg>
+          </div>
+          <h2 id="confirmationHeading">You're booked!</h2>
+          <p class="wiz-step-sub" id="confirmationSubtext" data-i18n="eventWizard.confirmation.defaultSubtext">
+            An event specialist will reach out shortly to confirm your booking.
+          </p>
+
+          <div class="wiz-balance-card">
+            <p class="wiz-field-label" data-i18n="eventWizard.confirmation.balanceDueLabel">Balance due</p>
+            <p class="wiz-balance-value" id="balanceDueValue">$0</p>
+            <p class="wiz-field-hint" data-i18n="eventWizard.confirmation.heldHint">Your date and venue are held for:</p>
+            <div class="wiz-countdown" id="countdownDisplay">
+              <div class="wiz-countdown-unit"><span id="countdownDays">5</span><label data-i18n="eventWizard.countdown.days">days</label></div>
+              <div class="wiz-countdown-unit"><span id="countdownHours">00</span><label data-i18n="eventWizard.countdown.hours">hrs</label></div>
+              <div class="wiz-countdown-unit"><span id="countdownMinutes">00</span><label data-i18n="eventWizard.countdown.minutes">min</label></div>
+              <div class="wiz-countdown-unit"><span id="countdownSeconds">00</span><label data-i18n="eventWizard.countdown.seconds">sec</label></div>
+            </div>
+          </div>
+
+          <div class="wiz-actions wiz-actions-center">
+            <button type="button" class="btn" id="scheduleCallBtn" data-i18n="eventWizard.confirmation.scheduleCallBtn">Schedule a call with your specialist</button>
+          </div>
+          <p class="wiz-schedule-confirmation" id="scheduleConfirmationNote" hidden></p>
+        </section>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================= SAVE PROGRESS FLYOUT ======================= -->
+  <div class="wiz-save-backdrop" id="saveBackdrop"></div>
+  <aside class="wiz-save-flyout" id="saveFlyout" role="dialog" aria-label="Save your progress" data-i18n-aria="eventWizard.saveFlyout.ariaLabel">
+    <div class="wiz-save-header">
+      <h3 data-i18n="eventWizard.saveFlyout.heading">Save your progress</h3>
+      <button type="button" class="inv-modal-close" id="saveFlyoutCloseBtn" aria-label="Close" data-i18n-aria="eventWizard.common.closeAriaLabel">&times;</button>
+    </div>
+    <div class="wiz-save-body">
+      <p class="wiz-save-flyout-required-note" id="saveFlyoutRequiredNote" hidden data-i18n="eventWizard.saveFlyout.requiredNote">Save to continue &mdash; this is required before paying your deposit.</p>
+      <p data-i18n="eventWizard.saveFlyout.body">We'll keep your quote ready. Leave an email or a cell number and we can pick up right where you left off.</p>
+
+      <label class="wiz-field">
+        <span data-i18n="eventWizard.saveFlyout.emailLabel">Email</span>
+        <input type="email" id="saveEmailInput" placeholder="you@email.com" data-i18n-placeholder="eventWizard.saveFlyout.emailPlaceholder" />
+      </label>
+
+      <p class="wiz-or" data-i18n="eventWizard.saveFlyout.orDivider">— or —</p>
+
+      <div class="wiz-field-row">
+        <label class="wiz-field wiz-field-country">
+          <span data-i18n="eventWizard.saveFlyout.countryCodeLabel">Country code</span>
+          <input type="text" id="saveCountryCodeInput" placeholder="+52" data-i18n-placeholder="eventWizard.saveFlyout.countryCodePlaceholder" />
+        </label>
+        <label class="wiz-field">
+          <span data-i18n="eventWizard.saveFlyout.cellPhoneLabel">Cell phone</span>
+          <input type="tel" id="savePhoneInput" placeholder="998 123 4567" data-i18n-placeholder="eventWizard.saveFlyout.cellPhonePlaceholder" />
+        </label>
+      </div>
+
+      <label class="wiz-checkbox-row">
+        <input type="checkbox" id="savePrivacyCheckbox" />
+        <span><span data-i18n="eventWizard.saveFlyout.agreePrefix">I agree to the</span> <button type="button" class="wiz-link-btn" id="privacyPolicyLinkBtn" data-i18n="eventWizard.saveFlyout.privacyPolicyLinkText">privacy policy</button></span>
+      </label>
+
+      <p class="wiz-error" id="saveContactMissingError" hidden data-i18n="eventWizard.errors.saveContactMissing">Enter an email or phone number.</p>
+      <p class="wiz-error" id="saveEmailFormatError" hidden data-i18n="eventWizard.errors.saveEmailFormat">That email doesn't look right.</p>
+      <p class="wiz-error" id="saveCountryCodeError" hidden data-i18n="eventWizard.errors.saveCountryCodeMissing">Add a country code, e.g. +52.</p>
+      <p class="wiz-error" id="savePhoneFormatError" hidden data-i18n="eventWizard.errors.savePhoneFormat">Enter a valid phone number.</p>
+      <p class="wiz-error" id="savePrivacyError" hidden data-i18n="eventWizard.errors.savePrivacyRequired">Check the box to accept the privacy policy.</p>
+
+      <button type="button" class="btn" id="saveConfirmBtn" data-i18n="eventWizard.saveFlyout.saveBtn">Save my progress</button>
+      <p class="wiz-save-confirmation" id="saveConfirmationNote" hidden data-i18n="eventWizard.saveFlyout.savedConfirmation">Saved! We've sent a link to pick up right where you left off.</p>
+    </div>
+  </aside>
+
+  <!-- ======================= RESET CONFIRM MODAL ======================= -->
+  <div class="inv-modal-backdrop" id="resetBackdrop"></div>
+  <div class="inv-modal wiz-reset-modal" id="resetModal" role="dialog" aria-label="Start over" data-i18n-aria="eventWizard.resetModal.ariaLabel">
+    <div class="inv-modal-header">
+      <h3 data-i18n="eventWizard.resetModal.heading">Start over?</h3>
+      <button type="button" class="inv-modal-close" id="resetModalCloseBtn" aria-label="Close" data-i18n-aria="eventWizard.common.closeAriaLabel">&times;</button>
+    </div>
+    <div class="inv-modal-body">
+      <p data-i18n="eventWizard.resetModal.body">This clears your current answers and takes you back to step 1.</p>
+    </div>
+    <div class="inv-modal-actions">
+      <button type="button" class="btn-outline" id="resetCancelBtn" data-i18n="eventWizard.resetModal.cancelBtn">Cancel</button>
+      <button type="button" class="btn wiz-btn-danger" id="resetConfirmBtn" data-i18n="eventWizard.resetModal.confirmBtn">Start over</button>
+    </div>
+  </div>
+
+  <!-- ======================= PRIVACY POLICY MODAL ======================= -->
+  <div class="inv-modal-backdrop" id="privacyBackdrop"></div>
+  <div class="inv-modal wiz-privacy-modal" id="privacyModal" role="dialog" aria-label="Privacy policy" data-i18n-aria="eventWizard.privacyModal.ariaLabel">
+    <div class="inv-modal-header">
+      <h3 data-i18n="eventWizard.privacyModal.heading">Privacy policy (demo)</h3>
+      <button type="button" class="inv-modal-close" id="privacyModalCloseBtn" aria-label="Close" data-i18n-aria="eventWizard.common.closeAriaLabel">&times;</button>
+    </div>
+    <div class="inv-modal-body">
+      <p data-i18n="eventWizard.privacyModal.p1">This is a simulated policy for a portfolio demo — nothing you enter here is stored or sent anywhere.</p>
+      <p data-i18n="eventWizard.privacyModal.p2">In the real product, this section would plainly cover: what we collect (your name, contact info, and event details), why (to hold your date and follow up about your event), who sees it (your assigned event specialist and the resort's booking team), and how to have it deleted at any time by contacting us directly.</p>
+    </div>
+  </div>
+
+  <!-- ======================= SCHEDULE CALL MODAL ======================= -->
+  <div class="inv-modal-backdrop" id="scheduleBackdrop"></div>
+  <div class="inv-modal wiz-schedule-modal" id="scheduleModal" role="dialog" aria-label="Schedule a call" data-i18n-aria="eventWizard.scheduleModal.ariaLabel">
+    <div class="inv-modal-header">
+      <h3 data-i18n="eventWizard.scheduleModal.heading">Schedule a call</h3>
+      <button type="button" class="inv-modal-close" id="scheduleModalCloseBtn" aria-label="Close" data-i18n-aria="eventWizard.common.closeAriaLabel">&times;</button>
+    </div>
+    <div class="inv-modal-body">
+      <p class="wiz-field-hint" data-i18n="eventWizard.scheduleModal.hint">Pick a time that works for you (simulated — like a Calendly booking).</p>
+      <div class="wiz-schedule-slots" id="scheduleSlotList"></div>
+      <p class="wiz-error" id="scheduleError" hidden data-i18n="eventWizard.errors.pleaseChooseTimeSlot">Please pick a time slot.</p>
+    </div>
+    <div class="inv-modal-actions">
+      <button type="button" class="btn-outline" id="scheduleCancelBtn" data-i18n="eventWizard.scheduleModal.cancelBtn">Cancel</button>
+      <button type="button" class="btn" id="scheduleConfirmBtn" data-i18n="eventWizard.scheduleModal.confirmBtn">Confirm time</button>
+    </div>
+  </div>
+
+  <!-- ======================= STICKY WHATSAPP BUTTON ======================= -->
+  <a
+    class="whatsapp-button"
+    href="https://wa.me/5219988459830?text=I%20saw%20your%20profile%2C%20let's%20chat!"
+    target="_blank"
+    rel="noopener"
+    aria-label="Chat on WhatsApp"
+    data-i18n-aria="whatsapp.ariaLabel"
+  >
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M16 4C9.373 4 4 9.373 4 16c0 2.09.545 4.14 1.58 5.947L4 28l6.223-1.554A11.94 11.94 0 0 0 16 28c6.627 0 12-5.373 12-12S22.627 4 16 4Z"
+        fill="#ffffff"
+      />
+      <path
+        d="M22.1 19.1c-.32-.16-1.9-.94-2.2-1.05-.3-.11-.51-.16-.73.16-.21.32-.84 1.05-1.03 1.26-.19.21-.38.24-.7.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.49.14-.65.14-.14.32-.38.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.73-1.75-1-2.4-.26-.62-.53-.54-.73-.55h-.62c-.21 0-.56.08-.85.4-.29.32-1.12 1.09-1.12 2.67 0 1.57 1.15 3.09 1.31 3.31.16.21 2.26 3.45 5.47 4.84.76.33 1.36.53 1.82.67.77.24 1.46.21 2.01.13.61-.09 1.9-.78 2.17-1.53.27-.75.27-1.4.19-1.53-.08-.13-.29-.21-.61-.37Z"
+        fill="#25d366"
+      />
+    </svg>
+  </a>
+
+  <script src="../../js/i18n.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="event-wizard-data.js"></script>
+  <script src="event-wizard.js"></script>
+</body>
+</html>
