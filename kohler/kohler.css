@@ -336,11 +336,19 @@
   color: var(--kh-ramp);
 }
 
-.kh-acc-item {
+.kh-accordion {
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  margin-bottom: 0.6rem;
+  border-radius: var(--radius-lg);
   overflow: hidden;
+}
+
+.kh-acc-item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.kh-acc-item:last-child {
+  border-bottom: none;
 }
 
 .kh-acc-heading {
@@ -447,11 +455,6 @@
 }
 
 /* ============================== FIRST 90 DAYS ============================== */
-
-.kh-90-intro {
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-sm);
-}
 
 .kh-90-grid {
   display: grid;
