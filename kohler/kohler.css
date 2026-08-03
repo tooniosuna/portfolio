@@ -1,0 +1,656 @@
+/* ==========================================================================
+   KOHLER PAGE — page-scoped styles only.
+   Everything here is prefixed .kh- so nothing collides with, or needs to
+   touch, the shared site stylesheet. Reuses site CSS variables (colors,
+   fonts, spacing, radius) from styles.css for visual consistency.
+   ========================================================================== */
+
+/* Purple accent used only on this page, for the "Questions" nav button.
+   The rotating 4-color set on the timeline/90-day numbers matches the
+   site's existing quick-tour component (styles.css) for consistency. */
+:root {
+  --kh-purple: #7c4fe0;
+  --kh-purple-2: #b06ee0;
+  --kh-direct: #0f9d78;
+  --kh-adjacent: #2f6fed;
+  --kh-ramp: #c9791b;
+  --kh-danger: #c0392b;
+  --kh-rotate-1: #2f6fed;
+  --kh-rotate-2: #0f9d78;
+  --kh-rotate-3: #c9791b;
+  --kh-rotate-4: #a5309c;
+}
+
+/* ============================== NAV EXTRA ============================== */
+
+.kh-questions-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.6rem;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--kh-purple);
+  background:
+    linear-gradient(rgba(124, 79, 224, 0.09), rgba(124, 79, 224, 0.09)) padding-box,
+    linear-gradient(120deg, var(--kh-purple), var(--kh-purple-2)) border-box;
+  border: 2px solid transparent;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.kh-questions-btn:hover,
+.kh-questions-btn:focus-visible {
+  background:
+    linear-gradient(rgba(124, 79, 224, 0.16), rgba(124, 79, 224, 0.16)) padding-box,
+    linear-gradient(120deg, var(--kh-purple), var(--kh-purple-2)) border-box;
+  box-shadow: 0 0 0 4px rgba(124, 79, 224, 0.18);
+  transform: scale(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kh-questions-btn {
+    transition: none;
+  }
+  .kh-questions-btn:hover,
+  .kh-questions-btn:focus-visible {
+    transform: none;
+  }
+}
+
+/* ============================== HERO ============================== */
+
+.kh-hero {
+  padding: var(--space-xl) 0 var(--space-lg);
+}
+
+.kh-hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  text-align: center;
+}
+
+.kh-hero-image img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-surface);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
+}
+
+.kh-hero-name {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.kh-hero-role {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-top: 0.35rem;
+}
+
+.kh-hero-summary {
+  margin-top: var(--space-sm);
+  color: var(--color-text-secondary);
+  max-width: 620px;
+  line-height: 1.7;
+}
+
+.kh-hero-summary strong {
+  color: var(--color-text);
+}
+
+@media (min-width: 700px) {
+  .kh-hero-inner {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+    gap: var(--space-lg);
+  }
+
+  .kh-hero-image img {
+    width: 170px;
+    height: 170px;
+  }
+}
+
+/* ============================== SECTIONS ============================== */
+
+.kh-section {
+  padding: var(--space-xl) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.kh-section h2 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--color-text);
+  margin-bottom: var(--space-md);
+}
+
+.kh-section h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-text);
+  margin: var(--space-md) 0 var(--space-sm);
+}
+
+/* ============================== TIMELINE ============================== */
+/* Single card for the whole path, always vertical, styled after the site's
+   quick-tour component: soft gradient background, colored round markers. */
+
+.kh-tl-card {
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(120deg, #eaf1ff 0%, #eafaf3 55%, #fff6e6 100%);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.kh-tl-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.kh-tl-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.kh-tl-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.kh-tl-icon {
+  flex-shrink: 0;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  margin-top: 0.35rem;
+}
+
+.kh-tl-item:nth-child(4n+1) .kh-tl-icon {
+  background: var(--kh-rotate-1);
+}
+
+.kh-tl-item:nth-child(4n+2) .kh-tl-icon {
+  background: var(--kh-rotate-2);
+}
+
+.kh-tl-item:nth-child(4n+3) .kh-tl-icon {
+  background: var(--kh-rotate-3);
+}
+
+.kh-tl-item:nth-child(4n+4) .kh-tl-icon {
+  background: var(--kh-rotate-4);
+}
+
+.kh-tl-header {
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.kh-tl-header strong {
+  color: var(--color-text);
+}
+
+.kh-tl-desc {
+  margin-top: 0.3rem;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.kh-tl-item-final {
+  align-items: center;
+}
+
+.kh-tl-item-final .kh-tl-icon {
+  background: var(--kh-purple);
+  width: 1rem;
+  height: 1rem;
+}
+
+.kh-tl-item-final .kh-tl-header {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--kh-purple);
+}
+
+/* ============================ STRENGTHS & RAMP ============================ */
+
+.kh-ramp-intro {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.kh-card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 700px) {
+  .kh-card-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.kh-strength-card,
+.kh-ramp-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm);
+}
+
+.kh-strength-card h4,
+.kh-ramp-card h4 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--color-text);
+}
+
+.kh-strength-card {
+  border-left: 3px solid var(--kh-direct);
+}
+
+.kh-ramp-card {
+  border-left: 3px solid var(--kh-ramp);
+}
+
+.kh-strength-card p,
+.kh-ramp-card p {
+  color: var(--color-text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.kh-ramp-inmotion {
+  margin-top: 0.5rem;
+  color: var(--color-text) !important;
+}
+
+.kh-cert-note {
+  margin-top: var(--space-md);
+  padding: var(--space-sm);
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  color: var(--color-text-secondary);
+  font-size: 0.92rem;
+}
+
+/* ============================== JD ACCORDION ============================== */
+
+.kh-legend {
+  list-style: none;
+  margin: 0 0 var(--space-sm);
+  padding: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.kh-legend li {
+  padding: 0.25rem 0;
+}
+
+.kh-chip {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-right: 0.4rem;
+  white-space: nowrap;
+}
+
+.kh-chip-direct {
+  background: rgba(15, 157, 120, 0.12);
+  color: var(--kh-direct);
+}
+
+.kh-chip-adjacent {
+  background: rgba(47, 111, 237, 0.12);
+  color: var(--kh-adjacent);
+}
+
+.kh-chip-ramp {
+  background: rgba(201, 121, 27, 0.12);
+  color: var(--kh-ramp);
+}
+
+.kh-acc-item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  margin-bottom: 0.6rem;
+  overflow: hidden;
+}
+
+.kh-acc-heading {
+  margin: 0;
+}
+
+.kh-acc-trigger,
+.kh-acc-trigger:hover,
+.kh-acc-trigger:focus-visible {
+  background: var(--color-surface);
+}
+
+.kh-acc-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: var(--space-sm);
+  text-align: left;
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-text);
+  transition: box-shadow 0.15s ease;
+}
+
+.kh-acc-trigger:hover,
+.kh-acc-trigger:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.kh-acc-title {
+  flex: 1;
+  min-width: 140px;
+}
+
+.kh-acc-counts {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.kh-acc-icon {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--color-text-secondary);
+  border-bottom: 2px solid var(--color-text-secondary);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.kh-acc-item.is-open .kh-acc-icon {
+  transform: rotate(-135deg);
+}
+
+.kh-acc-panel {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.25s ease;
+  background: var(--color-bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kh-acc-panel,
+  .kh-acc-icon,
+  .kh-acc-trigger {
+    transition: none;
+  }
+}
+
+.kh-jd-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.4rem;
+  padding: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.kh-jd-row:first-child {
+  border-top: none;
+}
+
+.kh-jd-point {
+  font-weight: 500;
+  color: var(--color-text);
+  font-size: 0.92rem;
+}
+
+.kh-jd-contribution {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.kh-jd-contribution .kh-chip {
+  text-transform: capitalize;
+  margin-right: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .kh-jd-row {
+    grid-template-columns: 1fr 1.4fr;
+    gap: var(--space-sm);
+  }
+}
+
+/* ============================== FIRST 90 DAYS ============================== */
+
+.kh-90-intro {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.kh-90-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 900px) {
+  .kh-90-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.kh-90-col {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm);
+}
+
+.kh-90-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.kh-90-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.kh-90-list p {
+  margin: 0.05rem 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.kh-90-num {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.kh-90-list li:nth-child(4n+1) .kh-90-num {
+  background: var(--kh-rotate-1);
+}
+
+.kh-90-list li:nth-child(4n+2) .kh-90-num {
+  background: var(--kh-rotate-2);
+}
+
+.kh-90-list li:nth-child(4n+3) .kh-90-num {
+  background: var(--kh-rotate-3);
+}
+
+.kh-90-list li:nth-child(4n+4) .kh-90-num {
+  background: var(--kh-rotate-4);
+}
+
+.kh-90-close {
+  margin-top: var(--space-md);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 1.05rem;
+}
+
+/* ============================== QUESTIONS FOR YOU ============================== */
+
+.kh-q-sub {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.kh-q-group-heading {
+  margin-top: var(--space-lg);
+}
+
+.kh-q-group-priority {
+  color: var(--kh-purple);
+}
+
+.kh-q-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 700px) {
+  .kh-q-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.kh-q-card {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm);
+  box-shadow: 3px 4px 10px rgba(124, 79, 224, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kh-q-card:hover,
+.kh-q-card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: 4px 8px 18px rgba(124, 79, 224, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kh-q-card {
+    transition: none;
+  }
+  .kh-q-card:hover,
+  .kh-q-card:focus-within {
+    transform: none;
+  }
+}
+
+.kh-q-card.has-notes::after {
+  content: "";
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--kh-purple);
+}
+
+.kh-q-text {
+  color: var(--color-text);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: var(--space-sm);
+}
+
+.kh-note-wrap {
+  position: relative;
+}
+
+.kh-note-label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.3rem;
+}
+
+.kh-note-input {
+  width: 100%;
+  height: 2.25rem;
+  max-height: 220px;
+  overflow-y: hidden;
+  resize: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  transition: height 0.2s ease, border-color 0.15s ease;
+}
+
+.kh-note-input:focus {
+  outline: none;
+  border-color: var(--kh-purple);
+  background: var(--color-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kh-note-input {
+    transition: none;
+  }
+}
+
+.kh-note-saved {
+  position: absolute;
+  bottom: -1.1rem;
+  right: 0;
+  font-size: 0.72rem;
+  color: var(--kh-direct);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.kh-note-saved.is-visible {
+  opacity: 1;
+}
