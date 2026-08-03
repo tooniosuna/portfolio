@@ -27,23 +27,21 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 0.6rem 1.6rem;
+  padding: 0.6rem 2rem;
   border-radius: 999px;
   font-weight: 500;
   font-size: 0.95rem;
   color: var(--kh-purple);
   background:
-    linear-gradient(rgba(124, 79, 224, 0.09), rgba(124, 79, 224, 0.09)) padding-box,
+    var(--color-surface) padding-box,
     linear-gradient(120deg, var(--kh-purple), var(--kh-purple-2)) border-box;
   border: 2px solid transparent;
-  transition: box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .kh-questions-btn:hover,
 .kh-questions-btn:focus-visible {
-  background:
-    linear-gradient(rgba(124, 79, 224, 0.16), rgba(124, 79, 224, 0.16)) padding-box,
-    linear-gradient(120deg, var(--kh-purple), var(--kh-purple-2)) border-box;
+  color: var(--kh-purple-2);
   box-shadow: 0 0 0 4px rgba(124, 79, 224, 0.18);
   transform: scale(1.03);
 }
