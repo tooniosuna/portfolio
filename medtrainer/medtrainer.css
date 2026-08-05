@@ -1,29 +1,25 @@
 /* ==========================================================================
-   KOHLER PAGE — page-scoped styles only.
-   Everything here is prefixed .kh- so nothing collides with, or needs to
-   touch, the shared site stylesheet. Reuses site CSS variables (colors,
-   fonts, spacing, radius) from styles.css for visual consistency.
+   MEDTRAINER PAGE — page-scoped styles only.
+   Sibling of kohler/kohler.css, same structural pattern, prefixed .mt- so
+   it never collides with .kh- (the other hidden page) or the shared
+   stylesheet. Reuses site CSS variables for visual consistency.
    ========================================================================== */
 
-/* Purple accent used only on this page, for the "Questions" nav button.
-   The rotating 4-color set on the timeline/90-day numbers matches the
-   site's existing quick-tour component (styles.css) for consistency. */
 :root {
-  --kh-purple: #7c4fe0;
-  --kh-purple-2: #b06ee0;
-  --kh-direct: #0f9d78;
-  --kh-adjacent: #2f6fed;
-  --kh-ramp: #c9791b;
-  --kh-danger: #c0392b;
-  --kh-rotate-1: #2f6fed;
-  --kh-rotate-2: #0f9d78;
-  --kh-rotate-3: #c9791b;
-  --kh-rotate-4: #a5309c;
+  --mt-purple: #7c4fe0;
+  --mt-purple-2: #b06ee0;
+  --mt-direct: #0f9d78;
+  --mt-adjacent: #2f6fed;
+  --mt-ramp: #c9791b;
+  --mt-rotate-1: #2f6fed;
+  --mt-rotate-2: #0f9d78;
+  --mt-rotate-3: #c9791b;
+  --mt-rotate-4: #a5309c;
 }
 
 /* ============================== NAV EXTRA ============================== */
 
-.kh-questions-btn {
+.mt-questions-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -31,38 +27,38 @@
   border-radius: 999px;
   font-weight: 500;
   font-size: 0.95rem;
-  color: var(--kh-purple);
+  color: var(--mt-purple);
   background:
     var(--color-surface) padding-box,
-    linear-gradient(120deg, var(--kh-purple), var(--kh-purple-2)) border-box;
+    linear-gradient(120deg, var(--mt-purple), var(--mt-purple-2)) border-box;
   border: 2px solid transparent;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.kh-questions-btn:hover,
-.kh-questions-btn:focus-visible {
-  color: var(--kh-purple-2);
+.mt-questions-btn:hover,
+.mt-questions-btn:focus-visible {
+  color: var(--mt-purple-2);
   box-shadow: 0 0 0 4px rgba(124, 79, 224, 0.18);
   transform: scale(1.03);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kh-questions-btn {
+  .mt-questions-btn {
     transition: none;
   }
-  .kh-questions-btn:hover,
-  .kh-questions-btn:focus-visible {
+  .mt-questions-btn:hover,
+  .mt-questions-btn:focus-visible {
     transform: none;
   }
 }
 
 /* ============================== HERO ============================== */
 
-.kh-hero {
+.mt-hero {
   padding: var(--space-xl) 0 var(--space-lg);
 }
 
-.kh-hero-inner {
+.mt-hero-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,7 +66,7 @@
   text-align: center;
 }
 
-.kh-hero-image img {
+.mt-hero-image img {
   width: 140px;
   height: 140px;
   border-radius: 50%;
@@ -79,40 +75,46 @@
   box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
 }
 
-.kh-hero-name {
+.mt-hero-name {
   font-family: var(--font-heading);
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--color-text);
 }
 
-.kh-hero-role {
+.mt-hero-role {
   font-family: var(--font-heading);
   font-weight: 600;
   color: var(--color-accent);
   margin-top: 0.35rem;
 }
 
-.kh-hero-summary {
+.mt-hero-summary {
   margin-top: var(--space-sm);
+  padding-left: 1.2rem;
   color: var(--color-text-secondary);
   max-width: 620px;
-  line-height: 1.7;
+  line-height: 1.6;
+  text-align: left;
 }
 
-.kh-hero-summary strong {
-  color: var(--color-text);
+.mt-hero-summary li {
+  margin-bottom: 0.4rem;
+}
+
+.mt-hero-summary li:last-child {
+  margin-bottom: 0;
 }
 
 @media (min-width: 700px) {
-  .kh-hero-inner {
+  .mt-hero-inner {
     flex-direction: row;
     text-align: left;
     align-items: flex-start;
     gap: var(--space-lg);
   }
 
-  .kh-hero-image img {
+  .mt-hero-image img {
     width: 170px;
     height: 170px;
   }
@@ -120,12 +122,12 @@
 
 /* ============================== SECTIONS ============================== */
 
-.kh-section {
+.mt-section {
   padding: var(--space-xl) 0;
   border-top: 1px solid var(--color-border);
 }
 
-.kh-section h2 {
+.mt-section h2 {
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 1.4rem;
@@ -133,7 +135,7 @@
   margin-bottom: var(--space-md);
 }
 
-.kh-section h3 {
+.mt-section h3 {
   font-family: var(--font-heading);
   font-weight: 600;
   font-size: 1.1rem;
@@ -142,17 +144,30 @@
 }
 
 /* ============================== TIMELINE ============================== */
-/* Single card for the whole path, always vertical, styled after the site's
-   quick-tour component: soft gradient background, colored round markers. */
 
-.kh-tl-card {
+.mt-tl-thesis {
+  color: var(--color-text);
+  margin-bottom: var(--space-md);
+  line-height: 1.7;
+  font-size: 0.98rem;
+}
+
+.mt-tl-card {
   padding: var(--space-md) var(--space-lg);
   border-radius: var(--radius-lg);
   background: linear-gradient(120deg, #eaf1ff 0%, #eafaf3 55%, #fff6e6 100%);
   border: 1px solid rgba(15, 23, 42, 0.06);
 }
 
-.kh-tl-list {
+@media (min-width: 700px) {
+  .mt-tl-card {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.mt-tl-list {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -161,7 +176,7 @@
   gap: var(--space-sm);
 }
 
-.kh-tl-item {
+.mt-tl-item {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
@@ -169,12 +184,12 @@
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
 }
 
-.kh-tl-item:last-child {
+.mt-tl-item:last-child {
   border-bottom: none;
   padding-bottom: 0;
 }
 
-.kh-tl-icon {
+.mt-tl-icon {
   flex-shrink: 0;
   width: 0.85rem;
   height: 0.85rem;
@@ -182,128 +197,101 @@
   margin-top: 0.35rem;
 }
 
-.kh-tl-item:nth-child(4n+1) .kh-tl-icon {
-  background: var(--kh-rotate-1);
+.mt-tl-item:nth-child(4n+1) .mt-tl-icon {
+  background: var(--mt-rotate-1);
 }
 
-.kh-tl-item:nth-child(4n+2) .kh-tl-icon {
-  background: var(--kh-rotate-2);
+.mt-tl-item:nth-child(4n+2) .mt-tl-icon {
+  background: var(--mt-rotate-2);
 }
 
-.kh-tl-item:nth-child(4n+3) .kh-tl-icon {
-  background: var(--kh-rotate-3);
+.mt-tl-item:nth-child(4n+3) .mt-tl-icon {
+  background: var(--mt-rotate-3);
 }
 
-.kh-tl-item:nth-child(4n+4) .kh-tl-icon {
-  background: var(--kh-rotate-4);
+.mt-tl-item:nth-child(4n+4) .mt-tl-icon {
+  background: var(--mt-rotate-4);
 }
 
-.kh-tl-header {
+/* Final node override — deliberately placed after the rotation rules above
+   AND written with equal-or-higher specificity (three class-level selectors)
+   so it always wins regardless of which rotation slot the last item lands
+   on. The Kohler page shipped without this and the destination node
+   silently rendered in whatever rotation color it landed on instead of the
+   intended purple ring — fixed there too, see kohler.css. */
+.mt-tl-list .mt-tl-item-final .mt-tl-icon {
+  background: transparent;
+  border: 2px dashed var(--mt-purple);
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.mt-tl-header {
   font-size: 0.95rem;
   color: var(--color-text);
 }
 
-.kh-tl-header strong {
+.mt-tl-header strong {
   color: var(--color-text);
 }
 
-.kh-tl-desc {
-  margin-top: 0.3rem;
-  font-size: 0.88rem;
-  color: var(--color-text-secondary);
-  line-height: 1.6;
+.mt-tl-chips {
+  margin: 0.4rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
 
-.kh-tl-item-final {
+.mt-tl-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+.mt-tl-chip-stopped {
+  border-style: dashed;
+  color: var(--color-text-secondary);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.mt-tl-chip-stopped em {
+  font-style: italic;
+}
+
+.mt-tl-desc-list {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+.mt-tl-desc-list li {
+  margin-bottom: 0.25rem;
+}
+
+.mt-tl-desc-list li:last-child {
+  margin-bottom: 0;
+}
+
+.mt-tl-item-final {
   align-items: center;
 }
 
-/* Specificity note: this must beat the nth-child rotation rules above
-   (.kh-tl-item:nth-child(4n+3) .kh-tl-icon etc., each specificity 0,3,0)
-   or the final node silently inherits whatever rotation color its position
-   lands on instead of the intended purple. The extra .kh-tl-list ancestor
-   here makes this selector 0,3,0 too, and it wins on source order since
-   it's declared after the rotation rules. */
-.kh-tl-list .kh-tl-item-final .kh-tl-icon {
-  background: var(--kh-purple);
-  width: 1rem;
-  height: 1rem;
-}
-
-.kh-tl-item-final .kh-tl-header {
+.mt-tl-item-final .mt-tl-header {
   font-weight: 700;
   font-size: 1.05rem;
-  color: var(--kh-purple);
-}
-
-/* ============================ STRENGTHS & RAMP ============================ */
-
-.kh-ramp-intro {
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-sm);
-}
-
-.kh-card-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-sm);
-}
-
-@media (min-width: 700px) {
-  .kh-card-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.kh-strength-card,
-.kh-ramp-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-sm);
-}
-
-.kh-strength-card h4,
-.kh-ramp-card h4 {
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: var(--color-text);
-}
-
-.kh-strength-card {
-  border-left: 3px solid var(--kh-direct);
-}
-
-.kh-ramp-card {
-  border-left: 3px solid var(--kh-ramp);
-}
-
-.kh-strength-card p,
-.kh-ramp-card p {
-  color: var(--color-text-secondary);
-  font-size: 0.92rem;
-  line-height: 1.6;
-}
-
-.kh-ramp-inmotion {
-  margin-top: 0.5rem;
-  color: var(--color-text) !important;
-}
-
-.kh-cert-note {
-  margin-top: var(--space-md);
-  padding: var(--space-sm);
-  background: var(--color-bg);
-  border-radius: var(--radius);
-  color: var(--color-text-secondary);
-  font-size: 0.92rem;
+  color: var(--mt-purple);
 }
 
 /* ============================== JD ACCORDION ============================== */
 
-.kh-legend {
+.mt-legend {
   list-style: none;
   margin: 0 0 var(--space-sm);
   padding: 0;
@@ -311,11 +299,11 @@
   font-size: 0.9rem;
 }
 
-.kh-legend li {
+.mt-legend li {
   padding: 0.25rem 0;
 }
 
-.kh-chip {
+.mt-chip {
   display: inline-block;
   padding: 0.15rem 0.55rem;
   border-radius: 999px;
@@ -325,47 +313,47 @@
   white-space: nowrap;
 }
 
-.kh-chip-direct {
+.mt-chip-direct {
   background: rgba(15, 157, 120, 0.12);
-  color: var(--kh-direct);
+  color: var(--mt-direct);
 }
 
-.kh-chip-adjacent {
+.mt-chip-adjacent {
   background: rgba(47, 111, 237, 0.12);
-  color: var(--kh-adjacent);
+  color: var(--mt-adjacent);
 }
 
-.kh-chip-ramp {
+.mt-chip-ramp {
   background: rgba(201, 121, 27, 0.12);
-  color: var(--kh-ramp);
+  color: var(--mt-ramp);
 }
 
-.kh-accordion {
+.mt-accordion {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
-.kh-acc-item {
+.mt-acc-item {
   border-bottom: 1px solid var(--color-border);
 }
 
-.kh-acc-item:last-child {
+.mt-acc-item:last-child {
   border-bottom: none;
 }
 
-.kh-acc-heading {
+.mt-acc-heading {
   margin: 0;
 }
 
-.kh-acc-trigger,
-.kh-acc-trigger:hover,
-.kh-acc-trigger:focus-visible {
+.mt-acc-trigger,
+.mt-acc-trigger:hover,
+.mt-acc-trigger:focus-visible {
   background: var(--color-surface);
 }
 
-.kh-acc-trigger {
+.mt-acc-trigger {
   width: 100%;
   display: flex;
   align-items: center;
@@ -378,22 +366,22 @@
   transition: box-shadow 0.15s ease;
 }
 
-.kh-acc-trigger:hover,
-.kh-acc-trigger:focus-visible {
+.mt-acc-trigger:hover,
+.mt-acc-trigger:focus-visible {
   box-shadow: inset 0 0 0 1px var(--color-border);
 }
 
-.kh-acc-title {
+.mt-acc-title {
   flex: 1;
   min-width: 140px;
 }
 
-.kh-acc-counts {
+.mt-acc-counts {
   display: flex;
   flex-wrap: wrap;
 }
 
-.kh-acc-icon {
+.mt-acc-icon {
   width: 10px;
   height: 10px;
   border-right: 2px solid var(--color-text-secondary);
@@ -403,11 +391,11 @@
   flex-shrink: 0;
 }
 
-.kh-acc-item.is-open .kh-acc-icon {
+.mt-acc-item.is-open .mt-acc-icon {
   transform: rotate(-135deg);
 }
 
-.kh-acc-panel {
+.mt-acc-panel {
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.25s ease;
@@ -415,14 +403,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kh-acc-panel,
-  .kh-acc-icon,
-  .kh-acc-trigger {
+  .mt-acc-panel,
+  .mt-acc-icon,
+  .mt-acc-trigger {
     transition: none;
   }
 }
 
-.kh-jd-row {
+.mt-jd-row {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.4rem;
@@ -430,142 +418,62 @@
   border-top: 1px solid var(--color-border);
 }
 
-.kh-jd-row:first-child {
+.mt-jd-row:first-child {
   border-top: none;
 }
 
-.kh-jd-point {
+.mt-jd-point {
   font-weight: 500;
   color: var(--color-text);
   font-size: 0.92rem;
 }
 
-.kh-jd-contribution {
+.mt-jd-contribution {
   color: var(--color-text-secondary);
   font-size: 0.9rem;
   line-height: 1.65;
 }
 
-.kh-jd-contribution .kh-chip {
+.mt-jd-contribution .mt-chip {
   text-transform: capitalize;
   margin-right: 0.5rem;
 }
 
 @media (min-width: 768px) {
-  .kh-jd-row {
+  .mt-jd-row {
     grid-template-columns: 1fr 1.4fr;
     gap: var(--space-sm);
   }
 }
 
-/* ============================== FIRST 90 DAYS ============================== */
-
-.kh-90-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-sm);
-}
-
-@media (min-width: 900px) {
-  .kh-90-grid {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
-
-.kh-90-col {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-sm);
-}
-
-.kh-90-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.kh-90-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.65rem;
-}
-
-.kh-90-list p {
-  margin: 0.05rem 0 0;
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-  line-height: 1.6;
-}
-
-.kh-90-num {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 50%;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.kh-90-list li:nth-child(4n+1) .kh-90-num {
-  background: var(--kh-rotate-1);
-}
-
-.kh-90-list li:nth-child(4n+2) .kh-90-num {
-  background: var(--kh-rotate-2);
-}
-
-.kh-90-list li:nth-child(4n+3) .kh-90-num {
-  background: var(--kh-rotate-3);
-}
-
-.kh-90-list li:nth-child(4n+4) .kh-90-num {
-  background: var(--kh-rotate-4);
-}
-
-.kh-90-close {
-  margin-top: var(--space-md);
-  font-family: var(--font-heading);
-  font-weight: 600;
-  color: var(--color-text);
-  font-size: 1.05rem;
-}
-
 /* ============================== QUESTIONS FOR YOU ============================== */
 
-.kh-q-sub {
+.mt-q-sub {
   color: var(--color-text-secondary);
   margin-bottom: var(--space-sm);
 }
 
-.kh-q-group-heading {
+.mt-q-group-heading {
   margin-top: var(--space-lg);
 }
 
-.kh-q-group-priority {
-  color: var(--kh-purple);
+.mt-q-group-priority {
+  color: var(--mt-purple);
 }
 
-.kh-q-grid {
+.mt-q-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-sm);
 }
 
 @media (min-width: 700px) {
-  .kh-q-grid {
+  .mt-q-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-.kh-q-card {
+.mt-q-card {
   position: relative;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -575,23 +483,23 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.kh-q-card:hover,
-.kh-q-card:focus-within {
+.mt-q-card:hover,
+.mt-q-card:focus-within {
   transform: translateY(-3px);
   box-shadow: 4px 8px 18px rgba(124, 79, 224, 0.18);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kh-q-card {
+  .mt-q-card {
     transition: none;
   }
-  .kh-q-card:hover,
-  .kh-q-card:focus-within {
+  .mt-q-card:hover,
+  .mt-q-card:focus-within {
     transform: none;
   }
 }
 
-.kh-q-card.has-notes::after {
+.mt-q-card.has-notes::after {
   content: "";
   position: absolute;
   top: 0.7rem;
@@ -599,28 +507,28 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--kh-purple);
+  background: var(--mt-purple);
 }
 
-.kh-q-text {
+.mt-q-text {
   color: var(--color-text);
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: var(--space-sm);
 }
 
-.kh-note-wrap {
+.mt-note-wrap {
   position: relative;
 }
 
-.kh-note-label {
+.mt-note-label {
   display: block;
   font-size: 0.78rem;
   color: var(--color-text-secondary);
   margin-bottom: 0.3rem;
 }
 
-.kh-note-input {
+.mt-note-input {
   width: 100%;
   height: 2.25rem;
   max-height: 220px;
@@ -636,28 +544,28 @@
   transition: height 0.2s ease, border-color 0.15s ease;
 }
 
-.kh-note-input:focus {
+.mt-note-input:focus {
   outline: none;
-  border-color: var(--kh-purple);
+  border-color: var(--mt-purple);
   background: var(--color-surface);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kh-note-input {
+  .mt-note-input {
     transition: none;
   }
 }
 
-.kh-note-saved {
+.mt-note-saved {
   position: absolute;
   bottom: -1.1rem;
   right: 0;
   font-size: 0.72rem;
-  color: var(--kh-direct);
+  color: var(--mt-direct);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-.kh-note-saved.is-visible {
+.mt-note-saved.is-visible {
   opacity: 1;
 }
