@@ -90,6 +90,7 @@
 }
 
 .mt-hero-summary {
+  list-style: disc;
   margin-top: var(--space-sm);
   padding-left: 1.2rem;
   color: var(--color-text-secondary);
@@ -152,6 +153,10 @@
   font-size: 0.98rem;
 }
 
+.mt-tl-thesis-highlight {
+  color: var(--mt-purple);
+}
+
 .mt-tl-card {
   padding: var(--space-md) var(--space-lg);
   border-radius: var(--radius-lg);
@@ -160,6 +165,7 @@
 }
 
 @media (min-width: 700px) {
+  .mt-tl-thesis,
   .mt-tl-card {
     max-width: 700px;
     margin-left: auto;
@@ -264,6 +270,7 @@
 }
 
 .mt-tl-desc-list {
+  list-style: disc;
   margin: 0.4rem 0 0;
   padding-left: 1.1rem;
   font-size: 0.88rem;
